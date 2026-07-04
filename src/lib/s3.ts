@@ -6,10 +6,17 @@ import { PUBLIC_S3_ENDPOINT, PUBLIC_S3_KEY_PREFIX } from '$env/static/public';
 // S3-compatible client. Configured for Cloudflare R2:
 //   PUBLIC_S3_ENDPOINT = <account_id>.r2.cloudflarestorage.com
 //   region             = 'auto' (R2 convention; ignored due to custom endpoint)
+//   forcePathStyle     = true — R2 requires path-style
+//                        (https://<account_id>.r2.cloudflarestorage.com/<bucket>).
+//                        Without it the SDK defaults to virtual-hosted-style
+//                        (https://<bucket>.<account_id>.r2.cloudflarestorage.com),
+//                        which R2's `*.r2.cloudflarestorage.com` TLS cert doesn't
+//                        cover (that extra subdomain level), so requests fail.
 // Works with any S3-compatible provider by swapping the endpoint + credentials.
 export const s3Client = new S3Client({
 	endpoint: { hostname: PUBLIC_S3_ENDPOINT, path: '', protocol: 'https:' }, // For some reason the ":" is required
 	region: 'auto',
+	forcePathStyle: true,
 	credentials: {
 		accessKeyId: S3_ACCESS_KEY,
 		secretAccessKey: S3_SECRET_KEY

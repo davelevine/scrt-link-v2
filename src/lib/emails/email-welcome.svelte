@@ -1,14 +1,5 @@
 <script lang="ts">
-	import {
-		Body,
-		Container,
-		Head,
-		Heading,
-		Hr,
-		Html,
-		Img,
-		Text
-	} from 'svelte-email-tailwind';
+	import { Body, Container, Head, Heading, Hr, Html, Img, Text } from 'svelte-email-tailwind';
 
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';

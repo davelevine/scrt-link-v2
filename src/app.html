@@ -1,12 +1,16 @@
 <!doctype html>
-<html lang="%lang%">
+<!-- Dark is the default theme. Rendering `.dark` on <html> server-side means the
+     very first paint already uses the dark palette (app.css `.dark` background),
+     so there is no white/cream flash before mode-watcher's client script runs.
+     mode-watcher reconciles this on mount (removing `.dark` only if the visitor
+     has explicitly chosen light). -->
+<html lang="%lang%" class="dark">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<!-- Dark is the default theme. Paint the dark background immediately (before
-		     app CSS / mode-watcher run) so there is no white flash on first load.
-		     Matches the `.dark` `--background` in app.css. -->
+		<!-- Paint the dark background before app CSS loads, as a belt-and-suspenders
+		     backstop to the `.dark` class above. Matches `.dark --background`. -->
 		<style>
 			:root {
 				color-scheme: dark;

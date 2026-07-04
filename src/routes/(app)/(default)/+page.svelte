@@ -31,8 +31,9 @@
 						: 'translate-y-10 opacity-0'}"
 				>
 					<Card class="mb-2">
-						<UrlExplained />
-						{m.equal_elegant_herring_yell()}
+						<div class="px-2 py-6 sm:px-6">
+							<UrlExplained class="mx-auto w-full max-w-2xl" />
+						</div>
 					</Card>
 				</div>
 			{/snippet}
