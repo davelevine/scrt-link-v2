@@ -10,7 +10,7 @@ axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 type SignedUrlGetResponse = {
 	url: string;
 };
-export type PresignedPostResponse = { url: string; fields: Record<string, string> };
+export type PresignedUploadResponse = { url: string };
 
 type Chunk = {
 	key: string;
@@ -81,14 +81,11 @@ export const handleFileEncryptionAndUpload = async ({
 		const signature = await signMessage(fileName, privateKey);
 
 		const fileNameHashed = await sha256Hash(fileName);
-		const { url, fields } = await api<PresignedPostResponse>(
-			`/secrets/files?file=${fileNameHashed}`
-		);
+		const { url } = await api<PresignedUploadResponse>(`/secrets/files?file=${fileNameHashed}`);
 
 		await uploadFileToS3({
 			signal,
 			url,
-			fields,
 			blob: encryptedFile,
 			size: chunkFileSize,
 			progressCallback: (p) => {
@@ -110,39 +107,31 @@ export const handleFileEncryptionAndUpload = async ({
 
 type UploadFileToS3Params = {
 	signal: AbortSignal;
+	url: string;
 	blob: Blob;
 	size: number;
 	progressCallback: (progress: number) => void;
-} & PresignedPostResponse;
+};
 
 export const uploadFileToS3 = async ({
 	signal,
 	url,
-	fields,
 	blob,
 	size,
 	progressCallback
 }: UploadFileToS3Params): Promise<void> => {
 	progressCallback(0);
 
-	// Prepare form data
-	const formData = new FormData();
-	Object.entries(fields).forEach(([key, value]) => {
-		if (typeof value !== 'string') {
-			return;
-		}
-		formData.append(key, value);
-	});
-
-	formData.append('file', blob);
-
-	// Post file to S3
-	// Using axios b/c of built-in progress callback
+	// Upload with a presigned PUT (Cloudflare R2 doesn't implement S3 POST Object).
+	// The Content-Type must match what the URL was signed with on the server
+	// (application/octet-stream), otherwise R2 rejects the signature.
+	// Using axios b/c of built-in progress callback.
 	await axios.request({
 		signal,
-		method: 'POST',
+		method: 'PUT',
 		url: url,
-		data: formData,
+		data: blob,
+		headers: { 'Content-Type': 'application/octet-stream' },
 		onUploadProgress: (p) => {
 			progressCallback(p.loaded / (p.total || size));
 		}
