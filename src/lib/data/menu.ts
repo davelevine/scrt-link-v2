@@ -9,8 +9,6 @@ import {
 
 import { m } from '$lib/paraglide/messages.js';
 
-import { githubUrl } from './app';
-
 export const secretMenu = () => [
 	{
 		icon: TypeOutline,
@@ -40,20 +38,11 @@ export const secretMenu = () => [
 	{
 		icon: ConciergeBell,
 		href: '/account/requests',
-		label: m.keen_swift_heron_ask(),
-		badge: m.heavy_inclusive_yak_skip()
+		label: m.keen_swift_heron_ask()
 	}
 ];
 
 export const productMenu = () => [
-	{
-		href: '/business',
-		label: m.great_funny_beaver_gleam()
-	},
-	{
-		href: '/pricing',
-		label: m.moving_quaint_buzzard_trip()
-	},
 	{
 		href: '/api-documentation',
 		label: 'API Docs'
@@ -61,35 +50,6 @@ export const productMenu = () => [
 	{
 		href: '/cli',
 		label: 'CLI'
-	},
-	{
-		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
-		externalLink: true,
-		label: 'Wiki'
-	},
-	{
-		href: githubUrl,
-		externalLink: true,
-		label: 'Github'
-	}
-];
-
-export const companyMenu = () => [
-	{
-		href: '/about',
-		label: m.polite_misty_jan_hint()
-	},
-	{
-		href: '/privacy',
-		label: m.awake_frail_kitten_hush()
-	},
-	{
-		href: '/security',
-		label: m.nice_last_quail_pop()
-	},
-	{
-		href: '/blog',
-		label: m.crazy_tired_racoon_offer()
 	}
 ];
 
@@ -97,101 +57,5 @@ export const helpMenu = () => [
 	{
 		href: '/contact',
 		label: m.early_bright_salmon_comfort()
-	},
-	{
-		href: '/faq',
-		label: m.few_awful_chipmunk_trust()
-	},
-	{
-		href: '/imprint',
-		label: m.civil_dizzy_gopher_glow()
 	}
 ];
-
-const tos = () => ({
-	href: '/terms-of-service',
-	label: m.bad_white_baboon_zap()
-});
-
-const cookiePolicy = () => ({
-	href: '/cookie-policy',
-	label: m.dull_tidy_sawfish_find()
-});
-
-const privacyPolicy = () => ({
-	href: '/privacy-policy',
-	label: m.crazy_jumpy_mouse_hush()
-});
-
-const acceptableUsePolicy = () => ({
-	href: '/acceptable-use-policy',
-	label: m.blue_aqua_hornet_link()
-});
-
-const imprint = () => ({
-	href: '/imprint',
-	label: m.basic_cool_fish_conquer()
-});
-
-const sla = () => ({
-	href: '/sla',
-	label: 'Service Level Agreement (SLA)'
-});
-
-const gdpr = () => ({
-	href: '/gdpr',
-	label: 'GDPR'
-});
-
-export const useCasesMenu = () => [
-	{
-		href: '/business',
-		label: m.great_funny_beaver_gleam()
-	},
-	{
-		href: '/use-cases/it-security',
-		label: m.warm_calm_hawk_defend()
-	},
-	{
-		href: '/use-cases/legal-compliance',
-		label: m.clear_pure_owl_advise()
-	},
-	{
-		href: '/use-cases/journalists',
-		label: m.brave_sharp_fox_report()
-	},
-	{
-		href: '/use-cases/customer-support',
-		label: m.kind_warm_bear_assist()
-	}
-];
-
-export const mainNav = () => [
-	{
-		title: m.quick_proud_lion_guide(),
-		items: useCasesMenu()
-	},
-	{
-		title: m.tiny_suave_nils_accept(),
-		items: productMenu().filter((item) => ['/pricing', '/api-documentation'].includes(item.href))
-	},
-	{
-		title: m.chunky_raw_osprey_dial(),
-		items: companyMenu().filter((item) => ['/about', '/blog', '/security'].includes(item.href))
-	},
-	{
-		title: m.equal_away_frog_aim(),
-		items: helpMenu().filter((item) => ['/faq', '/contact'].includes(item.href))
-	}
-];
-
-// Menus
-export const legalMenu = () => [
-	tos(),
-	cookiePolicy(),
-	privacyPolicy(),
-	acceptableUsePolicy(),
-	sla(),
-	gdpr()
-];
-export const imprintMenu = () => [imprint(), gdpr(), privacyPolicy(), cookiePolicy()];

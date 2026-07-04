@@ -227,7 +227,7 @@
 		<OrganizationForm
 			form={organizationForm}
 			formAction="?/createOrganization"
-			onSuccess={() => goto(localizeHref('/pricing?tab=business'))}
+			onSuccess={() => goto(localizeHref('/account/organization'))}
 		/>
 	</Card>
 {/if}

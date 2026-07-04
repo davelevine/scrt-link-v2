@@ -1,4 +1,4 @@
-Create end-to-end encrypted secrets directly from your terminal. The `scrtlink` CLI is built on top of the [scrt.link API](/api-documentation) and uses the same client-side encryption as the web app — the server never sees your plaintext.
+Create end-to-end encrypted secrets directly from your terminal. The `scrtlink` CLI is built on top of the [Secrets API](/api-documentation) and uses the same client-side encryption as the web app — the server never sees your plaintext.
 
 To use the CLI, you'll need an active [subscription](/pricing) and an API key from your [account page](/account/api).
 
@@ -33,7 +33,7 @@ scrtlink <secret> [options]
 | `--views`    | View limit 1–1000                               | `1`         |
 | `--note`     | Public note shown to recipient before reveal    | —           |
 | `--password` | Password-protect the secret                     | —           |
-| `--host`     | Override API host (white-label instances)       | `scrt.link` |
+| `--host`     | Override API host (self-hosted instances)       | `Secrets` |
 | `--api-key`  | API key — overrides `SCRT_LINK_API_KEY` env var | —           |
 
 ### Examples
@@ -69,7 +69,7 @@ scrtlink "my secret" --api-key ak_...
 
 ## White-label
 
-Point the CLI at your own scrt.link instance with `--host`:
+Point the CLI at your own instance with `--host`:
 
 ```bash
 scrtlink "my secret" --host yourdomain.com

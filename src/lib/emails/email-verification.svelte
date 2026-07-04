@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Container, Head, Heading, Hr, Html, Img, Link, Text } from 'svelte-email-tailwind';
+	import { Container, Head, Heading, Hr, Html, Img, Text } from 'svelte-email-tailwind';
 
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';
@@ -28,10 +28,7 @@
 
 		<Text class="text text-muted">
 			©{new Date().getFullYear()}
-			{appName} -
-			<Link class="text-muted" href="{getBaseUrl()}/privacy-policy"
-				>{m.crazy_jumpy_mouse_hush()}</Link
-			>
+			{appName}
 		</Text>
 	</Container>
 </Html>

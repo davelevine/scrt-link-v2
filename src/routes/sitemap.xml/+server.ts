@@ -1,32 +1,11 @@
 import { getBaseUrl } from '$lib/constants';
 import { baseLocale, locales, localizeHref } from '$lib/paraglide/runtime';
-import { getBlogPosts } from '$lib/server/blog';
 
 import type { RequestHandler } from './$types';
 
-// Public, crawlable marketing and info pages. Excludes auth flows,
-// account pages, secret retrieval links (/s, /r, /l), the API, and
-// white-label routes (those live on their own custom domains).
-const STATIC_PATHS = [
-	'/',
-	'/about',
-	'/pricing',
-	'/faq',
-	'/contact',
-	'/developers',
-	'/api-documentation',
-	'/security',
-	'/privacy',
-	'/farewell',
-	'/blog',
-	'/acceptable-use-policy',
-	'/cookie-policy',
-	'/gdpr',
-	'/imprint',
-	'/privacy-policy',
-	'/sla',
-	'/terms-of-service'
-];
+// Public, crawlable pages. Excludes auth flows, account pages, secret
+// retrieval links (/s, /r, /l), and the API.
+const STATIC_PATHS = ['/', '/contact', '/api-documentation', '/cli', '/developers'];
 
 const escapeXml = (value: string) =>
 	value
@@ -56,14 +35,8 @@ ${alternates}
 
 export const GET: RequestHandler = async () => {
 	const baseUrl = getBaseUrl();
-	const posts = await getBlogPosts();
 
-	const entries = [
-		...STATIC_PATHS.map((path) => buildUrlEntry(baseUrl, path)),
-		...posts.map((post) =>
-			buildUrlEntry(baseUrl, `/blog/${post.slug}`, new Date(post.date).toISOString())
-		)
-	];
+	const entries = STATIC_PATHS.map((path) => buildUrlEntry(baseUrl, path));
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

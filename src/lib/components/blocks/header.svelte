@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Building2, Factory, Plus, X } from '@lucide/svelte';
+	import { Building2, Factory, Plus } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
-	import { PersistedState } from 'runed';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -38,47 +37,17 @@
 	const tier = $derived(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL);
 
 	let persistHeader = $derived(isPersistent || !!tag);
-
-	// Set to `true` to re-enable the header announcement/promo banner.
-	const announcementEnabled = true;
-	const showAnnouncement = new PersistedState<boolean>('showAnnouncement:secret-requests-ga', true);
-	const announcementVisible = $derived(
-		announcementEnabled && showAnnouncement.current && !isMinimal
-	);
 </script>
 
 <IntersectionObserver bottom={persistHeader ? 0 : 100}>
 	{#snippet children(intersecting)}
-		<header
-			class="relative z-10 h-[var(--header-height)] transition-all"
-			style={announcementVisible ? '--header-height: 104px' : undefined}
-		>
+		<header class="relative z-10 h-[var(--header-height)] transition-all">
 			<div
 				class="fixed top-0 left-0 h-[var(--header-height)] w-full transition-all duration-300 ease-in-out {intersecting &&
 				!persistHeader
 					? 'bg-transparent'
 					: 'bg-card shadow-sm'}"
 			>
-				{#if announcementVisible}
-					<div class="bg-primary text-primary-foreground">
-						<Container variant="wide" class="flex h-10 items-center gap-2 text-sm">
-							<span>{m.fresh_calm_heron_note()}</span>
-							<a
-								class="after:bg-primary-foreground before:bg-primary-foreground relative inline-block before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-								href={localizeHref('/blog/product-updates-june-2026')}
-								>{m.keen_proud_otter_news()}</a
-							>
-							<button
-								type="button"
-								class="ml-auto block p-2"
-								onclick={() => (showAnnouncement.current = false)}
-							>
-								<X class="h-5 w-5" />
-								<span class="sr-only">{m.tidy_swift_fox_close()}</span>
-							</button>
-						</Container>
-					</div>
-				{/if}
 				<Container variant="wide" class="flex h-16 items-center">
 					<a
 						class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
