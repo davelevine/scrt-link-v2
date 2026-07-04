@@ -37,7 +37,7 @@
 		hasRecoveryKey: boolean;
 		keyStore: KeyStore | null;
 		passwordForm: SuperValidated<Infer<PasswordFormSchema>>;
-		recoveryForm: SuperValidated<Infer<RecoverySetupFormSchema>>;
+		recoveryForm: SuperValidated<RecoverySetupFormSchema>;
 	};
 
 	let { hasRecoveryKey, keyStore, passwordForm: pwFormData }: Props = $props();

@@ -6,7 +6,7 @@
 	type $$Props = AccordionPrimitive.ItemProps;
 
 	let className: $$Props['class'] = undefined;
-	export let value: $$Props['value'];
+	export let value: $$Props['value'] = undefined;
 	export { className as class };
 </script>
 

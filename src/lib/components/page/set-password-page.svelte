@@ -144,12 +144,15 @@
 			})
 		: null;
 
-	// Only destructure when encryptionForm exists — these are accessed inside {#if} guards
-	const encFormData = encryptionForm?.form;
-	const encMessage = encryptionForm?.message;
-	const encDelayed = encryptionForm?.delayed;
-	const encConstraints = encryptionForm?.constraints;
-	const encEnhance = encryptionForm?.enhance;
+	// These stores exist whenever `encryptionForm` is non-null. The encryption
+	// password form is only rendered inside an `{#if encryptionForm}` guard, so
+	// treating them as defined here is safe.
+	type EncForm = NonNullable<typeof encryptionForm>;
+	const encFormData = encryptionForm?.form as EncForm['form'];
+	const encMessage = encryptionForm?.message as EncForm['message'];
+	const encDelayed = encryptionForm?.delayed as EncForm['delayed'];
+	const encConstraints = encryptionForm?.constraints as EncForm['constraints'];
+	const encEnhance = encryptionForm?.enhance as EncForm['enhance'];
 </script>
 
 <SingleFormPage title={m.front_fun_husky_pray()} description={m.male_ornate_mantis_feel()}>

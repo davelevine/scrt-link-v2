@@ -3,7 +3,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = SeparatorPrimitive.Props;
+	type $$Props = SeparatorPrimitive.RootProps;
 
 	let className: $$Props['class'] = undefined;
 	export let orientation: $$Props['orientation'] = 'horizontal';

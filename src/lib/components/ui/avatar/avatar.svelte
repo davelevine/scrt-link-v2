@@ -3,7 +3,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = AvatarPrimitive.Props;
+	type $$Props = AvatarPrimitive.RootProps;
 
 	let className: $$Props['class'] = undefined;
 	export let delayMs: $$Props['delayMs'] = undefined;

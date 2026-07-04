@@ -4,8 +4,6 @@
 	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = TabsPrimitive.TriggerProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = TabsPrimitive.TriggerEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'];
@@ -19,7 +17,6 @@
 	)}
 	{value}
 	{...$$restProps}
-	on:click
 >
 	<slot />
 </TabsPrimitive.Trigger>

@@ -7,7 +7,7 @@
 	type Props = {
 		label: string;
 	};
-	let { checked = $bindable(), label, ...rest }: Props & SwitchPrimitive.Props = $props();
+	let { checked = $bindable(), label, ...rest }: Props & SwitchPrimitive.RootProps = $props();
 </script>
 
 <Form.Control let:attrs>

@@ -10,8 +10,8 @@
 	type $$Props = DialogPrimitive.ContentProps;
 
 	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = fly;
-	export let transitionConfig: $$Props['transitionConfig'] = {
+	export let transition = fly;
+	export let transitionConfig = {
 		duration: 200,
 		y: 200
 	};
