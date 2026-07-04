@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 
 	import { page } from '$app/state';
 	import { PUBLIC_ENV } from '$env/static/public';
@@ -10,13 +10,6 @@
 	import type { LayoutData } from './$types';
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();
-
-	onMount(async () => {
-		console.info(
-			'%c🤫\nSo follow sparks that light your mind,\nfor those who seek, are those who find.\n\nUse promo code HIDDENTREASURE during checkout and get a nice surprise!',
-			'font-size: 16px;color: #ff0083'
-		);
-	});
 </script>
 
 <svelte:head>

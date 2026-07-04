@@ -171,6 +171,10 @@
 					}
 
 					createDownloadLinkAndClick(url, fileMeta.name);
+					// Single-chunk download is complete — don't also fall through to the
+					// service-worker streaming path below (which is for multi-chunk files),
+					// or the file downloads twice.
+					return;
 				}
 
 				await downloadFileAsStream(secretIdHash, fileMeta, fileReference, masterKey);
