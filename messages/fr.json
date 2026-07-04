@@ -147,7 +147,7 @@
 	"real_safe_crow_database": "Base de données Postgres",
 	"real_safe_crow_storage": "Stockage d'objets (fichiers)",
 	"civil_safe_hawk_report": "Divulgation responsable",
-	"civil_safe_hawk_body": "La sécurité est une priorité pour nous — si vous repérez une vulnérabilité, nous vous serions reconnaissants de nous la signaler de manière responsable à [dave@levine.io](mailto:dave@levine.io) afin que nous puissions la corriger avant qu'elle n'affecte les utilisateurs. Les rapports utiles décrivent le problème et son impact potentiel, comment le reproduire, ainsi que tout code de preuve de concept ou capture d'écran.",
+	"civil_safe_hawk_body": "La sécurité est une priorité pour nous — si vous repérez une vulnérabilité, nous vous serions reconnaissants de nous la signaler de manière responsable à [notre formulaire de contact](/contact) afin que nous puissions la corriger avant qu'elle n'affecte les utilisateurs. Les rapports utiles décrivent le problème et son impact potentiel, comment le reproduire, ainsi que tout code de preuve de concept ou capture d'écran.",
 	"funny_swift_jay_promise": "Secrets",
 	"equal_away_frog_aim": "Aide",
 	"caring_light_tiger_taste": "Enregistrer",

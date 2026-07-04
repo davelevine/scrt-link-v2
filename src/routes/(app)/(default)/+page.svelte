@@ -31,13 +31,17 @@
 						: 'translate-y-10 opacity-0'}"
 				>
 					<Card class="mb-2">
-						<div class="flex flex-col gap-4 py-2">
-							<div class="font-mono text-sm break-all sm:text-lg">
-								<span class="text-muted-foreground">https://{page.url.host}/s</span><span
-									class="text-accent font-semibold">#Xy7k2p9wLqZ…</span
+						<div class="flex flex-col items-center gap-5 py-4">
+							<div
+								class="bg-muted/40 border-border w-full rounded-lg border px-4 py-3 text-center font-mono text-sm break-all sm:text-lg"
+							>
+								<span class="text-muted-foreground">https://{page.url.host}/s#</span><span
+									class="text-accent font-semibold">Xy7k2p9wLqZ…</span
 								>
 							</div>
-							<p>{m.equal_elegant_herring_yell()}</p>
+							<p class="text-muted-foreground max-w-md text-center text-sm">
+								{m.equal_elegant_herring_yell()}
+							</p>
 						</div>
 					</Card>
 				</div>

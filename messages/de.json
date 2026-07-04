@@ -147,7 +147,7 @@
 	"real_safe_crow_database": "Postgres-Datenbank",
 	"real_safe_crow_storage": "Objektspeicher (Dateien)",
 	"civil_safe_hawk_report": "Verantwortungsvolle Offenlegung",
-	"civil_safe_hawk_body": "Sicherheit hat für uns höchste Priorität — wenn du eine Schwachstelle entdeckst, freuen wir uns über eine verantwortungsvolle Meldung an [dave@levine.io](mailto:dave@levine.io), damit wir sie beheben können, bevor Nutzer betroffen sind. Hilfreiche Berichte beschreiben das Problem und seine möglichen Auswirkungen, wie es sich reproduzieren lässt, sowie unterstützenden Proof-of-Concept-Code oder Screenshots.",
+	"civil_safe_hawk_body": "Sicherheit hat für uns höchste Priorität — wenn du eine Schwachstelle entdeckst, freuen wir uns über eine verantwortungsvolle Meldung an [unser Kontaktformular](/contact), damit wir sie beheben können, bevor Nutzer betroffen sind. Hilfreiche Berichte beschreiben das Problem und seine möglichen Auswirkungen, wie es sich reproduzieren lässt, sowie unterstützenden Proof-of-Concept-Code oder Screenshots.",
 	"funny_swift_jay_promise": "Geheimnisse",
 	"equal_away_frog_aim": "Hilfe",
 	"caring_light_tiger_taste": "Speichern",

@@ -147,7 +147,7 @@
 	"real_safe_crow_database": "Postgres-databas",
 	"real_safe_crow_storage": "Objektlagring (filer)",
 	"civil_safe_hawk_report": "Ansvarsfull rapportering",
-	"civil_safe_hawk_body": "Säkerhet är en prioritet för oss — om du hittar en sårbarhet uppskattar vi ett ansvarsfullt avslöjande till [dave@levine.io](mailto:dave@levine.io) så att vi kan åtgärda det innan användare påverkas. Hjälpsamma rapporter beskriver problemet och dess potentiella påverkan, hur det reproduceras samt eventuell proof-of-concept-kod eller skärmdumpar.",
+	"civil_safe_hawk_body": "Säkerhet är en prioritet för oss — om du hittar en sårbarhet uppskattar vi ett ansvarsfullt avslöjande till [vårt kontaktformulär](/contact) så att vi kan åtgärda det innan användare påverkas. Hjälpsamma rapporter beskriver problemet och dess potentiella påverkan, hur det reproduceras samt eventuell proof-of-concept-kod eller skärmdumpar.",
 	"funny_swift_jay_promise": "Hemligheter",
 	"equal_away_frog_aim": "Hjälp",
 	"caring_light_tiger_taste": "Spara",

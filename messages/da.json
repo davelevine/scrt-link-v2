@@ -147,7 +147,7 @@
 	"real_safe_crow_database": "Postgres-database",
 	"real_safe_crow_storage": "Objektlagring (filer)",
 	"civil_safe_hawk_report": "Ansvarlig afsløring",
-	"civil_safe_hawk_body": "Sikkerhed er en prioritet for os — hvis du opdager en sårbarhed, sætter vi pris på en ansvarlig afsløring til [dave@levine.io](mailto:dave@levine.io), så vi kan rette det, inden brugere berøres. Nyttige rapporter beskriver problemet og dets potentielle konsekvenser, hvordan det reproduceres samt eventuel proof-of-concept-kode eller skærmbilleder.",
+	"civil_safe_hawk_body": "Sikkerhed er en prioritet for os — hvis du opdager en sårbarhed, sætter vi pris på en ansvarlig afsløring til [vores kontaktformular](/contact), så vi kan rette det, inden brugere berøres. Nyttige rapporter beskriver problemet og dets potentielle konsekvenser, hvordan det reproduceres samt eventuel proof-of-concept-kode eller skærmbilleder.",
 	"funny_swift_jay_promise": "Hemmeligheder",
 	"equal_away_frog_aim": "Hjælp",
 	"caring_light_tiger_taste": "Gem",

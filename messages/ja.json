@@ -147,7 +147,7 @@
 	"real_safe_crow_database": "Postgres データベース",
 	"real_safe_crow_storage": "オブジェクトストレージ（ファイル）",
 	"civil_safe_hawk_report": "責任ある脆弱性開示",
-	"civil_safe_hawk_body": "セキュリティは私たちの最優先事項です — 脆弱性を発見した場合は、ユーザーへの影響が出る前に修正できるよう、[dave@levine.io](mailto:dave@levine.io) への責任ある開示をお願いします。有用な報告には、問題とその潜在的な影響、再現手順、および概念実証コードやスクリーンショットを含めてください。",
+	"civil_safe_hawk_body": "セキュリティは私たちの最優先事項です — 脆弱性を発見した場合は、ユーザーへの影響が出る前に修正できるよう、[お問い合わせフォーム](/contact) への責任ある開示をお願いします。有用な報告には、問題とその潜在的な影響、再現手順、および概念実証コードやスクリーンショットを含めてください。",
 	"funny_swift_jay_promise": "シークレット",
 	"equal_away_frog_aim": "ヘルプ",
 	"caring_light_tiger_taste": "保存",
