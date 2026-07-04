@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 118" role="img" aria-label="Anatomy of a secret link: the domain identifies the service, while the secret ID and encryption key live in the URL fragment that is never sent to the server.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 108" role="img" aria-label="Anatomy of a secret link https://secrets.levine.io/s#… : the domain identifies the service, while the Secret ID and encryption key live in the URL fragment after the # and are never sent to the server.">
 	<defs>
 		<style>
 			.ue-url {
 				font-family: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
-				font-size: 22px;
+				font-size: 20px;
 				font-weight: 700;
+			}
+			/* Decorative illustration — never selectable/interactive (the original
+			   was baked vector paths; this keeps the same behaviour with real text). */
+			.ue-url,
+			.ue-label {
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				user-select: none;
+				pointer-events: none;
 			}
 			.ue-base {
 				fill: currentColor;
@@ -42,30 +51,32 @@
 		</style>
 	</defs>
 
-	<!-- The secret link. Monospace + textLength lock each segment's width so the
-	     braces align exactly with the `s` / `#` boundary. The full key is shown
-	     (no truncation). Domain 27 chars, fragment 26 chars @ 13.2px advance. -->
-	<text class="ue-url" y="42">
-		<tspan class="ue-base" x="30" textLength="356" lengthAdjust="spacingAndGlyphs"
-			>https://secrets.levine.io/s</tspan
-		><tspan class="ue-key" textLength="343" lengthAdjust="spacingAndGlyphs"
-			>#Djw7Kp2LmQ4vTnB8sR3xZ6yH</tspan
+	<!-- Full secret link, monospace @ 12px advance. Three locked segments:
+	     domain (26 chars, x 28→340) · the `s#` connector (2 chars, x 340→364,
+	     deliberately left OUTSIDE both braces) · the key (24 chars, x 364→652). -->
+	<text class="ue-url" y="38">
+		<tspan class="ue-base" x="28" textLength="312" lengthAdjust="spacingAndGlyphs"
+			>https://secrets.levine.io/</tspan
+		><tspan class="ue-base" textLength="24" lengthAdjust="spacingAndGlyphs">s#</tspan
+		><tspan class="ue-key" textLength="288" lengthAdjust="spacingAndGlyphs"
+			>Djw7Kp2LmQ4vTnB8sR3xZ6yH</tspan
 		>
 	</text>
 
-	<!-- Curly brace + label under the domain (x 30 → 386, boundary at s/#) -->
+	<!-- Curly brace + label under the domain only (x 28 → 340) -->
 	<path
 		class="ue-brace"
-		d="M30,56 Q30,66 41,66 L197,66 Q208,66 208,75 Q208,66 219,66 L375,66 Q386,66 386,56"
+		d="M28,52 Q28,62 39,62 L173,62 Q184,62 184,71 Q184,62 195,62 L329,62 Q340,62 340,52"
 	/>
-	<text class="ue-label ue-label-base" x="208" y="95" text-anchor="middle">Domain</text>
+	<text class="ue-label ue-label-base" x="184" y="88" text-anchor="middle">Domain</text>
 
-	<!-- Curly brace + label under the secret ID / encryption key fragment (x 386 → 729) -->
+	<!-- Curly brace + label under the key only (x 364 → 652); the `s#` between the
+	     two braces is intentionally un-bracketed, matching the original. -->
 	<path
 		class="ue-brace-key"
-		d="M386,56 Q386,66 397,66 L546,66 Q557,66 557,75 Q557,66 568,66 L718,66 Q729,66 729,56"
+		d="M364,52 Q364,62 375,62 L497,62 Q508,62 508,71 Q508,62 519,62 L641,62 Q652,62 652,52"
 	/>
-	<text class="ue-label ue-label-key" x="557" y="95" text-anchor="middle">
+	<text class="ue-label ue-label-key" x="508" y="88" text-anchor="middle">
 		Secret ID / Encryption Key
 	</text>
 </svg>
