@@ -1,13 +1,17 @@
 <script lang="ts">
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
+
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
+	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { PageData } from './$types';
 
@@ -33,10 +37,16 @@
 					<Card class="mb-2">
 						<div class="px-2 py-6 sm:px-6">
 							<UrlExplained class="mx-auto w-full max-w-2xl" />
+							<p class="text-muted-foreground mt-4 text-center text-sm">
+								{m.equal_elegant_herring_yell()}
+							</p>
 						</div>
 					</Card>
 				</div>
 			{/snippet}
 		</IntersectionObserver>
+		<Button variant="ghost" href={localizeHref('/security')}>
+			{m.happy_plain_panther_fry()}<ArrowRight class="ms-2 h-4 w-4" />
+		</Button>
 	</Section>
 </Page>
