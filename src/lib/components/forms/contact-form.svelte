@@ -2,7 +2,6 @@
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { PUBLIC_RECAPTCHA_CLIENT_KEY } from '$env/static/public';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -20,21 +19,7 @@
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const jsonPayload = $formData;
-			let recaptchaToken;
-
-			try {
-				// eslint-disable-next-line no-undef
-				await grecaptcha
-					.execute(PUBLIC_RECAPTCHA_CLIENT_KEY, { action: 'contact_form' })
-					.then(function (token) {
-						recaptchaToken = token;
-					});
-			} catch (error) {
-				console.log(error);
-			}
-
-			jsonData({ ...jsonPayload, recaptchaToken: recaptchaToken });
+			jsonData({ ...$formData });
 		},
 
 		onError({ result }) {
@@ -49,12 +34,6 @@
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
 </script>
-
-<svelte:head>
-	<script
-		src="https://www.google.com/recaptcha/api.js?render={PUBLIC_RECAPTCHA_CLIENT_KEY}"
-	></script>
-</svelte:head>
 
 <FormWrapper message={$message}>
 	<form method="POST" action="?/contact" use:enhance>

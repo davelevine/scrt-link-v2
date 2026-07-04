@@ -8,10 +8,6 @@ export const EMAIL_VERIFICATION_COOKIE = 'email_verification';
 export const PASSWORD_VERIFIED_COOKIE = 'password-verified';
 export const RECOVERY_VERIFIED_COOKIE = 'recovery-verified';
 export const NEEDS_RECOVERY_COOKIE = 'needs-recovery';
-// Client-readable; kept in sync with the literal in $lib/client/plausible.ts.
-export const SIGNUP_TRACKING_COOKIE = 'signup-tracking';
-const GOOGLE_OAUTH_STATE_COOKIE = 'google_oauth_state';
-const GOOGLE_CODE_VERIFIER_COOKIE = 'google_code_verifier';
 
 // --- Secure cookie defaults ---
 
@@ -77,43 +73,4 @@ export function getEmailVerificationCookie(event: RequestEvent): string | undefi
 
 export function deleteEmailVerificationCookie(event: RequestEvent) {
 	event.cookies.delete(EMAIL_VERIFICATION_COOKIE, { path: '/' });
-}
-
-// --- Google OAuth cookies ---
-
-export function setGoogleOAuthCookies(event: RequestEvent, state: string, codeVerifier: string) {
-	const options = {
-		path: '/',
-		httpOnly: true,
-		secure: !dev,
-		sameSite: 'lax' as const, // lax required for OAuth redirect flow
-		maxAge: 60 * 10 // 10 minutes
-	};
-	event.cookies.set(GOOGLE_OAUTH_STATE_COOKIE, state, options);
-	event.cookies.set(GOOGLE_CODE_VERIFIER_COOKIE, codeVerifier, options);
-}
-
-export function getGoogleOAuthCookies(event: RequestEvent) {
-	return {
-		state: event.cookies.get(GOOGLE_OAUTH_STATE_COOKIE) ?? null,
-		codeVerifier: event.cookies.get(GOOGLE_CODE_VERIFIER_COOKIE) ?? null
-	};
-}
-
-// --- Signup tracking cookie ---
-
-/**
- * Mark that a brand-new user was just created, so the client can fire a one-off
- * Plausible "Signup" event after the post-signup redirect. Not httpOnly (read in
- * the browser); `lax` so it survives the top-level OAuth redirect. The value is
- * the signup method.
- */
-export function setSignupTrackingCookie(event: RequestEvent, method: 'email' | 'google') {
-	event.cookies.set(SIGNUP_TRACKING_COOKIE, method, {
-		path: '/',
-		httpOnly: false,
-		secure: !dev,
-		sameSite: 'lax',
-		maxAge: 60 * 5 // 5 minutes
-	});
 }

@@ -4,7 +4,7 @@ import { importPublicKey, verifyMessageSignature } from '@scrt-link/core';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { s3Client } from '$lib/s3';
+import { s3Client, withKeyPrefix } from '$lib/s3';
 import { db } from '$lib/server/db';
 import { secret as secretSchema } from '$lib/server/db/schema';
 
@@ -15,11 +15,13 @@ export const POST = async ({ params, request }: RequestEvent) => {
 	const { secretIdHash, bucket, keyHash, signature } = body;
 
 	const Bucket = bucket;
-	const Key = keyHash;
 
-	if (!Key) {
+	if (!keyHash) {
 		error(400, 'No file key provided.');
 	}
+
+	// Re-apply the instance key prefix the object was uploaded under.
+	const Key = withKeyPrefix(keyHash);
 
 	const [secret] = await db
 		.select()
@@ -40,10 +42,10 @@ export const POST = async ({ params, request }: RequestEvent) => {
 		error(400, `Invalid signature`);
 	}
 
+	// No ACL — R2 rejects per-object ACLs; the presigned URL grants access.
 	const bucketParams = {
 		Bucket,
-		Key,
-		ACL: 'public-read'
+		Key
 	};
 	const url = await getSignedUrl(s3Client, new GetObjectCommand(bucketParams), {
 		expiresIn: 5 * 60 // 5min

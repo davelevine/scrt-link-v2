@@ -15,7 +15,6 @@
 
 	import { page } from '$app/state';
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
-	import { plausible } from '$lib/client/plausible';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import type { TierOptions } from '$lib/data/enums';
@@ -80,17 +79,6 @@
 			// base64url so the whole fragment stays URL-safe (no `|`, `+`, `/`, `=`).
 			const hashFragment = noteKey ? `${requestId}.${noteKey}` : requestId;
 			requestLink = `${page.url.origin}/r/${$formData.requestIdHash}#${hashFragment}`;
-
-			if (plausible) {
-				const { trackEvent } = plausible;
-				trackEvent('SecretCreation', {
-					props: {
-						secretType: 'request',
-						whiteLabelDomain: page.url.host,
-						subscriptionTier: tier || 'none'
-					}
-				});
-			}
 
 			jsonData($formData);
 		},

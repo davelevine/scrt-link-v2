@@ -5,7 +5,6 @@ import ResetPasswordPage from '../page/reset-password-page.svelte';
 import SetPasswordPage from '../page/set-password-page.svelte';
 import SingleFormPage from '../page/single-form-page.svelte';
 import VerifyEmailPage from '../page/verify-email-page.svelte';
-import WhiteLabelPage from '../page/white-label-page.svelte';
 import Root from './default-page.svelte';
 
 export {
@@ -16,6 +15,5 @@ export {
 	ResetPasswordPage,
 	SetPasswordPage,
 	SingleFormPage,
-	VerifyEmailPage,
-	WhiteLabelPage
+	VerifyEmailPage
 };

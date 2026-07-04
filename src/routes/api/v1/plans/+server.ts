@@ -1,8 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { Stripe } from 'stripe';
 
-import { getActivePrices, getActiveProducts } from '$lib/server/stripe';
-
 type PriceWithCurrencyOptions = Stripe.Price & {
 	currency_options: Record<
 		string,
@@ -26,39 +24,7 @@ export type Plan = {
 	};
 };
 
+// Billing is disabled on this instance: there is no Stripe catalog to expose.
 export const GET = async () => {
-	const products = await getActiveProducts();
-
-	const getPlans = async () =>
-		Promise.all(
-			products.map(async (item) => {
-				const { seatPrices, basePrices } = (await getActivePrices(
-					item.id,
-					item.baseFeeProductId
-				)) as {
-					seatPrices: PriceWithCurrencyOptions[];
-					basePrices: PriceWithCurrencyOptions[];
-				};
-
-				const priceByInterval = (prices: PriceWithCurrencyOptions[], interval: string) =>
-					prices.find(({ recurring }) => recurring?.interval === interval);
-
-				return {
-					name: item.name,
-					id: item.id,
-					prices: {
-						monthly: priceByInterval(seatPrices, 'month'),
-						yearly: priceByInterval(seatPrices, 'year')
-					},
-					...(basePrices.length && {
-						basePrices: {
-							monthly: priceByInterval(basePrices, 'month'),
-							yearly: priceByInterval(basePrices, 'year')
-						}
-					})
-				};
-			})
-		);
-
-	return json(await getPlans());
+	return json([] as Plan[]);
 };

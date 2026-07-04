@@ -1,8 +1,6 @@
 <script lang="ts">
-	import Google from '$lib/assets/images/Google.svg?component';
 	import EmailForm from '$lib/components/forms/email-form.svelte';
 	import { SingleFormPage } from '$lib/components/page';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import Link from '$lib/components/ui/link';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -25,14 +23,6 @@
 	</div>
 	<div class="py-5">
 		<Separator decorative />
-	</div>
-
-	<Button class="w-full" size="lg" variant="outline" href="/login/google"
-		><Google class="mr-3" />{m.gross_tiny_raven_read()}</Button
-	>
-
-	<div class="py-5">
-		<Separator />
 	</div>
 	<div class="muted px-5 text-center text-xs">
 		{m.ornate_main_beaver_snip()}

@@ -3,8 +3,8 @@ import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { RECAPTCHA_SERVER_KEY } from '$env/static/private';
 import { m } from '$lib/paraglide/messages.js';
+import { isRateLimited, rateLimitErrorMessage } from '$lib/server/rate-limit';
 import { sendContactEmail } from '$lib/server/transactional-email';
 import { contactFormSchema } from '$lib/validators/formSchemas';
 
@@ -24,25 +24,9 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const { email, content, recaptchaToken } = form.data;
+		if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
-		// Verify reCAPTCHA token with Google API
-		const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-
-		const response = await fetch(verifyUrl, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({
-				secret: RECAPTCHA_SERVER_KEY,
-				response: recaptchaToken
-			})
-		});
-
-		const data = await response.json();
-
-		if (!data.success || data.score < 0.5) {
-			error(400, m.front_wise_spider_hunt());
-		}
+		const { email, content } = form.data;
 
 		try {
 			// We send an email

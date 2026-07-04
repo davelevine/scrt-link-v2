@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { Building2, Factory, Plus, Sparkles, X } from '@lucide/svelte';
+	import { Building2, Factory, Plus, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
 
-	import { page } from '$app/state';
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -110,17 +109,6 @@
 
 					<div class="ml-auto grid grid-flow-col items-center gap-2">
 						{#if !isMinimal && user}
-							{#if tier === TierOptions.CONFIDENTIAL && !page.url.pathname.endsWith('/pricing')}
-								<Button
-									variant="rainbow"
-									href={localizeHref('/pricing')}
-									class="hidden text-xs sm:inline-flex"
-								>
-									<Sparkles class="h-3.5 w-3.5" />
-									{m.fair_red_warbler_bake()}
-								</Button>
-							{/if}
-
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
 									{#snippet child({ props })}

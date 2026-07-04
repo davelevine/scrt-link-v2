@@ -55,3 +55,4 @@ tasks
 
 # Playwright auth state (contains session cookies)
 e2e/.auth/
+.env*

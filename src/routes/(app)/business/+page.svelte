@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Lock, MessageCircleQuestion, Palette, Sparkles } from '@lucide/svelte';
+	import { Lock, MessageCircleQuestion, Sparkles } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
@@ -9,12 +9,11 @@
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntegrationSection from '$lib/components/blocks/integration-section.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
-	import WhiteLabelShowcase from '$lib/components/blocks/white-label-showcase.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Section } from '$lib/components/ui/section';
-	import { businessFeatures, securityFeatures, whiteLabelDemoWebsite } from '$lib/data/app';
+	import { businessFeatures, securityFeatures } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -25,12 +24,9 @@
 
 {#snippet cta()}
 	<div class="sm:grid-cols-auto grid grid-rows-2 gap-2 sm:flex sm:grid-rows-none">
-		<Button size="lg" variant="default" href={localizeHref('/pricing') + '?tab=business'}>
+		<Button size="lg" variant="default" href={localizeHref('/contact')}>
 			<Sparkles class="me-2 h-4 w-4" />
 			{m.business_cta_make_it_yours()}
-		</Button>
-		<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}>
-			{m.business_cta_live_example()}
 		</Button>
 	</div>
 {/snippet}
@@ -47,25 +43,6 @@
 			</video>
 		</AndroidFrame>
 	</Hero>
-
-	<Section
-		wide
-		variant="card"
-		title={m.business_customize_title()}
-		lead={m.business_customize_lead()}
-	>
-		<WhiteLabelShowcase />
-
-		<div class="mt-8 flex flex-wrap gap-2">
-			<Button size="lg" variant="default" href={localizeHref('/pricing') + '?tab=business'}>
-				<Palette class="me-2 h-4 w-4" />
-				{m.business_cta_make_it_yours()}
-			</Button>
-			<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}>
-				{m.business_cta_live_example()}
-			</Button>
-		</div>
-	</Section>
 
 	<Section wide variant="neutral" title={m.business_trust_title()} lead={m.business_trust_lead()}>
 		<IntersectionObserver top={-50} once={true}>

@@ -1,12 +1,34 @@
 import Stripe from 'stripe';
 
-import { STRIPE_SECRET_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { TierOptions } from '$lib/data/enums';
 import { getEnumFromString } from '$lib/typescript-helpers';
 
-const stripeInstance = new Stripe(STRIPE_SECRET_KEY, {
-	// https://github.com/stripe/stripe-node#configuration
-	apiVersion: '2025-02-24.acacia'
+// Billing is disabled on this instance. `STRIPE_SECRET_KEY` is normally unset, so
+// the client is created lazily via dynamic env (no build-time requirement):
+// importing this module never throws, and callers only fail (with a clear error)
+// if they actually try to reach Stripe. In practice no user ever has a
+// `stripeCustomerId`, so these helpers are unreached.
+let _stripe: Stripe | undefined;
+const getStripe = (): Stripe => {
+	if (!env.STRIPE_SECRET_KEY) {
+		throw new Error('Stripe is not configured on this instance (billing disabled).');
+	}
+	if (!_stripe) {
+		_stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+			// https://github.com/stripe/stripe-node#configuration
+			apiVersion: '2025-02-24.acacia'
+		});
+	}
+	return _stripe;
+};
+
+// Proxy preserves the previous `stripeInstance.foo(...)` call sites while
+// deferring construction until first property access.
+const stripeInstance = new Proxy({} as Stripe, {
+	get(_target, prop) {
+		return Reflect.get(getStripe(), prop);
+	}
 });
 
 type StripeCustomer = Awaited<ReturnType<typeof stripeInstance.customers.retrieve>>;

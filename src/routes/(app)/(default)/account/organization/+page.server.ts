@@ -1,6 +1,5 @@
 import { MembershipRole } from '$lib/data/enums';
 import { redirectLocalized } from '$lib/i18n';
-import { getActiveSubscription } from '$lib/server/stripe';
 
 import type { PageServerLoad } from './$types';
 
@@ -12,14 +11,9 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 
 	const ownedOrg = userOrganizations.find((org) => org.role === MembershipRole.OWNER);
 
+	// Billing is disabled: owners go straight to their organization (no pricing gate).
 	if (ownedOrg) {
-		const subscription = ownedOrg.stripeCustomerId
-			? await getActiveSubscription(ownedOrg.stripeCustomerId)
-			: null;
-
-		return subscription
-			? redirectLocalized(302, `/account/org/${ownedOrg.id}`)
-			: redirectLocalized(302, '/pricing?tab=business');
+		return redirectLocalized(302, `/account/org/${ownedOrg.id}`);
 	}
 
 	if (userOrganizations.length > 0) {

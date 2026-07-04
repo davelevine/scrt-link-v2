@@ -46,7 +46,7 @@ export const user = pgTable('user', {
 	googleId: text('google_id'),
 	stripeCustomerId: text('stripe_customer_id'),
 	role: role().default(Role.USER),
-	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
+	subscriptionTier: subscriptionTier().default(TierOptions.TOP_SECRET_SERVICE),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified'),
 	encryptionEnabled: boolean('encryption_enabled').default(false),
@@ -112,7 +112,7 @@ export const organization = pgTable('organization', {
 	name: text('name').notNull(),
 	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' }),
 	stripeCustomerId: text('stripe_customer_id'),
-	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.CONFIDENTIAL),
+	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.TOP_SECRET_SERVICE),
 	// Designates which user receives the Stripe portal link and billing emails.
 	// Defaults to null (falls back to any org owner). Can be any existing org member.
 	billingOwnerId: uuid('billing_owner_id').references(() => user.id, { onDelete: 'set null' })

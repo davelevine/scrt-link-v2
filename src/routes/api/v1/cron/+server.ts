@@ -8,7 +8,7 @@ import { CRON_SECRET } from '$env/static/private';
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
-import { s3Client } from '$lib/s3';
+import { s3Client, s3KeyPrefix } from '$lib/s3';
 import { db } from '$lib/server/db';
 import {
 	apiKey,
@@ -34,9 +34,13 @@ export const GET: RequestHandler = async ({ request }) => {
 		// Delete files older than X days
 		const deleteFilesBeforeDate = subtractDays(new Date(), FILE_RETENTION_PERIOD_IN_DAYS);
 
+		// IMPORTANT: scope the listing to this instance's key prefix. The bucket may
+		// be shared with unrelated data — without `Prefix` the cleanup would list and
+		// delete every object in the bucket. `s3KeyPrefix` may be '' (whole bucket)
+		// only when the instance owns the bucket exclusively.
 		for await (const data of paginateListObjectsV2(
 			{ client, pageSize: 1000 },
-			{ Bucket: BucketName }
+			{ Bucket: BucketName, Prefix: s3KeyPrefix }
 		)) {
 			if (!data.Contents) {
 				error(500, 'No Contents');

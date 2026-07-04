@@ -10,7 +10,6 @@ Disallow: /s/
 Disallow: /r/
 Disallow: /account/
 Disallow: /api/
-Disallow: /white-label/
 
 Sitemap: ${baseUrl}/sitemap.xml
 `;

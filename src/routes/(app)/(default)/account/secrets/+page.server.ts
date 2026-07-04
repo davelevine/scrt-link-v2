@@ -14,8 +14,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	const secrets = await fetchSecrets({
-		userId: user.id,
-		whiteLabelSiteId: locals.whiteLabelSite?.id
+		userId: user.id
 	});
 	const secretForm = await secretFormValidator();
 
