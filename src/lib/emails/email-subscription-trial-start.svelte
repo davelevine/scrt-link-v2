@@ -8,7 +8,6 @@
 		Hr,
 		Html,
 		Img,
-		Link,
 		Text
 	} from 'svelte-email-tailwind';
 
@@ -51,10 +50,7 @@
 
 			<Text class="text-muted text-xs">
 				©{new Date().getFullYear()}
-				{appName} -
-				<Link class="text-muted" href="{getBaseUrl()}/privacy-policy"
-					>{m.crazy_jumpy_mouse_hush()}</Link
-				>
+				{appName}
 			</Text>
 		</Container>
 	</Body>

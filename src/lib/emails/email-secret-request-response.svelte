@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Body, Container, Head, Heading, Hr, Html, Img, Link, Text } from 'svelte-email-tailwind';
+	import { Body, Container, Head, Heading, Hr, Html, Img, Text } from 'svelte-email-tailwind';
 
 	import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 	import { getBaseUrl } from '$lib/constants';
@@ -35,10 +35,7 @@
 
 			<Text class="text-muted text-xs">
 				©{new Date().getFullYear()}
-				{appName} -
-				<Link class="text-muted" href="{getBaseUrl()}/privacy-policy"
-					>{m.crazy_jumpy_mouse_hush()}</Link
-				>
+				{appName}
 			</Text>
 		</Container>
 	</Body>

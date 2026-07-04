@@ -14,7 +14,7 @@
 	{@render children()}
 </Tooltip.Provider>
 
-<ModeWatcher disableTransitions={false} />
+<ModeWatcher defaultMode="dark" />
 <Toaster />
 
 <style>

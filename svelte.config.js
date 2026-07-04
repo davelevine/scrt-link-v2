@@ -36,7 +36,7 @@ const config = {
 					// SvelteKit doesn't nonce library-injected head scripts, so it must be
 					// allowlisted by hash. Re-check this if mode-watcher is upgraded or its
 					// <ModeWatcher> props change (the inline script content would change).
-					'sha256-cIZByCqcmZEwY5l704mu2OYBzfdBwMjhGZvxBc2yUeE=',
+					'sha256-ROCYlxtWUqR9ME4wxI9LchLFa/eBFKzkqmIeHvTRK00=',
 					'https://vercel.live'
 				],
 				'style-src': ['self', 'unsafe-inline'],

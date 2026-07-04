@@ -1,19 +1,13 @@
 <script lang="ts">
-	import ArrowRight from '@lucide/svelte/icons/arrow-right';
-
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
-	import Accordion from '$lib/components/ui/accordion';
-	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
-	import { shortFaq } from '$lib/data/faq';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { PageData } from './$types';
 
@@ -43,14 +37,5 @@
 				</div>
 			{/snippet}
 		</IntersectionObserver>
-		<Button variant="ghost" href={localizeHref('/security')}
-			>{m.happy_plain_panther_fry()}<ArrowRight class="ms-2 h-4 w-4" /></Button
-		>
-	</Section>
-
-	<Section title={m.few_awful_chipmunk_trust()} lead={m.stock_keen_marten_commend()}>
-		<Accordion items={shortFaq()} jsonLd />
-
-		<Button href={localizeHref('/faq')}>{m.white_top_warbler_buzz()}</Button>
 	</Section>
 </Page>

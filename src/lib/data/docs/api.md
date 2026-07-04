@@ -6,11 +6,11 @@ To use the API, you’ll need an active [subscription](/pricing) that unlocks th
 
 Due to the complexity of handling end-to-end encrypted files, **only text-based secrets** (Text, Redirect, Neogram) **are supported** via the API.
 
-For convenience, the client module is available as an ESM module at `https://scrt.link/api/v1/client-module`. Or use the [NPM package](https://www.npmjs.com/package/@scrt-link/client).
+For convenience, the client module is available as an ESM module at `https://secrets.levine.io/api/v1/client-module`. Or use the [NPM package](https://www.npmjs.com/package/@scrt-link/client).
 
 ## ⚒️ Client Module
 
-The client module provides a simple and convenient way to interact with the scrt.link API.
+The client module provides a simple and convenient way to interact with the Secrets API.
 
 👉 [Demo implementation](https://github.com/stophecom/scrt-link-demo)
 
@@ -38,7 +38,7 @@ const response = await client.createSecret('Your secret text...', {
 
 ```html
 <script type="module">
-	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
+	import { scrtLink } from 'https://secrets.levine.io/api/v1/client-module';
 
 	// Instantiate client with API key.
 	const client = scrtLink('<your-api-key>');
@@ -52,7 +52,7 @@ const response = await client.createSecret('Your secret text...', {
 
 ```json
 {
-	"secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+	"secretLink": "https://secrets.levine.io/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000,
 	"expiresAt": "2025-04-24T16:15:52.172Z",
@@ -64,7 +64,7 @@ const response = await client.createSecret('Your secret text...', {
 
 ```html
 <script type="module">
-	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
+	import { scrtLink } from 'https://secrets.levine.io/api/v1/client-module';
 
 	// Instantiate client with API key.
 	const client = scrtLink('<your-api-key>');

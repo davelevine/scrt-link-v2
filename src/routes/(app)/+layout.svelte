@@ -26,14 +26,12 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 	<link rel="manifest" href="/site.webmanifest" />
 
-	<link rel="manifest" href="/manifest.json" />
-
-	<meta name="apple-mobile-web-app-title" content="scrt.link" />
+	<meta name="apple-mobile-web-app-title" content={appName} />
 	<meta property="og:locale" content={getLocale()} />
 	<meta property="og:site_name" content={appName} />
 
-	<meta name="msapplication-TileColor" content="#da532c" />
-	<meta name="theme-color" content="#ffffff" />
+	<meta name="msapplication-TileColor" content="#172941" />
+	<meta name="theme-color" content="#172941" />
 
 	<meta property="og:url" content={page.url.href} />
 	<meta property="og:type" content="website" />

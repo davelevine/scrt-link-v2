@@ -836,7 +836,7 @@ export const loginWithEmail: Action = async (event) => {
 		return { form };
 	}
 
-	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
+	// If user doesn't have a password (e.g. from an older version) or email is not verified.
 	if (!result.passwordHash || !result.emailVerified) {
 		// User needs to verify his/her email
 		await createEmailVerificationRequestAndRedirect(event, email);

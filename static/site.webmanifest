@@ -1,6 +1,6 @@
 {
-	"name": "scrt.link",
-	"short_name": "scrt.link",
+	"name": "Secrets",
+	"short_name": "Secrets",
 	"icons": [
 		{
 			"src": "/web-app-manifest-192x192.png",
@@ -16,6 +16,6 @@
 		}
 	],
 	"theme_color": "#172941",
-	"background_color": "#eeebe3",
+	"background_color": "#0b1521",
 	"display": "standalone"
 }

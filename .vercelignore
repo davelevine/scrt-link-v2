@@ -1,0 +1,5 @@
+# Never upload local env files to Vercel builds — the project env vars are the
+# source of truth. Without this, a CLI `vercel deploy` would ship local .env
+# placeholder values and Vite could load them over the real Vercel env.
+.env
+.env.*
