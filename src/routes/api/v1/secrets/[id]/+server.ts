@@ -5,12 +5,9 @@ import { eq } from 'drizzle-orm';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
-import { getWhiteLabelSiteById } from '$lib/server/whiteLabelSite';
 
-export const POST: RequestHandler = async ({ params, url }) => {
+export const POST: RequestHandler = async ({ params }) => {
 	const secretId = params.id;
-
-	const hostname = url.hostname;
 
 	try {
 		if (!secretId) {
@@ -29,14 +26,6 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 		if (result?.retrievedAt || result.viewCount >= result.viewLimit) {
 			throw Error(`This secret has already been accessed and therefore no longer exists.`);
-		}
-
-		if (result?.whiteLabelSiteId) {
-			const whiteLabelResult = await getWhiteLabelSiteById(result.whiteLabelSiteId);
-
-			if (hostname !== whiteLabelResult.customDomain) {
-				throw Error(`Host mismatch. The secret can't get accessed from this host.`);
-			}
 		}
 
 		return json({

@@ -11,7 +11,6 @@ import {
 	userEncryptionKey,
 	userSettings
 } from './db/schema';
-import { addContactToAudience } from './resend';
 import { sendWelcomeEmail } from './transactional-email';
 
 // --- Encryption Key Management Actions ---
@@ -141,17 +140,6 @@ export const welcomeNewUser = async ({
 	isNewUser
 }: Pick<User, 'email' | 'name'> & { isNewUser: boolean }) => {
 	if (!isNewUser) return;
-
-	// We add user to MQL list on Resend
-	try {
-		const result = await addContactToAudience({ email });
-
-		if (result.error) {
-			throw Error(result.error.message);
-		}
-	} catch (error) {
-		console.error(`Failed to add contact to Resend.`, JSON.stringify(error));
-	}
 
 	// Send welcome email
 	try {

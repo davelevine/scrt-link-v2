@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import { MembershipRole, ReadReceiptOptions, SecretType, ThemeOptions } from '$lib/data/enums';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
-import { getSupportedLocales } from '$lib/data/supportedLocales';
 import { m } from '$lib/paraglide/messages.js';
 
 // We return functions in order for translations to work as expected.
@@ -137,97 +136,6 @@ export const manageOrganizationMemberFormSchema = () =>
 		role: z.nativeEnum(MembershipRole).optional()
 	});
 
-export const whiteLabelDomainSchema = () =>
-	z.object({
-		name: z.string().max(30),
-		customDomain: z.string().max(30),
-		organizationId: z.string().nullable().optional()
-	});
-
-export const whiteLabelMetaSchema = () =>
-	z.object({
-		organizationId: z.string().nullable(),
-		isPrivate: z.boolean(),
-		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
-		enabledSecretTypes: z
-			.array(z.nativeEnum(SecretType))
-			.min(1, {
-				message: m.slow_mushy_rook_shine()
-			})
-			.default([]), // Explicitly tell Superforms this is an array
-		enableSecretRequests: z.boolean().default(false)
-	});
-
-export const whiteLabelSiteSchema = () =>
-	z.object({
-		title: z.string().max(50).nullable().optional(),
-		lead: z.string().max(150).nullable().optional(),
-		description: z.string().max(5000).nullable().optional(),
-		imprint: z.string().nullable().optional(),
-		primaryColor: z.string().optional(),
-		lightBackground: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightForeground: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightPrimary: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightCard: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightDestructive: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightSuccess: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		lightInfo: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkBackground: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkForeground: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkPrimary: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkCard: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkDestructive: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkSuccess: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		darkInfo: z
-			.string()
-			.regex(/^#[0-9a-fA-F]{6}$/)
-			.optional(),
-		logo: z.string().nullable().optional(),
-		logoDarkMode: z.string().nullable().optional(),
-		appIcon: z.string().nullable().optional(),
-		ogImage: z.string().nullable().optional(),
-		published: z.boolean().optional().default(false)
-	});
-
 export const settingsFormSchema = () =>
 	z
 		.object({
@@ -271,8 +179,7 @@ export const revealSecretFormSchema = () =>
 export const contactFormSchema = () =>
 	z.object({
 		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
-		content: z.string().min(30, m.soft_proof_mink_pinch({ number: 30 })),
-		recaptchaToken: z.string()
+		content: z.string().min(30, m.soft_proof_mink_pinch({ number: 30 }))
 	});
 
 export const apiKeyFormSchema = () =>
@@ -382,9 +289,6 @@ export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = z.infer<ReturnType<typeof revealSecretFormSchema>>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
-export type WhiteLabelDomainSchema = z.infer<ReturnType<typeof whiteLabelDomainSchema>>;
-export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
-export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;
 export type EncryptionSetupFormSchema = z.infer<ReturnType<typeof encryptionSetupFormSchema>>;
 export type RecoverySetupFormSchema = z.infer<ReturnType<typeof recoverySetupFormSchema>>;
 export type RecoveryVerifyFormSchema = z.infer<ReturnType<typeof recoveryVerifyFormSchema>>;

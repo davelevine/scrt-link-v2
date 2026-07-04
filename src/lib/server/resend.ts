@@ -1,54 +1,71 @@
-import {
-	type CreateContactOptions,
-	type CreateEmailOptions,
-	type RemoveContactOptions,
-	Resend
-} from 'resend';
-
-import { RESEND_API } from '$env/static/private';
-import type { MakeOptional } from '$lib/typescript-helpers';
+import { EMAIL_FROM, LETTERMINT_TOKEN } from '$env/static/private';
 
 import { appName, emailNoReply } from '../data/app';
 
-const resend = new Resend(RESEND_API);
+// Transactional email is sent via Lettermint (https://lettermint.co).
+// The `from` address MUST use a domain verified in your Lettermint project —
+// set `EMAIL_FROM` (e.g. `Acme <no-reply@acme.com>`). Falls back to the app
+// defaults only for local development.
+const fromAddress = EMAIL_FROM || `${appName} <${emailNoReply}>`;
 
+const LETTERMINT_ENDPOINT = 'https://api.lettermint.co/v1/send';
+
+type SendEmailOptions = {
+	to: string | string[];
+	subject: string;
+	html: string;
+	cc?: string | string[];
+	bcc?: string | string[];
+	replyTo?: string | string[];
+};
+
+const toArray = (value?: string | string[]): string[] | undefined =>
+	value === undefined ? undefined : Array.isArray(value) ? value : [value];
+
+/**
+ * Sends a transactional email through Lettermint's REST API. Non-throwing:
+ * failures are logged (mirrors the previous provider's behavior) so callers in
+ * auth/secret flows are never broken by a transient email error.
+ */
 const sendTransactionalEmail = async ({
+	to,
+	subject,
 	html,
-	...options
-}: Omit<CreateEmailOptions, 'html' | 'from'> & { html: string }) => {
-	const { error } = await resend.emails.send({
-		...options,
-		html: html,
-		from: `${appName} <${emailNoReply}>`
-	});
-
-	if (error) {
-		return console.error({ error });
+	cc,
+	bcc,
+	replyTo
+}: SendEmailOptions) => {
+	if (!LETTERMINT_TOKEN) {
+		console.error('[email] LETTERMINT_TOKEN is not set — email not sent.');
+		return;
 	}
-};
 
-export const addContactToAudience = async ({
-	email,
-	audienceId = '5f72f540-84a5-4e2a-9d2d-c775b4d09f35', // MQL
-	...props
-}: MakeOptional<CreateContactOptions, 'audienceId'>) => {
-	return await resend.contacts.create({
-		email: email,
-		unsubscribed: false,
-		audienceId: audienceId,
-		...props
-	});
-};
+	try {
+		const response = await fetch(LETTERMINT_ENDPOINT, {
+			method: 'POST',
+			headers: {
+				'x-lettermint-token': LETTERMINT_TOKEN,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				from: fromAddress,
+				to: toArray(to),
+				subject,
+				html,
+				...(cc ? { cc: toArray(cc) } : {}),
+				...(bcc ? { bcc: toArray(bcc) } : {}),
+				...(replyTo ? { reply_to: toArray(replyTo) } : {})
+			})
+		});
 
-export const removeContactFromAudience = async ({
-	email,
-	audienceId = '5f72f540-84a5-4e2a-9d2d-c775b4d09f35' // MQL
-}: MakeOptional<RemoveContactOptions, 'audienceId'>) => {
-	// Delete by contact email
-	return resend.contacts.remove({
-		email: email,
-		audienceId: audienceId
-	});
+		// Lettermint returns 202 on success.
+		if (!response.ok) {
+			const body = await response.text().catch(() => '');
+			console.error(`[email] Lettermint send failed: ${response.status} ${body}`);
+		}
+	} catch (error) {
+		console.error({ error });
+	}
 };
 
 export default sendTransactionalEmail;

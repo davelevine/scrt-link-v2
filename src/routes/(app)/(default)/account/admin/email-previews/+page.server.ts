@@ -1,6 +1,4 @@
-import { createEmail, emailList, sendEmail } from 'svelte-email-tailwind/preview';
-
-import { RESEND_API } from '$env/static/private';
+import { createEmail, emailList } from 'svelte-email-tailwind/preview';
 
 export async function load() {
 	// return the list of email components
@@ -8,7 +6,7 @@ export async function load() {
 }
 
 export const actions = {
-	// Pass in the two actions. Provide your Resend API key.
-	...createEmail,
-	...sendEmail({ resendApiKey: RESEND_API })
+	// Template preview only. The send-test action is omitted — this instance uses
+	// Lettermint (see $lib/server/resend.ts) rather than the library's Resend sender.
+	...createEmail
 };

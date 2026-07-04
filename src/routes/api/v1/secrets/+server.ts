@@ -2,15 +2,13 @@ import { sha256Hash } from '@scrt-link/core';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { isOriginalHostname } from '$lib/app-routing';
 import { TierOptions } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
-import { getEffectiveTierForUser, isMemberOfOrganization } from '$lib/server/organization';
+import { getEffectiveTierForUser } from '$lib/server/organization';
 import { saveSecret } from '$lib/server/secrets';
-import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
 const corsHeaders = {
@@ -37,7 +35,6 @@ export async function OPTIONS() {
 export const POST: RequestHandler = async ({ request }) => {
 	const authorizationHeader = request.headers.get('authorization');
 	const receivedChecksum = request.headers.get('x-checksum');
-	const host = request.headers.get('x-host') || undefined;
 
 	if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
 		return jsonWithCors({ error: 'No API bearer token provided.' }, { status: 403 });
@@ -91,33 +88,11 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors({ error: 'Checksum mismatch.' }, { status: 400 });
 	}
 
-	let whiteLabelSiteId;
-	if (host && !isOriginalHostname(host)) {
-		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
-		whiteLabelSiteId = whiteLabelSiteResult.id;
-
-		const organizationId = whiteLabelSiteResult?.organizationId;
-
-		// For API users we need to check if user is allowed to use custom domain (white-label host)
-		const isOwner =
-			whiteLabelSiteResult?.userId !== null && whiteLabelSiteResult?.userId === userId;
-		const isMemberOfWhiteLabelSiteOwningOrganization =
-			userId && organizationId && (await isMemberOfOrganization(userId, organizationId));
-
-		if (!isOwner && !isMemberOfWhiteLabelSiteOwningOrganization) {
-			return jsonWithCors(
-				{ error: `Not allowed to create secret for host ${host}` },
-				{ status: 400 }
-			);
-		}
-	}
-
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: userId,
 			secretRequest: validation.data,
-			secretType: validation.data.secretType,
-			whiteLabelSiteId
+			secretType: validation.data.secretType
 		});
 		return jsonWithCors({ receiptId, expiresIn, expiresAt, viewLimit: validation.data.viewLimit });
 	} catch (error) {

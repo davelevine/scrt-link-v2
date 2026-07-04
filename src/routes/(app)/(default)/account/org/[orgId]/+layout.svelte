@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Activity from '@lucide/svelte/icons/activity';
-	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Globe from '@lucide/svelte/icons/globe';
 	import Users from '@lucide/svelte/icons/users';
 	import type { Snippet } from 'svelte';
@@ -35,12 +34,6 @@
 			: []),
 		...(isOrgOwner
 			? [
-					{
-						href: localizeHref(`/account/org/${orgId}/billing`),
-						label: m.misty_teal_hawk_glow(),
-						icon: CreditCard,
-						exact: false
-					},
 					{
 						href: localizeHref(`/account/org/${orgId}/logs`),
 						label: m.flat_warm_logs_tab(),

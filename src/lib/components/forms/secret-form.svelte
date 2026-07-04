@@ -17,7 +17,6 @@
 
 	import { page } from '$app/state';
 	import { isOriginalHostname } from '$lib/app-routing';
-	import { plausible } from '$lib/client/plausible';
 	import Number from '$lib/components/forms/form-fields/number.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
@@ -99,18 +98,6 @@
 				secretType,
 				viewLimit: $formData.viewLimit
 			};
-
-			if (plausible) {
-				const { trackEvent } = plausible;
-				trackEvent('SecretCreation', {
-					props: {
-						secretType: secretType,
-						whiteLabelDomain: page.url.host,
-						withPassword: !!$formData.password,
-						subscriptionTier: effectiveTier || 'none'
-					}
-				});
-			}
 
 			jsonData(jsonPayload);
 		},

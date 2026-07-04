@@ -19,7 +19,10 @@ const config = {
 		adapter:
 			process.env.ADAPTER === 'node'
 				? (await import('@sveltejs/adapter-node')).default()
-				: (await import('@sveltejs/adapter-vercel')).default(),
+				: // Pin the Vercel serverless runtime to Node 24 (matches the repo's Node pin
+					// in package.json `engines` + .npmrc). Also lets the adapter build succeed on
+					// newer local Node versions instead of failing default-runtime detection.
+					(await import('@sveltejs/adapter-vercel')).default({ runtime: 'nodejs24.x' }),
 
 		csrf: { checkOrigin: process.env.CSRF_CHECK_ORIGIN === 'false' ? false : true }, // For debug purposes only
 
@@ -34,28 +37,15 @@ const config = {
 					// allowlisted by hash. Re-check this if mode-watcher is upgraded or its
 					// <ModeWatcher> props change (the inline script content would change).
 					'sha256-cIZByCqcmZEwY5l704mu2OYBzfdBwMjhGZvxBc2yUeE=',
-					'https://js.stripe.com',
-					'https://vercel.live',
-					'https://www.google.com',
-					'https://www.gstatic.com'
+					'https://vercel.live'
 				],
 				'style-src': ['self', 'unsafe-inline'],
-				'img-src': [
-					'self',
-					'data:',
-					'blob:',
-					'https://*.os.zrh1.flow.swiss',
-					'https://scrt-link.imgix.net',
-					'https://lh3.googleusercontent.com'
-				],
+				'img-src': ['self', 'data:', 'blob:'],
 				'media-src': ['self'],
-				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
-				'frame-src': [
-					'self',
-					'https://js.stripe.com',
-					'https://vercel.live',
-					'https://www.google.com'
-				],
+				// Cloudflare R2 host — presigned uploads (POST) and file-chunk downloads
+				// (GET) go to <bucket>.<account>.r2.cloudflarestorage.com.
+				'connect-src': ['self', 'data:', 'https://*.r2.cloudflarestorage.com'],
+				'frame-src': ['self', 'https://vercel.live'],
 				'worker-src': ['self'],
 				'object-src': ['none'],
 				'base-uri': ['self'],

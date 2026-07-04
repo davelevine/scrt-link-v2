@@ -3,7 +3,6 @@
 
 	import { page } from '$app/state';
 	import { PUBLIC_ENV } from '$env/static/public';
-	import { plausible } from '$lib/client/plausible';
 	import Progress from '$lib/components/blocks/progress.svelte';
 	import { appName } from '$lib/data/app';
 	import { getLocale } from '$lib/paraglide/runtime';
@@ -13,12 +12,6 @@
 	let { children }: { data: LayoutData; children: Snippet } = $props();
 
 	onMount(async () => {
-		if (plausible) {
-			const { enableAutoPageviews } = plausible;
-
-			enableAutoPageviews();
-		}
-
 		console.info(
 			'%c🤫\nSo follow sparks that light your mind,\nfor those who seek, are those who find.\n\nUse promo code HIDDENTREASURE during checkout and get a nice surprise!',
 			'font-size: 16px;color: #ff0083'

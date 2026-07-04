@@ -1,12 +1,9 @@
 import { sha256Hash } from '@scrt-link/core';
 import type { RequestEvent } from '@sveltejs/kit';
-import { Google } from 'arctic';
 import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { dev } from '$app/environment';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
-import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
 import { ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
@@ -119,10 +116,3 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 		path: '/'
 	});
 }
-
-// OAuth Provider
-export const google = new Google(
-	GOOGLE_CLIENT_ID,
-	GOOGLE_CLIENT_SECRET,
-	`${getBaseUrl()}/login/google/callback`
-);

@@ -1,7 +1,6 @@
 import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
 import { timingSafeEqual } from 'crypto';
 import { and, desc, eq } from 'drizzle-orm';
-import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
@@ -10,10 +9,8 @@ import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
-import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
 import { formatDateTime, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { getLocale, locales } from '$lib/paraglide/runtime';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import {
@@ -24,11 +21,8 @@ import {
 	organization,
 	user as userSchema,
 	userEncryptionKey,
-	userSettings,
-	whiteLabelSite
+	userSettings
 } from '$lib/server/db/schema';
-import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
-import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
 	deleteOrganizationSchema,
@@ -49,10 +43,7 @@ import {
 	signInFormSchema,
 	themeFormSchema,
 	updateBillingOwnerSchema,
-	userFormSchema,
-	whiteLabelDomainSchema,
-	whiteLabelMetaSchema,
-	whiteLabelSiteSchema
+	userFormSchema
 } from '$lib/validators/formSchemas';
 
 import {
@@ -63,7 +54,6 @@ import {
 	RECOVERY_VERIFIED_COOKIE,
 	setEmailVerificationCookie,
 	setNeedsRecoveryCookie,
-	setSignupTrackingCookie,
 	setVerificationCookie
 } from '../cookies';
 import {
@@ -74,7 +64,6 @@ import {
 import {
 	getOrganizationsByUserId,
 	inviteUserToOrganization,
-	isUserOrgOwnerOrAdmin,
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
@@ -97,12 +86,6 @@ import {
 	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
-import {
-	checkIsUserAllowedOnWhiteLabelSite,
-	getWhiteLabelSiteByHost,
-	getWhiteLabelSiteByOrgId,
-	getWhiteLabelSiteByUserId
-} from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
@@ -114,7 +97,6 @@ export const postSecret: Action = async (event) => {
 	}
 
 	const user = event.locals.user;
-	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
 	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 	if (form.data.viewLimit > planLimits.maxViewLimit) {
@@ -125,8 +107,7 @@ export const postSecret: Action = async (event) => {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
 			secretRequest: form.data,
-			secretType: form.data.secretType,
-			whiteLabelSiteId
+			secretType: form.data.secretType
 		});
 
 		const expirationPeriod =
@@ -861,24 +842,6 @@ export const loginWithEmail: Action = async (event) => {
 		await createEmailVerificationRequestAndRedirect(event, email);
 	}
 
-	try {
-		// Restrict login to white-label
-		// @todo: refactor this
-		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, result.id);
-	} catch (error) {
-		console.error(error);
-
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.livid_wild_crab_loop(),
-				description: m.quaint_solid_orangutan_devour()
-			},
-			{ status: 401 }
-		);
-	}
-
 	setEmailVerificationCookie(event, email);
 
 	return redirectLocalized(303, '/login/password');
@@ -903,9 +866,6 @@ export const loginWithPassword: Action = async (event) => {
 		if (!user) {
 			throw Error('No user found.');
 		}
-
-		// Restrict login to white-label
-		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, user.id);
 
 		if (!user.emailVerified) {
 			throw Error('Email not verified.');
@@ -1065,9 +1025,6 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 			email: email,
 			emailVerified: true
 		});
-
-		// Signal the client to fire a one-off Plausible "Signup" event after redirect.
-		if (isNewUser) setSignupTrackingCookie(event, 'email');
 
 		// This is only triggered, if new user
 		await welcomeNewUser({ email, name, isNewUser });
@@ -1327,327 +1284,6 @@ export const revokeAPIToken: Action = async (event) => {
 	});
 };
 
-export const saveWhiteLabelDomain: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(whiteLabelDomainSchema()));
-
-	if (!form.valid) {
-		return fail(400, { form });
-	}
-
-	const user = event.locals.user;
-
-	if (!user) {
-		return redirectLocalized(307, '/signup');
-	}
-
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
-	}
-
-	const { customDomain, name, organizationId } = form.data;
-
-	if (!validDomainRegex.test(customDomain)) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.less_dirty_jurgen_kick(),
-				description: m.zippy_ornate_pelican_greet()
-			},
-			{ status: 405 }
-		);
-	}
-
-	if (organizationId) {
-		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
-		if (!allowed) {
-			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
-		}
-	}
-
-	try {
-		const existing = organizationId
-			? await getWhiteLabelSiteByOrgId(organizationId)
-			: await getWhiteLabelSiteByUserId(user.id);
-
-		if (existing?.customDomain && existing.customDomain !== customDomain) {
-			await removeDomainFromVercelProject(existing.customDomain);
-		}
-
-		const response = await addDomainToVercel(customDomain);
-
-		if (response?.error) {
-			if (response.error?.code !== 'domain_already_in_use') {
-				return message(
-					form,
-					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
-					{ status: 404 }
-				);
-			}
-			throw Error(JSON.stringify(response));
-		}
-	} catch (e) {
-		console.error(e);
-	}
-
-	try {
-		if (organizationId) {
-			await db
-				.insert(whiteLabelSite)
-				.values({ customDomain, name, organizationId, userId: null })
-				.onConflictDoUpdate({
-					target: whiteLabelSite.organizationId,
-					set: { customDomain, name }
-				});
-		} else {
-			await db
-				.insert(whiteLabelSite)
-				.values({ customDomain, name, userId: user.id })
-				.onConflictDoUpdate({
-					target: whiteLabelSite.userId,
-					set: { customDomain, name }
-				});
-		}
-	} catch (error) {
-		console.error(error);
-
-		if ((error as PostgresError)?.code === '23505') {
-			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain }));
-			return message(
-				form,
-				{
-					status: 'error',
-					title: m.dizzy_sour_liger_treasure(),
-					description: m.dark_each_pug_value({ customDomain })
-				},
-				{ status: 404 }
-			);
-		}
-
-		return message(
-			form,
-			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
-			{ status: 404 }
-		);
-	}
-
-	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
-};
-
-export const saveWhiteLabelMeta: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
-
-	if (!form.valid) {
-		return fail(400, { form });
-	}
-
-	const user = event.locals.user;
-
-	if (!user) {
-		return redirectLocalized(307, '/signup');
-	}
-
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
-	}
-
-	const { locale, isPrivate, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
-
-	if (organizationId) {
-		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
-		if (!allowed) {
-			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
-		}
-	}
-
-	try {
-		const metaSet = {
-			locale,
-			private: isPrivate,
-			organizationId,
-			enabledSecretTypes,
-			enableSecretRequests,
-			updatedAt: new Date()
-		};
-
-		if (organizationId) {
-			await db
-				.insert(whiteLabelSite)
-				.values({ ...metaSet, userId: null })
-				.onConflictDoUpdate({ target: whiteLabelSite.organizationId, set: metaSet });
-		} else {
-			await db
-				.insert(whiteLabelSite)
-				.values({ ...metaSet, userId: user.id })
-				.onConflictDoUpdate({ target: whiteLabelSite.userId, set: metaSet });
-		}
-	} catch (error) {
-		console.error(error);
-		return message(
-			form,
-			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
-			{ status: 404 }
-		);
-	}
-
-	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
-};
-
-export const saveWhiteLabelSite: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(whiteLabelSiteSchema()), {
-		strict: true // Prevent null coercion - used for logo/appIcon/ogImage
-	});
-
-	if (!form.valid) {
-		return fail(400, { form });
-	}
-
-	const user = event.locals.user;
-	const locale = getLocale();
-
-	if (!user) {
-		return redirectLocalized(307, '/signup');
-	}
-
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.busy_even_hawk_inspire(),
-				description: `Please upgrade to perform this action.`
-			},
-			{ status: 405 }
-		);
-	}
-
-	// Reminder: All form data is optional
-	const {
-		title,
-		lead,
-		description,
-		imprint,
-		lightBackground,
-		lightForeground,
-		lightPrimary,
-		lightCard,
-		lightDestructive,
-		lightSuccess,
-		lightInfo,
-		darkBackground,
-		darkForeground,
-		darkPrimary,
-		darkCard,
-		darkDestructive,
-		darkSuccess,
-		darkInfo,
-		logo,
-		logoDarkMode,
-		appIcon,
-		ogImage,
-		published
-	} = form.data;
-
-	const existingWhiteLabelSite = await getWhiteLabelSiteByHost(event.params.domain as string);
-
-	// @todo Delete logo/app icon on S3
-
-	// We store page content, such as title, lead, description as JSON.
-	// We therefor allow translating user content.
-	const messagesJson =
-		(existingWhiteLabelSite?.messages as LocalizedWhiteLabelMessage) ??
-		locales.reduce((acc, locale) => {
-			acc[locale] = {};
-			return acc;
-		}, {} as LocalizedWhiteLabelMessage);
-
-	// Prepare theme
-	const themeJson = (existingWhiteLabelSite?.theme as Theme) ?? {};
-
-	// Legacy: keep top-level primaryColor in sync with lightPrimary
-	themeJson.primaryColor = (lightPrimary ??
-		themeJson.primaryColor) as typeof themeJson.primaryColor;
-
-	const lightColors = dropUndefinedValuesFromObject({
-		background: lightBackground,
-		foreground: lightForeground,
-		primary: lightPrimary,
-		card: lightCard,
-		destructive: lightDestructive,
-		success: lightSuccess,
-		info: lightInfo
-	});
-	if (Object.keys(lightColors).length) {
-		themeJson.light = { ...themeJson.light, ...lightColors } as typeof themeJson.light;
-	}
-
-	const darkColors = dropUndefinedValuesFromObject({
-		background: darkBackground,
-		foreground: darkForeground,
-		primary: darkPrimary,
-		card: darkCard,
-		destructive: darkDestructive,
-		success: darkSuccess,
-		info: darkInfo
-	});
-	if (Object.keys(darkColors).length) {
-		themeJson.dark = { ...themeJson.dark, ...darkColors } as typeof themeJson.dark;
-	}
-
-	if (!existingWhiteLabelSite) {
-		return message(
-			form,
-			{ status: 'error', title: m.dizzy_sour_liger_treasure() },
-			{ status: 404 }
-		);
-	} else {
-		// If we add new supported locales, we need to create the entry first
-		if (!messagesJson[locale]) {
-			messagesJson[locale] = {};
-		}
-
-		Object.assign(
-			messagesJson[locale],
-			dropUndefinedValuesFromObject({ title, lead, description, imprint })
-		);
-
-		const updateSet = {
-			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-			published: published,
-			theme: themeJson,
-			messages: messagesJson
-		};
-
-		if (existingWhiteLabelSite.organizationId) {
-			const allowed = await isUserOrgOwnerOrAdmin(user.id, existingWhiteLabelSite.organizationId);
-			if (!allowed) {
-				return message(
-					form,
-					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
-					{ status: 403 }
-				);
-			}
-			await db
-				.update(whiteLabelSite)
-				.set(updateSet)
-				.where(eq(whiteLabelSite.organizationId, existingWhiteLabelSite.organizationId));
-		} else {
-			await db.update(whiteLabelSite).set(updateSet).where(eq(whiteLabelSite.userId, user.id));
-		}
-	}
-
-	return message(form, {
-		status: 'success',
-		title: 'Success'
-	});
-};
-
 export const verifyCurrentPassword: Action = async (event) => {
 	if (!event.locals.user) {
 		return redirectLocalized(307, '/login');
@@ -1878,21 +1514,17 @@ export const postSecretRequest: Action = async (event) => {
 		);
 	}
 
-	// Plan gating only applies to the main app. On white-label sites the feature
-	// is gated per-site via `enableSecretRequests` (asserted in the route).
-	if (!event.locals.whiteLabelSite) {
-		const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-		if (!planLimits.secretRequests) {
-			return message(
-				form,
-				{
-					status: 'error',
-					title: m.sad_arable_canary_mop(),
-					description: m.bold_neat_otter_gate()
-				},
-				{ status: 403 }
-			);
-		}
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
+	if (!planLimits.secretRequests) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.sad_arable_canary_mop(),
+				description: m.bold_neat_otter_gate()
+			},
+			{ status: 403 }
+		);
 	}
 
 	try {
