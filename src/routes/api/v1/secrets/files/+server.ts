@@ -1,4 +1,5 @@
-import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { error, json } from '@sveltejs/kit';
 
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
@@ -18,25 +19,25 @@ export const POST = async ({ url }: RequestEvent) => {
 	// which stores the unprefixed key and gets it re-applied on download).
 	const prefixedKey = withKeyPrefix(key);
 
-	const Conditions = [{ 'Content-Type': 'application/octet-stream' }];
-
 	try {
-		// Note: no object ACL — Cloudflare R2 rejects per-object ACLs. Access is
-		// controlled by the presigned URL and bucket configuration.
-		const post = await createPresignedPost(s3Client, {
-			Bucket,
-			Fields: {
-				key: prefixedKey,
-				'Content-type': 'application/octet-stream'
-			},
-			Key: prefixedKey,
-			Expires: 3 * 60 * 60, // seconds -> 3h (For really big files)
-			Conditions
-		});
+		// Cloudflare R2 does not implement the S3 POST Object (browser form-upload)
+		// operation — it responds with 501 Not Implemented. Use a presigned PUT
+		// instead, which R2 supports. The client must send the exact Content-Type it
+		// was signed with. No object ACL — R2 rejects per-object ACLs; access is
+		// controlled by the presigned URL.
+		const uploadUrl = await getSignedUrl(
+			s3Client,
+			new PutObjectCommand({
+				Bucket,
+				Key: prefixedKey,
+				ContentType: 'application/octet-stream'
+			}),
+			{ expiresIn: 3 * 60 * 60 } // seconds -> 3h (for really big files)
+		);
 
-		return json(post);
+		return json({ url: uploadUrl });
 	} catch (err) {
 		console.error(err);
-		error(400, 'No able to get a presigned post URL.');
+		error(400, 'Not able to get a presigned upload URL.');
 	}
 };

@@ -185,6 +185,7 @@
 	"royal_odd_ox_read": "Ciframos tu secreto directamente en tu dispositivo. La clave de cifrado nunca se almacena; en su lugar, se convierte en parte del enlace. Sin el enlace completo, nadie, incluyendo nosotros, podrá descifrar tu secreto.",
 	"flat_zany_baboon_adapt": "Cifrado de extremo a extremo",
 	"equal_elegant_herring_yell": "La clave de cifrado nunca se transmite al servidor.",
+	"happy_plain_panther_fry": "Más información sobre seguridad",
 	"alert_sound_hornet_adapt": "¿Tienes una pregunta o necesitas ayuda? ¡Ponte en contacto!",
 	"tasty_awake_cobra_belong": "Incluye:",
 	"stale_fine_turkey_praise": "Textos secretos",

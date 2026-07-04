@@ -1,59 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 118" role="img" aria-label="Anatomy of a secret link: the link identifies the secret, the key fragment is never sent to the server.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 108" role="img" aria-label="Anatomy of a secret link https://secrets.levine.io/s#… : the domain identifies the service, while the Secret ID and encryption key live in the URL fragment after the # and are never sent to the server.">
 	<defs>
 		<style>
 			.ue-url {
-				font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-				font-size: 26px;
+				font-family: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
+				font-size: 20px;
+				font-weight: 700;
+			}
+			/* Decorative illustration — never selectable/interactive (the original
+			   was baked vector paths; this keeps the same behaviour with real text). */
+			.ue-url,
+			.ue-label {
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				user-select: none;
+				pointer-events: none;
 			}
 			.ue-base {
 				fill: currentColor;
 			}
 			.ue-key {
 				fill: var(--color-accent);
-				font-weight: 700;
 			}
 			.ue-label {
-				font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-				font-size: 15px;
+				font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+				font-size: 17px;
 			}
 			.ue-label-base {
 				fill: currentColor;
-				opacity: 0.6;
+				opacity: 0.7;
 			}
 			.ue-label-key {
 				fill: var(--color-accent);
 			}
-			.ue-bracket {
+			.ue-brace {
 				fill: none;
 				stroke: currentColor;
-				stroke-opacity: 0.35;
+				stroke-opacity: 0.4;
 				stroke-width: 2;
+				stroke-linecap: round;
+				stroke-linejoin: round;
 			}
-			.ue-bracket-key {
+			.ue-brace-key {
 				fill: none;
 				stroke: var(--color-accent);
 				stroke-width: 2;
+				stroke-linecap: round;
+				stroke-linejoin: round;
 			}
 		</style>
 	</defs>
 
-	<!-- The secret link. textLength forces exact segment widths so the brackets below align. -->
-	<text class="ue-url" y="34">
-		<tspan class="ue-base" x="45" textLength="445" lengthAdjust="spacingAndGlyphs"
-			>https://secrets.levine.io/s</tspan
-		><tspan class="ue-key" textLength="215" lengthAdjust="spacingAndGlyphs">#Xy7k2p9wLqZ…</tspan>
+	<!-- Full secret link, monospace @ 12px advance. Three locked segments:
+	     domain (26 chars, x 28→340) · the `s#` connector (2 chars, x 340→364,
+	     deliberately left OUTSIDE both braces) · the key (24 chars, x 364→652). -->
+	<text class="ue-url" y="38">
+		<tspan class="ue-base" x="28" textLength="312" lengthAdjust="spacingAndGlyphs"
+			>https://secrets.levine.io/</tspan
+		><tspan class="ue-base" textLength="24" lengthAdjust="spacingAndGlyphs">s#</tspan
+		><tspan class="ue-key" textLength="288" lengthAdjust="spacingAndGlyphs"
+			>Djw7Kp2LmQ4vTnB8sR3xZ6yH</tspan
+		>
 	</text>
 
-	<!-- Bracket + label under the base URL -->
-	<path class="ue-bracket" d="M45,58 V50 H490 V58" />
-	<text class="ue-label ue-label-base" x="267" y="82" text-anchor="middle">
-		Identifies the secret
-	</text>
+	<!-- Curly brace + label under the domain only (x 28 → 340) -->
+	<path
+		class="ue-brace"
+		d="M28,52 Q28,62 39,62 L173,62 Q184,62 184,71 Q184,62 195,62 L329,62 Q340,62 340,52"
+	/>
+	<text class="ue-label ue-label-base" x="184" y="88" text-anchor="middle">Domain</text>
 
-	<!-- Bracket + label under the key fragment -->
-	<path class="ue-bracket-key" d="M490,58 V50 H705 V58" />
-	<text class="ue-label ue-label-key" x="597" y="82" text-anchor="middle">
-		The key — never sent to us
+	<!-- Curly brace + label under the key only (x 364 → 652); the `s#` between the
+	     two braces is intentionally un-bracketed, matching the original. -->
+	<path
+		class="ue-brace-key"
+		d="M364,52 Q364,62 375,62 L497,62 Q508,62 508,71 Q508,62 519,62 L641,62 Q652,62 652,52"
+	/>
+	<text class="ue-label ue-label-key" x="508" y="88" text-anchor="middle">
+		Secret ID / Encryption Key
 	</text>
 </svg>
