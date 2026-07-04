@@ -3,7 +3,6 @@
 	import Page from '$lib/components/page/default-page.svelte';
 	import Card from '$lib/components/ui/card';
 	import Container from '$lib/components/ui/container/container.svelte';
-	import { emailSupport } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -16,8 +15,5 @@
 		<Card class="mb-6" title={m.royal_cuddly_kitten_tickle()}>
 			<ContactForm data={data.form} />
 		</Card>
-		<div class="prose">
-			<a href="mailto:{emailSupport}">{emailSupport}</a>
-		</div>
 	</Container>
 </Page>

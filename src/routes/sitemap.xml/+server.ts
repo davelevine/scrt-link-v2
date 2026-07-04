@@ -5,7 +5,16 @@ import type { RequestHandler } from './$types';
 
 // Public, crawlable pages. Excludes auth flows, account pages, secret
 // retrieval links (/s, /r, /l), and the API.
-const STATIC_PATHS = ['/', '/contact', '/api-documentation', '/cli', '/developers'];
+const STATIC_PATHS = [
+	'/',
+	'/about',
+	'/privacy',
+	'/security',
+	'/contact',
+	'/api-documentation',
+	'/cli',
+	'/developers'
+];
 
 const escapeXml = (value: string) =>
 	value

@@ -53,6 +53,21 @@ export const productMenu = () => [
 	}
 ];
 
+export const companyMenu = () => [
+	{
+		href: '/about',
+		label: m.polite_misty_jan_hint()
+	},
+	{
+		href: '/privacy',
+		label: m.awake_frail_kitten_hush()
+	},
+	{
+		href: '/security',
+		label: m.nice_last_quail_pop()
+	}
+];
+
 export const helpMenu = () => [
 	{
 		href: '/contact',
