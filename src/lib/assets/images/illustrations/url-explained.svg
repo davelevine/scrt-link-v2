@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 118" role="img" aria-label="Anatomy of a secret link: the link identifies the secret, the key fragment is never sent to the server.">
+	<defs>
+		<style>
+			.ue-url {
+				font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+				font-size: 26px;
+			}
+			.ue-base {
+				fill: currentColor;
+			}
+			.ue-key {
+				fill: var(--color-accent);
+				font-weight: 700;
+			}
+			.ue-label {
+				font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+				font-size: 15px;
+			}
+			.ue-label-base {
+				fill: currentColor;
+				opacity: 0.6;
+			}
+			.ue-label-key {
+				fill: var(--color-accent);
+			}
+			.ue-bracket {
+				fill: none;
+				stroke: currentColor;
+				stroke-opacity: 0.35;
+				stroke-width: 2;
+			}
+			.ue-bracket-key {
+				fill: none;
+				stroke: var(--color-accent);
+				stroke-width: 2;
+			}
+		</style>
+	</defs>
+
+	<!-- The secret link. textLength forces exact segment widths so the brackets below align. -->
+	<text class="ue-url" y="34">
+		<tspan class="ue-base" x="45" textLength="445" lengthAdjust="spacingAndGlyphs"
+			>https://secrets.levine.io/s</tspan
+		><tspan class="ue-key" textLength="215" lengthAdjust="spacingAndGlyphs">#Xy7k2p9wLqZ…</tspan>
+	</text>
+
+	<!-- Bracket + label under the base URL -->
+	<path class="ue-bracket" d="M45,58 V50 H490 V58" />
+	<text class="ue-label ue-label-base" x="267" y="82" text-anchor="middle">
+		Identifies the secret
+	</text>
+
+	<!-- Bracket + label under the key fragment -->
+	<path class="ue-bracket-key" d="M490,58 V50 H705 V58" />
+	<text class="ue-label ue-label-key" x="597" y="82" text-anchor="middle">
+		The key — never sent to us
+	</text>
+</svg>

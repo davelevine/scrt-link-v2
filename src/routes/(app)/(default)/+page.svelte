@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
@@ -31,17 +31,8 @@
 						: 'translate-y-10 opacity-0'}"
 				>
 					<Card class="mb-2">
-						<div class="flex flex-col items-center gap-5 py-4">
-							<div
-								class="bg-muted/40 border-border w-full rounded-lg border px-4 py-3 text-center font-mono text-sm break-all sm:text-lg"
-							>
-								<span class="text-muted-foreground">https://{page.url.host}/s#</span><span
-									class="text-accent font-semibold">Xy7k2p9wLqZ…</span
-								>
-							</div>
-							<p class="text-muted-foreground max-w-md text-center text-sm">
-								{m.equal_elegant_herring_yell()}
-							</p>
+						<div class="px-2 py-6 sm:px-6">
+							<UrlExplained class="mx-auto w-full max-w-2xl" />
 						</div>
 					</Card>
 				</div>
