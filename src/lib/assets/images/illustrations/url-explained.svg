@@ -28,14 +28,14 @@
 				fill: none;
 				stroke: currentColor;
 				stroke-opacity: 0.4;
-				stroke-width: 2.5;
+				stroke-width: 2;
 				stroke-linecap: round;
 				stroke-linejoin: round;
 			}
 			.ue-brace-key {
 				fill: none;
 				stroke: var(--color-accent);
-				stroke-width: 2.5;
+				stroke-width: 2;
 				stroke-linecap: round;
 				stroke-linejoin: round;
 			}
@@ -52,16 +52,16 @@
 	<!-- Curly brace + label under the domain -->
 	<path
 		class="ue-brace"
-		d="M50,58 Q50,72 64,72 L216,72 Q230,72 230,86 Q230,72 244,72 L396,72 Q410,72 410,58"
+		d="M50,60 Q50,70 61,70 L219,70 Q230,70 230,79 Q230,70 241,70 L399,70 Q410,70 410,60"
 	/>
-	<text class="ue-label ue-label-base" x="230" y="106" text-anchor="middle">Domain</text>
+	<text class="ue-label ue-label-base" x="230" y="99" text-anchor="middle">Domain</text>
 
 	<!-- Curly brace + label under the secret ID / encryption key fragment -->
 	<path
 		class="ue-brace-key"
-		d="M410,58 Q410,72 424,72 L521,72 Q535,72 535,86 Q535,72 549,72 L646,72 Q660,72 660,58"
+		d="M410,60 Q410,70 421,70 L524,70 Q535,70 535,79 Q535,70 546,70 L649,70 Q660,70 660,60"
 	/>
-	<text class="ue-label ue-label-key" x="535" y="106" text-anchor="middle">
+	<text class="ue-label ue-label-key" x="535" y="99" text-anchor="middle">
 		Secret ID / Encryption Key
 	</text>
 </svg>

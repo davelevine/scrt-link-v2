@@ -17,6 +17,13 @@ export const s3Client = new S3Client({
 	endpoint: { hostname: PUBLIC_S3_ENDPOINT, path: '', protocol: 'https:' }, // For some reason the ":" is required
 	region: 'auto',
 	forcePathStyle: true,
+	// AWS SDK v3 (>=3.729) adds a default CRC32 integrity checksum to every
+	// request. On a *presigned* PUT the body is unknown at signing time, so the
+	// SDK bakes an empty-payload placeholder (x-amz-checksum-crc32=AAAAAA==) into
+	// the URL; the real upload then fails the checksum. R2 doesn't need it, so
+	// only compute checksums when a request explicitly requires one.
+	requestChecksumCalculation: 'WHEN_REQUIRED',
+	responseChecksumValidation: 'WHEN_REQUIRED',
 	credentials: {
 		accessKeyId: S3_ACCESS_KEY,
 		secretAccessKey: S3_SECRET_KEY
