@@ -4,11 +4,17 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = AccordionPrimitive.ContentProps;
+	// bits-ui v2's ContentProps no longer carries transition/transitionConfig, but
+	// this wrapper applies a custom Svelte transition via a `child` snippet, so add
+	// them back as props for callers.
+	type $$Props = AccordionPrimitive.ContentProps & {
+		transition?: typeof slide;
+		transitionConfig?: Parameters<typeof slide>[1];
+	};
 
 	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = slide;
-	export let transitionConfig: $$Props['transitionConfig'] = {
+	export let transition: NonNullable<$$Props['transition']> = slide;
+	export let transitionConfig: NonNullable<$$Props['transitionConfig']> = {
 		duration: 200
 	};
 	export { className as class };

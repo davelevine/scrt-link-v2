@@ -4,12 +4,10 @@
 	import { cn, flyAndScale } from '$lib/client/utils.js';
 
 	type $$Props = DropdownMenuPrimitive.SubContentProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = DropdownMenuPrimitive.SubContentEvents;
 
 	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = flyAndScale;
-	export let transitionConfig: $$Props['transitionConfig'] = {
+	export let transition = flyAndScale;
+	export let transitionConfig = {
 		x: -10,
 		y: 0
 	};
@@ -24,9 +22,6 @@
 			className
 		)}
 		{...$$restProps}
-		on:keydown
-		on:focusout
-		on:pointermove
 	>
 		{#snippet child({ props, open }: { props: Record<string, unknown>; open: boolean })}
 			{#if open}

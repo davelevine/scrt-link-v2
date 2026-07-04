@@ -3,9 +3,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = LabelPrimitive.Props;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = LabelPrimitive.Events;
+	type $$Props = LabelPrimitive.RootProps;
 
 	let className: $$Props['class'] = undefined;
 	export { className as class };
@@ -17,7 +15,6 @@
 		className
 	)}
 	{...$$restProps}
-	on:mousedown
 >
 	<slot />
 </LabelPrimitive.Root>

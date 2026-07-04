@@ -7,8 +7,8 @@
 	type $$Props = DialogPrimitive.OverlayProps;
 
 	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = fade;
-	export let transitionConfig: $$Props['transitionConfig'] = {
+	export let transition = fade;
+	export let transitionConfig = {
 		duration: 150
 	};
 	export { className as class };

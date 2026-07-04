@@ -82,7 +82,14 @@
 		(page.data.userOrganizations ?? []) as { id: string; name: string }[]
 	);
 
-	const personalNavItems = $derived([
+	type NavItem = {
+		href: string;
+		label: string;
+		icon: typeof Link;
+		badge?: string;
+	};
+
+	const personalNavItems: NavItem[] = $derived([
 		...(isAdmin
 			? [
 					{

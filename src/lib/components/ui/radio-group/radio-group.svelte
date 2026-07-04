@@ -3,7 +3,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = RadioGroupPrimitive.Props;
+	type $$Props = RadioGroupPrimitive.RootProps;
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'] = undefined;
