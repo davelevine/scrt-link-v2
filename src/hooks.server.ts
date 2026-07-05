@@ -2,7 +2,6 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
-import { TierOptions } from '$lib/data/enums';
 import { buildThemeCss, resolveThemeOption, THEME_STYLE_ID } from '$lib/data/theme';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
@@ -16,7 +15,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	if (!sessionToken) {
 		event.locals.user = null;
 		event.locals.session = null;
-		event.locals.effectiveTier = TierOptions.CONFIDENTIAL;
 		return resolve(event);
 	}
 
@@ -29,9 +27,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 
 	event.locals.user = user;
 	event.locals.session = session;
-	// Billing is disabled on this instance: every authenticated user gets the top
-	// tier. Anonymous visitors keep the free/default limits (see early return above).
-	event.locals.effectiveTier = user ? TierOptions.TOP_SECRET_SERVICE : TierOptions.CONFIDENTIAL;
 
 	return resolve(event);
 };

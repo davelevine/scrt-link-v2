@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { User } from '@lucide/svelte';
-	import type { Stripe } from 'stripe';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { goto } from '$app/navigation';
@@ -29,13 +28,11 @@
 		organizationForm,
 		inviteOrganizationMemberForm,
 		manageOrganizationMemberForm,
-		organization,
-		orgSubscription = null
+		organization
 	}: {
 		user: App.Locals['user'];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		organization: any;
-		orgSubscription?: Stripe.Subscription | null;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm?: SuperValidated<InviteOrganizationMemberFormSchema>;
 		manageOrganizationMemberForm?: SuperValidated<ManageOrganizationMemberFormSchema>;
@@ -71,8 +68,7 @@
 	email: string,
 	name: string | null,
 	picture: string | null,
-	isCurrentUser: boolean,
-	isBillingContact: boolean
+	isCurrentUser: boolean
 )}
 	{@const memberName = name || m.witty_wise_grebe_empower()}
 	<div class="flex items-center font-medium">
@@ -89,12 +85,6 @@
 				{memberName}
 				{#if isCurrentUser}
 					<User class="text-muted-foreground h-3.5 w-3.5" />
-				{/if}
-				{#if isBillingContact}
-					<span
-						class="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[10px] leading-none font-medium"
-						>{m.misty_teal_hawk_glow()}</span
-					>
 				{/if}
 			</div>
 			<div class="text-xs">{email}</div>
@@ -121,8 +111,7 @@
 								member.email,
 								member.name,
 								member.picture,
-								member.userId === user?.id,
-								member.userId === organization.billingOwnerId
+								member.userId === user?.id
 							)}
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
@@ -143,15 +132,6 @@
 					</Table.Row>
 				{/each}
 			</Table.Body>
-			{#if (organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN) && orgSubscription && ['active', 'trialing'].includes(orgSubscription.status)}
-				{@const activeCount = Math.max(
-					organization.members.filter((m: MembersAndInvitesByOrganization) => m.userId).length,
-					1
-				)}
-				<Table.Caption class="mt-6 px-4 text-balance"
-					>{m.glad_teal_fox_bill({ count: activeCount })}
-				</Table.Caption>
-			{/if}
 		</Table.Root>
 
 		{#if organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN}
@@ -199,8 +179,7 @@
 								selectedItem.email,
 								selectedItem.name,
 								selectedItem.picture,
-								selectedItem.userId === user?.id,
-								selectedItem.userId === organization.billingOwnerId
+								selectedItem.userId === user?.id
 							)}
 						</dir>
 						<ManageOrganizationMemberForm

@@ -7,7 +7,6 @@ import { redirectLocalized } from '$lib/i18n';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { user as userSchema } from '$lib/server/db/schema';
-import { cancelSubscription, getActiveSubscription } from '$lib/server/stripe';
 import { deleteAccountSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
@@ -46,14 +45,6 @@ async function deleteAccount(event: RequestEvent) {
 
 	try {
 		if (confirm) {
-			// Cancel subscription if necessary
-			if (event.locals.user.stripeCustomerId) {
-				const subscription = await getActiveSubscription(event.locals.user.stripeCustomerId);
-				if (subscription?.id) {
-					await cancelSubscription(subscription.id);
-				}
-			}
-
 			await db.delete(userSchema).where(eq(userSchema.id, event.locals.user.id));
 			await auth.invalidateSession(event.locals.session.id);
 			auth.deleteSessionTokenCookie(event);

@@ -5,27 +5,18 @@
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { TierOptions } from '$lib/data/enums';
-	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { stripPattern } from '$lib/utils';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 	import { getReadReceiptOptions } from '../../data/secretSettings';
-	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<Infer<SettingsFormSchema>>;
-		user: App.Locals['user'];
-		effectiveTier?: TierOptions;
 	};
 
-	let { user, form: formProp, effectiveTier }: Props = $props();
-
-	const planLimits = $derived(
-		getUserPlanLimits(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL)
-	);
+	let { form: formProp }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zod4Client(settingsFormSchema()),
@@ -57,10 +48,6 @@
 			/>
 		</Form.Fieldset>
 
-		{#if $formData.readReceiptOption !== 'none' && !planLimits.readReceiptsAllowed}
-			<UpgradeNotice tier={effectiveTier ?? user?.subscriptionTier} />
-		{/if}
-
 		{#if $formData.readReceiptOption === 'email'}
 			<Form.Field {form} name="email">
 				<Text
@@ -68,7 +55,6 @@
 					bind:value={$formData.email}
 					{...stripPattern($constraints.email)}
 					type="email"
-					disabled={!planLimits.readReceiptsAllowed}
 				/>
 				<Form.Description>{m.hour_royal_moose_kiss()}</Form.Description>
 			</Form.Field>
@@ -82,7 +68,6 @@
 					bind:value={$formData.ntfyEndpoint}
 					{...$constraints.ntfyEndpoint}
 					description={m.nimble_mushy_felix_drop({ link: '[https://ntfy.sh](https://ntfy.sh)' })}
-					disabled={!planLimits.readReceiptsAllowed}
 				/>
 			</Form.Field>
 		{/if}

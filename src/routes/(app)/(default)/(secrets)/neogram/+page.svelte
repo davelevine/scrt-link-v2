@@ -17,10 +17,6 @@
 	metaKeywords={m.petty_ago_gibbon_enchant()}
 >
 	<Container>
-		<CreateSecret
-			form={data.secretForm}
-			effectiveTier={data.effectiveTier}
-			secretTypes={[SecretType.NEOGRAM]}
-		/>
+		<CreateSecret form={data.secretForm} secretTypes={[SecretType.NEOGRAM]} />
 	</Container>
 </Page>

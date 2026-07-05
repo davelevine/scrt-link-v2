@@ -7,7 +7,6 @@ import { redirectLocalized } from '$lib/i18n';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db/index.js';
 import { invite, membership, organization } from '$lib/server/db/schema.js';
-import { syncOrgSeatCount } from '$lib/server/organization.js';
 import { createOrUpdateUser } from '$lib/server/user.js';
 
 import type { Actions, RequestEvent } from './$types';
@@ -81,7 +80,6 @@ export const actions: Actions = {
 					organizationId: existingInvite.organizationId,
 					role: existingInvite.membershipRole
 				});
-				syncOrgSeatCount(existingInvite.organizationId).catch(console.error);
 			}
 
 			await db.delete(invite).where(eq(invite.id, existingInvite.id));

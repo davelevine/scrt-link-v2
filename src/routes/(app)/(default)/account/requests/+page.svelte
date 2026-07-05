@@ -8,7 +8,7 @@
 </script>
 
 <div class="mb-6">
-	<CreateSecretRequest form={data.secretRequestForm} subscriptionTier={data.effectiveTier} />
+	<CreateSecretRequest form={data.secretRequestForm} />
 </div>
 
 <RequestsCard requests={data.requests} unreadCount={data.unreadCount} />

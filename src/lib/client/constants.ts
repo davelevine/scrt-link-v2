@@ -1,2 +1,1 @@
-export const TRIAL_PERIOD_DAYS = 7;
 export const SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS = 30;

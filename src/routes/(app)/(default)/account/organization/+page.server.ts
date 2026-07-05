@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 
 	const ownedOrg = userOrganizations.find((org) => org.role === MembershipRole.OWNER);
 
-	// Billing is disabled: owners go straight to their organization (no pricing gate).
+	// Owners go straight to their organization.
 	if (ownedOrg) {
 		return redirectLocalized(302, `/account/org/${ownedOrg.id}`);
 	}

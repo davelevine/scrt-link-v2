@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**scrt.link** is a secure secret-sharing platform. Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, Stripe subscriptions, and a public API.
+**scrt.link** is a secure secret-sharing platform. Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, and a public API. It is free — there is no billing or subscription system.
 
 ## Tech Stack
 
@@ -13,7 +13,6 @@
 - **Auth**: Custom session-based (Lucia pattern) + Google OAuth (Arctic)
 - **i18n**: Paraglide.js (7 locales: en, de, fr, es, pt, ru, zh-CN)
 - **Email**: Resend + svelte-email-tailwind templates
-- **Payments**: Stripe subscriptions
 - **Storage**: AWS S3 + Imgix CDN
 - **Testing**: Vitest (unit/browser) + Playwright (e2e)
 - **Package manager**: pnpm (monorepo)
@@ -114,6 +113,6 @@ Schema changes: edit `schema.ts` then `pnpm run db:push`
 
 ## Environment
 
-Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API`, `PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
+Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
 
 Adapters: Vercel (default) or Node (`ADAPTER=node` for Docker)

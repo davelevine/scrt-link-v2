@@ -42,7 +42,6 @@ import {
 	settingsFormSchema,
 	signInFormSchema,
 	themeFormSchema,
-	updateBillingOwnerSchema,
 	userFormSchema
 } from '$lib/validators/formSchemas';
 
@@ -61,11 +60,7 @@ import {
 	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
 } from '../email-verification';
-import {
-	getOrganizationsByUserId,
-	inviteUserToOrganization,
-	syncOrgSeatCount
-} from '../organization';
+import { getOrganizationsByUserId, inviteUserToOrganization } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
 import {
 	getSecretRequestByHash,
@@ -73,8 +68,6 @@ import {
 	submitSecretResponse
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
-import { cancelSubscription, getActiveSubscription } from '../stripe';
-import stripeInstance from '../stripe';
 import { sendSecretRequestResponseReceiptEmail } from '../transactional-email';
 import {
 	checkIfUserExists,
@@ -98,7 +91,7 @@ export const postSecret: Action = async (event) => {
 
 	const user = event.locals.user;
 
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
+	const planLimits = getUserPlanLimits();
 	if (form.data.viewLimit > planLimits.maxViewLimit) {
 		return fail(403, { form });
 	}
@@ -304,15 +297,7 @@ export const editOrganization: Action = async (event) => {
 		);
 	}
 
-	const [updatedOrg] = await db
-		.update(organization)
-		.set({ name })
-		.where(eq(organization.id, organizationId))
-		.returning();
-
-	if (updatedOrg?.stripeCustomerId) {
-		await stripeInstance.customers.update(updatedOrg.stripeCustomerId, { name });
-	}
+	await db.update(organization).set({ name }).where(eq(organization.id, organizationId));
 
 	return message(form, {
 		status: 'success',
@@ -419,8 +404,6 @@ export const addMemberToOrganization: Action = async (event) => {
 		organizationId
 	});
 
-	syncOrgSeatCount(organizationId).catch(console.error);
-
 	return message(form, {
 		status: 'success',
 		title: m.weak_stock_elephant_build(),
@@ -468,17 +451,11 @@ export const manageOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
-		// Fetch the target's current role and org billing owner in parallel.
-		const [[targetMembership], orgRow] = await Promise.all([
-			db
-				.select({ role: membership.role })
-				.from(membership)
-				.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))),
-			db.query.organization.findFirst({
-				columns: { billingOwnerId: true, stripeCustomerId: true },
-				where: (fields, { eq }) => eq(fields.id, organizationId)
-			})
-		]);
+		// Fetch the target member's current role.
+		const [targetMembership] = await db
+			.select({ role: membership.role })
+			.from(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)));
 
 		// Admins cannot change the role of an existing Owner (no demotion either).
 		if (
@@ -491,10 +468,6 @@ export const manageOrganizationMember: Action = async (event) => {
 				{ status: 403 }
 			);
 		}
-
-		const isBillingOwner = orgRow?.billingOwnerId === userId;
-		const isDemotedFromOwner =
-			targetMembership?.role === MembershipRole.OWNER && role !== MembershipRole.OWNER;
 
 		if (role !== MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
@@ -523,41 +496,6 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		if (!result.length) {
 			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
-		}
-
-		// Auto-reassign billing contact when the billing owner is demoted from OWNER.
-		if (isBillingOwner && isDemotedFromOwner) {
-			// Self-demotion: pick first other available owner; otherwise fall back to acting user.
-			let newBillingOwnerId: string;
-			if (user.id === userId) {
-				const otherOwner = await db.query.membership.findFirst({
-					where: (fields, { eq, and, ne }) =>
-						and(
-							eq(fields.organizationId, organizationId),
-							eq(fields.role, MembershipRole.OWNER),
-							ne(fields.userId, userId)
-						)
-				});
-				newBillingOwnerId = otherOwner?.userId ?? user.id;
-			} else {
-				newBillingOwnerId = user.id;
-			}
-
-			const [newBillingOwner] = await db
-				.select({ email: userSchema.email })
-				.from(userSchema)
-				.where(eq(userSchema.id, newBillingOwnerId));
-
-			await db
-				.update(organization)
-				.set({ billingOwnerId: newBillingOwnerId })
-				.where(eq(organization.id, organizationId));
-
-			if (orgRow?.stripeCustomerId && newBillingOwner?.email) {
-				await stripeInstance.customers.update(orgRow.stripeCustomerId, {
-					email: newBillingOwner.email
-				});
-			}
 		}
 
 		return message(form, {
@@ -710,9 +648,6 @@ export const removeOrganizationMember: Action = async (event) => {
 			);
 		}
 
-		// Sync Stripe subscription quantity (fire-and-forget)
-		syncOrgSeatCount(organizationId).catch(console.error);
-
 		return message(form, {
 			status: 'success',
 			title: m.salty_tense_pug_roam(),
@@ -742,81 +677,9 @@ export const deleteOrganization: Action = async (event) => {
 		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
 	}
 
-	const [orgRow] = await db
-		.select({ stripeCustomerId: organization.stripeCustomerId })
-		.from(organization)
-		.where(eq(organization.id, organizationId));
-
-	// Cancel active subscription before deleting.
-	if (orgRow?.stripeCustomerId) {
-		const subscription = await getActiveSubscription(orgRow.stripeCustomerId);
-		if (subscription?.id) {
-			await cancelSubscription(subscription.id);
-		}
-	}
-
 	await db.delete(organization).where(eq(organization.id, organizationId));
 
 	return redirectLocalized(303, '/account/organization');
-};
-
-export const updateOrganizationBillingOwner: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(updateBillingOwnerSchema()));
-	const user = event.locals.user;
-
-	if (!form.valid) return fail(400, { form });
-	if (!user) return redirectLocalized(307, '/signup');
-
-	const { organizationId, billingOwnerId: newBillingOwnerId } = form.data;
-
-	// Only org owners may change the billing contact.
-	const [memberRow] = await db
-		.select({ role: membership.role })
-		.from(membership)
-		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
-
-	if (memberRow?.role !== MembershipRole.OWNER) {
-		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
-	}
-
-	// The new billing owner must be an OWNER of the org.
-	const [[targetRow], [org]] = await Promise.all([
-		db
-			.select({ userId: membership.userId, role: membership.role, email: userSchema.email })
-			.from(membership)
-			.innerJoin(userSchema, eq(userSchema.id, membership.userId))
-			.where(
-				and(eq(membership.userId, newBillingOwnerId), eq(membership.organizationId, organizationId))
-			),
-		db
-			.select({ stripeCustomerId: organization.stripeCustomerId })
-			.from(organization)
-			.where(eq(organization.id, organizationId))
-	]);
-
-	if (!targetRow) {
-		return message(form, { status: 'error', title: m.this_home_stingray_yell() }, { status: 400 });
-	}
-
-	if (targetRow.role !== MembershipRole.OWNER) {
-		return message(
-			form,
-			{ status: 'error', title: m.lean_bright_billing_owner_warn() },
-			{ status: 400 }
-		);
-	}
-
-	await db
-		.update(organization)
-		.set({ billingOwnerId: newBillingOwnerId })
-		.where(eq(organization.id, organizationId));
-
-	// Keep Stripe customer email in sync so invoices go to the new billing contact.
-	if (org?.stripeCustomerId) {
-		await stripeInstance.customers.update(org.stripeCustomerId, { email: targetRow.email });
-	}
-
-	return message(form, { status: 'success', title: m.wild_born_blackbird_peel() });
 };
 
 export const loginWithEmail: Action = async (event) => {
@@ -1509,19 +1372,6 @@ export const postSecretRequest: Action = async (event) => {
 				status: 'error',
 				title: m.sad_arable_canary_mop(),
 				description: m.mild_blue_crab_warn()
-			},
-			{ status: 403 }
-		);
-	}
-
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-	if (!planLimits.secretRequests) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.sad_arable_canary_mop(),
-				description: m.bold_neat_otter_gate()
 			},
 			{ status: 403 }
 		);

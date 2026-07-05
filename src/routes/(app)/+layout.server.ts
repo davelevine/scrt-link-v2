@@ -63,7 +63,6 @@ export const load: LayoutServerLoad = async (event) => {
 
 	return {
 		user,
-		effectiveTier: event.locals.effectiveTier,
 		baseUrl: getBaseUrl()
 	};
 };
