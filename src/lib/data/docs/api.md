@@ -12,8 +12,6 @@ For convenience, the client module is available as an ESM module at `https://enc
 
 The client module provides a simple and convenient way to interact with the Encoded API.
 
-👉 [Demo implementation](https://github.com/stophecom/scrt-link-demo)
-
 ### Installation
 
 ```bash
@@ -86,4 +84,4 @@ const response = await client.createSecret('Your secret text...', {
 ## Contribute
 
 Do you need help or want to contribute?  
-The code is open-source on [Github](https://github.com/stophecom/scrt-link-v2).
+The code is open-source on [Github](https://github.com/davelevine/scrt-link-v2).

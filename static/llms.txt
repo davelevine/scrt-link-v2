@@ -1,6 +1,6 @@
 # Encoded
 
-> Encoded is a secure, end-to-end encrypted one-time secret sharing platform. Secrets are encrypted in the browser, shared via a one-time link, and permanently destroyed after being viewed once. Built with a zero-knowledge architecture under Swiss jurisdiction.
+> Encoded is a secure, end-to-end encrypted one-time secret sharing platform. Secrets are encrypted in the browser, shared via a one-time link, and permanently destroyed after being viewed once. Built with a zero-knowledge architecture.
 
 Encoded lets users share sensitive information — passwords, credentials, private keys, confidential messages — without leaving a trace in email or chat history. The encryption key is embedded in the URL fragment (`#`), which is never transmitted to the server. The server only ever sees encrypted data.
 
@@ -13,7 +13,7 @@ Encoded lets users share sensitive information — passwords, credentials, priva
 ## Secret Types
 
 - [Text](https://encoded.org/text): Share encrypted text messages (passwords, keys, notes).
-- [File](https://encoded.org/file): Share encrypted files up to 100 GB depending on plan.
+- [File](https://encoded.org/file): Share encrypted files up to 100 GB.
 - [Redirect](https://encoded.org/redirect): Create a one-time secret redirect URL.
 - [Snap](https://encoded.org/snap): Share self-destructing image snapshots.
 - [Neogram](https://encoded.org/neogram): Send a self-destructing animated message, similar to a telegram.
@@ -26,14 +26,14 @@ All secret types support optional password protection and configurable expiratio
 - **Zero Knowledge**: The encryption key is part of the URL fragment (`#`). Browsers never send fragments to the server. The server cannot decrypt your secrets.
 - **Automatic Deletion**: Secrets are permanently removed after a single view. No backups exist.
 - **Optional Password Protection**: Adds a second encryption layer. Even with full infrastructure access, the secret cannot be decrypted without the password.
-- **Open Source**: Full codebase available under MIT license at [github.com/stophecom/scrt-link-v2](https://github.com/stophecom/scrt-link-v2).
-- **Swiss Privacy**: Operated by SANTiHANS GmbH under Swiss privacy law.
+- **Open Source**: Full codebase available under MIT license at [github.com/davelevine/scrt-link-v2](https://github.com/davelevine/scrt-link-v2).
+- **Self-Hostable**: Run your own instance — no reliance on a third-party operator.
 - **Minimal Dependencies**: Reduced attack surface by design.
-- **No Tracking**: Uses Plausible Analytics (privacy-focused, cookieless).
+- **No Tracking**: No analytics and no third-party cookies. Only essential cookies for authentication.
 
 ## API & Client Module
 
-The API supports programmatic creation of text-based secrets (Text, Redirect, Neogram). File and Snap secrets are not available via API due to encryption complexity. Requires a paid subscription (Top Secret plan or higher) and an API key from your account page.
+The API supports programmatic creation of text-based secrets (Text, Redirect, Neogram). File and Snap secrets are not available via API due to encryption complexity. Requires an API key from your account page.
 
 ### Install
 
@@ -84,36 +84,13 @@ const result = await client.createSecret('my secret content', {
 - `SecretType.REDIRECT` — One-time redirect URL
 - `SecretType.NEOGRAM` — Self-destructing animated message
 
-## Pricing
-
-- **Confidential (Free)**: Text, File (10 MB), Redirect secrets. End-to-end encrypted.
-- **Secret ($1/month)**: All free features + Snaps, Neograms, 1 GB files, read receipts, password protection, 7-day retention.
-- **Top Secret ($5/month)**: All Secret features + 100 GB files, 30-day retention, API access, priority support.
-- **Secret Service ($20/month)**: Custom domain, logo, theme (white-label). 30 private team members. SLA 99.9% uptime.
-
-All paid plans include a 7-day free trial. Annual billing saves 33%.
-
 ## Links
 
 - [Homepage](https://encoded.org): Main landing page.
 - [Security](https://encoded.org/security): Detailed security architecture and encryption design.
-- [Pricing](https://encoded.org/pricing): Plans and feature comparison.
 - [API Documentation](https://encoded.org/api-documentation): Full API reference and client module docs.
-- [GitHub Repository](https://github.com/stophecom/scrt-link-v2): Open-source codebase (MIT license).
+- [GitHub Repository](https://github.com/davelevine/scrt-link-v2): Open-source codebase (MIT license).
 - [NPM Package](https://www.npmjs.com/package/@scrt-link/client): Client module for programmatic secret creation.
-- [Demo Implementation](https://github.com/stophecom/scrt-link-demo): Example project using the client module.
-- [About](https://encoded.org/about): Company information and mission.
-- [Status Page](https://stats.uptimerobot.com/v5yqDuEr5z): Uptime monitoring.
-
-## Optional
-
-- [Privacy Policy](https://encoded.org/privacy-policy)
-- [Terms of Service](https://encoded.org/terms-of-service)
-- [GDPR](https://encoded.org/gdpr)
-- [SLA](https://encoded.org/sla)
-- [Cookie Policy](https://encoded.org/cookie-policy)
-- [Acceptable Use Policy](https://encoded.org/acceptable-use-policy)
-- [FAQ](https://encoded.org/faq)
-- [Blog](https://encoded.org/blog)
+- [About](https://encoded.org/about): About the project and mission.
+- [Privacy Policy](https://encoded.org/privacy)
 - [Contact](https://encoded.org/contact)
-- [Business / White-Label](https://encoded.org/business)
