@@ -19,14 +19,11 @@
 	const form = superForm(formProp, {
 		validators: zod4Client(themeFormSchema()),
 		dataType: 'json',
-		invalidateAll: false,
+		// Refresh layout data so the saved theme re-applies reactively (see the theme
+		// effect in (app)/+layout.svelte) instead of forcing a full page reload.
+		invalidateAll: true,
 		onChange: () => {
 			form.submit();
-		},
-		onUpdated({ form: f }) {
-			if (f.valid) {
-				window.location.reload();
-			}
 		},
 		onError({ result }) {
 			// We use message for unexpected errors

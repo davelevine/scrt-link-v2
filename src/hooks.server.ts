@@ -2,7 +2,8 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
-import { ThemeOptions, TierOptions } from '$lib/data/enums';
+import { TierOptions } from '$lib/data/enums';
+import { buildThemeCss, resolveThemeOption, THEME_STYLE_ID } from '$lib/data/theme';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
 import { applyFrameHeaders } from '$lib/server/security-headers';
@@ -46,56 +47,15 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 		});
 	});
 
-type ThemeVars = { primary: string; primaryFg: string; accent: string };
-type Theme = { light: ThemeVars; dark: ThemeVars };
-
-const THEME_MAP: Record<ThemeOptions, Theme> = {
-	[ThemeOptions.NAVY]: {
-		light: { primary: '#1a2942', primaryFg: '#ffffff', accent: '#d92f2f' },
-		dark: { primary: '#3a5a92', primaryFg: '#ffffff', accent: '#e85555' }
-	},
-	[ThemeOptions.PINK]: {
-		light: { primary: '#e60077', primaryFg: '#ffffff', accent: '#2c1b55' },
-		dark: { primary: '#ff3d96', primaryFg: '#ffffff', accent: '#f0e1ff' }
-	},
-	[ThemeOptions.PURPLE]: {
-		light: { primary: '#70379d', primaryFg: '#ffffff', accent: '#f59e0b' },
-		dark: { primary: '#a04be2', primaryFg: '#ffffff', accent: '#fbbf24' }
-	},
-	[ThemeOptions.BLUE]: {
-		light: { primary: '#2071c9', primaryFg: '#ffffff', accent: '#f97316' },
-		dark: { primary: '#60a5fa', primaryFg: '#000000', accent: '#fb923c' }
-	},
-	[ThemeOptions.TEAL]: {
-		light: { primary: '#076969', primaryFg: '#ffffff', accent: '#f97316' },
-		dark: { primary: '#2dd4bf', primaryFg: '#003838', accent: '#fb923c' }
-	}
-};
-
-function buildThemeStyle(theme: Theme): string {
-	const l = theme.light;
-	const d = theme.dark;
-	return `<style>
-		:root {
-			--color-primary: ${l.primary};
-			--color-primary-foreground: ${l.primaryFg};
-			--color-accent: ${l.accent};
-		}
-		.dark {
-			--color-primary: ${d.primary};
-			--color-primary-foreground: ${d.primaryFg};
-			--color-accent: ${d.accent};
-		}
-	</style>`;
-}
-
 const handleTheme: Handle = async ({ event, resolve }) => {
-	const themeOption =
-		(event.locals.user?.preferences?.themeColor as ThemeOptions) ?? ThemeOptions.NAVY;
-	const theme = THEME_MAP[themeOption] ?? THEME_MAP[ThemeOptions.NAVY];
+	const themeOption = resolveThemeOption(event.locals.user?.preferences?.themeColor);
 
 	return resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('%THEME_CSS%', buildThemeStyle(theme))
+		transformPageChunk: ({ html }) =>
+			html.replace(
+				'%THEME_CSS%',
+				`<style id="${THEME_STYLE_ID}">${buildThemeCss(themeOption)}</style>`
+			)
 	});
 };
 
