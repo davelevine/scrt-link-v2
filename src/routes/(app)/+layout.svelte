@@ -1,15 +1,33 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
 
+	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import { PUBLIC_ENV } from '$env/static/public';
 	import Progress from '$lib/components/blocks/progress.svelte';
 	import { appName } from '$lib/data/app';
+	import { buildThemeCss, resolveThemeOption, THEME_STYLE_ID } from '$lib/data/theme';
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
 
-	let { children }: { data: LayoutData; children: Snippet } = $props();
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
+
+	// The theme's CSS variables are injected server-side (`%THEME_CSS%`) from the user at
+	// the initial document load. Client-side navigations (e.g. logging in) never re-render
+	// the <head>, so re-apply the signed-in user's saved theme here whenever it changes.
+	// Done in-place (no full reload) so the in-memory master key and pending password survive.
+	$effect(() => {
+		if (!browser) return;
+		const css = buildThemeCss(resolveThemeOption(data.user?.preferences?.themeColor));
+		let style = document.getElementById(THEME_STYLE_ID);
+		if (!style) {
+			style = document.createElement('style');
+			style.id = THEME_STYLE_ID;
+			document.head.appendChild(style);
+		}
+		style.textContent = css;
+	});
 </script>
 
 <svelte:head>
