@@ -52,7 +52,12 @@
 	}: Props = $props();
 
 	let masterKey = $state('');
-	let successMessage = $state('');
+	// SecretForm and SecretRequestForm each need their own bindable success state —
+	// a single $state can't back two components' `bind:` props. Either one filling in
+	// switches to the shared success view below.
+	let secretSuccessMessage = $state('');
+	let requestSuccessMessage = $state('');
+	let successMessage = $derived(secretSuccessMessage || requestSuccessMessage);
 	// Secret links are `/s#<key>`; a Secret Request produces a full link of its own.
 	let secretLink: string = $derived(`${originToUnicode(page.url.origin)}/s#${masterKey}`);
 	let requestLink = $state('');
@@ -67,7 +72,8 @@
 
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.
-		successMessage = '';
+		secretSuccessMessage = '';
+		requestSuccessMessage = '';
 	});
 
 	$effect(() => {
@@ -104,7 +110,8 @@
 		</div>
 		<Button
 			onclick={() => {
-				successMessage = '';
+				secretSuccessMessage = '';
+				requestSuccessMessage = '';
 				requestLink = '';
 				masterKey = '';
 			}}
@@ -119,7 +126,7 @@
 					{effectiveTier}
 					secretType={secretTypes[0]}
 					bind:masterKey
-					bind:successMessage
+					bind:successMessage={secretSuccessMessage}
 				/>
 			{:else}
 				<Tabs.Root bind:value={currentTab}>
@@ -138,7 +145,7 @@
 									form={secretRequestForm}
 									expirationOptions={planLimits.expirationOptions}
 									tier={effectiveTier}
-									bind:successMessage
+									bind:successMessage={requestSuccessMessage}
 									bind:requestLink
 								/>
 							{:else}
@@ -156,7 +163,7 @@
 								{effectiveTier}
 								secretType={currentTab as SecretType}
 								bind:masterKey
-								bind:successMessage
+								bind:successMessage={secretSuccessMessage}
 							/>
 						{/if}
 					</Tabs.Content>
