@@ -23,17 +23,17 @@
 	const badges = [
 		{
 			label: 'Security Headers',
-			href: 'https://securityheaders.com/?q=secrets.levine.io&followRedirects=on',
+			href: 'https://securityheaders.com/?q=encoded.org&followRedirects=on',
 			grade: 'A+'
 		},
 		{
 			label: 'Mozilla Observatory',
-			href: 'https://developer.mozilla.org/en-US/observatory/analyze?host=secrets.levine.io',
+			href: 'https://developer.mozilla.org/en-US/observatory/analyze?host=encoded.org',
 			grade: 'A+'
 		},
 		{
 			label: 'SSL Labs',
-			href: 'https://www.ssllabs.com/ssltest/analyze.html?d=secrets.levine.io',
+			href: 'https://www.ssllabs.com/ssltest/analyze.html?d=encoded.org',
 			grade: 'A+'
 		}
 	];
@@ -41,7 +41,7 @@
 	const riskScans = [
 		{
 			label: 'Sucuri',
-			href: 'https://sitecheck.sucuri.net/results/secrets.levine.io',
+			href: 'https://sitecheck.sucuri.net/results/encoded.org',
 			grade: 'Low'
 		},
 		{
