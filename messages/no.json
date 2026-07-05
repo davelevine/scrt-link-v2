@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Aktiver kryptering",
 	"dim_quiet_raven_lock": "Krypteringsnøklene dine må låses opp.",
 	"keen_swift_heron_ask": "Forespørsel",
+	"home_request_signin_prompt": "Logg inn for å opprette en forespørselslenke og motta en kryptert hemmelighet fra noen.",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "Mine Secret Requests",
 	"mild_shy_parrot_rest": "Du har ikke opprettet noen secret requests ennå.",

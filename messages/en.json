@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Enable encryption",
 	"dim_quiet_raven_lock": "Your encryption keys need to be unlocked.",
 	"keen_swift_heron_ask": "Request",
+	"home_request_signin_prompt": "Sign in to create a request link and receive an encrypted secret from someone.",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "My Secret Requests",
 	"mild_shy_parrot_rest": "You haven't created any secret requests yet.",

@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Aktivera kryptering",
 	"dim_quiet_raven_lock": "Dina krypteringsnycklar behöver låsas upp.",
 	"keen_swift_heron_ask": "Förfrågan",
+	"home_request_signin_prompt": "Logga in för att skapa en förfrågningslänk och ta emot en krypterad hemlighet från någon.",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "Mina Secret Requests",
 	"mild_shy_parrot_rest": "Du har inte skapat några Secret Requests ännu.",
