@@ -6,4 +6,4 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<PreviewInterface data={data.previewData} email="info@scrt.link" />
+<PreviewInterface data={data.previewData} email="info@encoded.org" />

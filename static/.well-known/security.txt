@@ -1,5 +1,5 @@
-Contact: mailto:security@scrt.link
+Contact: mailto:security@encoded.org
 Expires: 2027-05-21T00:00:00Z
-Canonical: https://scrt.link/.well-known/security.txt
+Canonical: https://encoded.org/.well-known/security.txt
 Preferred-Languages: en, de
-Policy: https://scrt.link/security
+Policy: https://encoded.org/security
