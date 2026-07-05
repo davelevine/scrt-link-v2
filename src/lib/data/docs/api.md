@@ -10,7 +10,7 @@ For convenience, the client module is available as an ESM module at `https://enc
 
 ## ⚒️ Client Module
 
-The client module provides a simple and convenient way to interact with the Secrets API.
+The client module provides a simple and convenient way to interact with the Encoded API.
 
 👉 [Demo implementation](https://github.com/stophecom/scrt-link-demo)
 

@@ -2,7 +2,7 @@ import { Flame, LockKeyhole, ShieldPlus } from '@lucide/svelte';
 
 import { m } from '$lib/paraglide/messages.js';
 
-export const appName = 'Secrets';
+export const appName = 'Encoded';
 export const emailSupport = 'dave@levine.io';
 export const emailNoReply = 'no-reply@levine.io';
 

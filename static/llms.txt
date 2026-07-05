@@ -1,8 +1,8 @@
-# scrt.link
+# Encoded
 
-> scrt.link is a secure, end-to-end encrypted one-time secret sharing platform. Secrets are encrypted in the browser, shared via a one-time link, and permanently destroyed after being viewed once. Built with a zero-knowledge architecture under Swiss jurisdiction.
+> Encoded is a secure, end-to-end encrypted one-time secret sharing platform. Secrets are encrypted in the browser, shared via a one-time link, and permanently destroyed after being viewed once. Built with a zero-knowledge architecture under Swiss jurisdiction.
 
-scrt.link lets users share sensitive information — passwords, credentials, private keys, confidential messages — without leaving a trace in email or chat history. The encryption key is embedded in the URL fragment (`#`), which is never transmitted to the server. The server only ever sees encrypted data.
+Encoded lets users share sensitive information — passwords, credentials, private keys, confidential messages — without leaving a trace in email or chat history. The encryption key is embedded in the URL fragment (`#`), which is never transmitted to the server. The server only ever sees encrypted data.
 
 ## How It Works
 
@@ -12,11 +12,11 @@ scrt.link lets users share sensitive information — passwords, credentials, pri
 
 ## Secret Types
 
-- [Text](https://scrt.link/text): Share encrypted text messages (passwords, keys, notes).
-- [File](https://scrt.link/file): Share encrypted files up to 100 GB depending on plan.
-- [Redirect](https://scrt.link/redirect): Create a one-time secret redirect URL.
-- [Snap](https://scrt.link/snap): Share self-destructing image snapshots.
-- [Neogram](https://scrt.link/neogram): Send a self-destructing animated message, similar to a telegram.
+- [Text](https://encoded.org/text): Share encrypted text messages (passwords, keys, notes).
+- [File](https://encoded.org/file): Share encrypted files up to 100 GB depending on plan.
+- [Redirect](https://encoded.org/redirect): Create a one-time secret redirect URL.
+- [Snap](https://encoded.org/snap): Share self-destructing image snapshots.
+- [Neogram](https://encoded.org/neogram): Send a self-destructing animated message, similar to a telegram.
 
 All secret types support optional password protection and configurable expiration (10 minutes to 30 days).
 
@@ -61,7 +61,7 @@ const result = await client.createSecret('my secret content', {
 
 ```json
 {
-  "secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+  "secretLink": "https://encoded.org/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
   "receiptId": "D0waygL3",
   "expiresIn": 86400000,
   "expiresAt": "2025-04-24T16:15:52.172Z"
@@ -72,7 +72,7 @@ const result = await client.createSecret('my secret content', {
 
 ```html
 <script type="module">
-  import { scrtLink } from 'https://scrt.link/api/v1/client-module';
+  import { scrtLink } from 'https://encoded.org/api/v1/client-module';
   const client = scrtLink('your-api-key');
   client.createSecret('secret text').then(console.log);
 </script>
@@ -95,25 +95,25 @@ All paid plans include a 7-day free trial. Annual billing saves 33%.
 
 ## Links
 
-- [Homepage](https://scrt.link): Main landing page.
-- [Security](https://scrt.link/security): Detailed security architecture and encryption design.
-- [Pricing](https://scrt.link/pricing): Plans and feature comparison.
-- [API Documentation](https://scrt.link/api-documentation): Full API reference and client module docs.
+- [Homepage](https://encoded.org): Main landing page.
+- [Security](https://encoded.org/security): Detailed security architecture and encryption design.
+- [Pricing](https://encoded.org/pricing): Plans and feature comparison.
+- [API Documentation](https://encoded.org/api-documentation): Full API reference and client module docs.
 - [GitHub Repository](https://github.com/stophecom/scrt-link-v2): Open-source codebase (MIT license).
 - [NPM Package](https://www.npmjs.com/package/@scrt-link/client): Client module for programmatic secret creation.
 - [Demo Implementation](https://github.com/stophecom/scrt-link-demo): Example project using the client module.
-- [About](https://scrt.link/about): Company information and mission.
+- [About](https://encoded.org/about): Company information and mission.
 - [Status Page](https://stats.uptimerobot.com/v5yqDuEr5z): Uptime monitoring.
 
 ## Optional
 
-- [Privacy Policy](https://scrt.link/privacy-policy)
-- [Terms of Service](https://scrt.link/terms-of-service)
-- [GDPR](https://scrt.link/gdpr)
-- [SLA](https://scrt.link/sla)
-- [Cookie Policy](https://scrt.link/cookie-policy)
-- [Acceptable Use Policy](https://scrt.link/acceptable-use-policy)
-- [FAQ](https://scrt.link/faq)
-- [Blog](https://scrt.link/blog)
-- [Contact](https://scrt.link/contact)
-- [Business / White-Label](https://scrt.link/business)
+- [Privacy Policy](https://encoded.org/privacy-policy)
+- [Terms of Service](https://encoded.org/terms-of-service)
+- [GDPR](https://encoded.org/gdpr)
+- [SLA](https://encoded.org/sla)
+- [Cookie Policy](https://encoded.org/cookie-policy)
+- [Acceptable Use Policy](https://encoded.org/acceptable-use-policy)
+- [FAQ](https://encoded.org/faq)
+- [Blog](https://encoded.org/blog)
+- [Contact](https://encoded.org/contact)
+- [Business / White-Label](https://encoded.org/business)
