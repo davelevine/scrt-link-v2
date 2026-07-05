@@ -59,7 +59,8 @@ export const GET: RequestHandler = async ({ request }) => {
 			if (s3ObjectsToDelete.length) {
 				console.log(`Cron: Start deleting files...`);
 				// Using per-object DeleteObjectCommand instead of batch DeleteObjectsCommand:
-				// flow.swiss rejects the checksum header that AWS SDK v3 attaches to the batch op.
+				// some S3-compatible endpoints reject the checksum header that AWS SDK v3
+				// attaches to the batch op.
 				await Promise.all(
 					s3ObjectsToDelete.map(({ Key }) =>
 						client.send(new DeleteObjectCommand({ Bucket: BucketName, Key }))
