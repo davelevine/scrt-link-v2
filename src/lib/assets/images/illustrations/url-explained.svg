@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 108" role="img" aria-label="Anatomy of a secret link https://secrets.levine.io/s#… : the domain identifies the service, while the Secret ID and encryption key live in the URL fragment after the # and are never sent to the server.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 2 646 108" role="img" aria-label="Anatomy of a secret link https://secrets.levine.io/s#… : the domain identifies the service, while the Secret ID and encryption key live in the URL fragment after the # and are never sent to the server.">
 	<defs>
 		<style>
 			.ue-url {
 				font-family: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
-				font-size: 20px;
+				font-size: 27px;
 				font-weight: 700;
 			}
 			/* Decorative illustration — never selectable/interactive (the original
@@ -24,7 +24,7 @@
 			}
 			.ue-label {
 				font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-				font-size: 17px;
+				font-size: 22px;
 			}
 			.ue-label-base {
 				fill: currentColor;
@@ -68,7 +68,7 @@
 		class="ue-brace"
 		d="M28,52 Q28,62 39,62 L173,62 Q184,62 184,71 Q184,62 195,62 L329,62 Q340,62 340,52"
 	/>
-	<text class="ue-label ue-label-base" x="184" y="88" text-anchor="middle">Domain</text>
+	<text class="ue-label ue-label-base" x="184" y="93" text-anchor="middle">Domain</text>
 
 	<!-- Curly brace + label under the key only (x 364 → 652); the `s#` between the
 	     two braces is intentionally un-bracketed, matching the original. -->
@@ -76,7 +76,7 @@
 		class="ue-brace-key"
 		d="M364,52 Q364,62 375,62 L497,62 Q508,62 508,71 Q508,62 519,62 L641,62 Q652,62 652,52"
 	/>
-	<text class="ue-label ue-label-key" x="508" y="88" text-anchor="middle">
+	<text class="ue-label ue-label-key" x="508" y="93" text-anchor="middle">
 		Secret ID / Encryption Key
 	</text>
 </svg>
