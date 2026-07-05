@@ -154,6 +154,19 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
+		<!--
+			Hidden username field. The password below protects a secret and has no
+			associated account, but browsers/password managers expect a username field
+			alongside any password input (accessibility + autofill heuristics).
+		-->
+		<input
+			type="text"
+			name="username"
+			autocomplete="username"
+			aria-hidden="true"
+			tabindex="-1"
+			hidden
+		/>
 		{#if secretType === SecretType.TEXT || secretType === SecretType.NEOGRAM}
 			<div in:fade>
 				<div class="min-h-32">

@@ -19,7 +19,6 @@
 		copyText(text);
 
 		visible = true;
-		console.log('copying');
 		setTimeout(() => {
 			if (e.target instanceof HTMLButtonElement) {
 				e.target.blur();
