@@ -21,7 +21,8 @@ import {
 	userFormSchema
 } from '$lib/validators/formSchemas';
 
-export const secretFormValidator = async () => await superValidate(zod4(secretFormSchema()));
+export const secretFormValidator = async () =>
+	await superValidate(zod4(secretFormSchema()), { id: 'secret-form' });
 
 // Auth
 export const emailFormValidator = async () => await superValidate(zod4(emailFormSchema())); // Used for login, signup, password reset
@@ -90,7 +91,7 @@ export const apiKeyFormValidator = async () =>
 
 // Secret Requests
 export const secretRequestFormValidator = async () =>
-	await superValidate(zod4(secretRequestFormSchema()));
+	await superValidate(zod4(secretRequestFormSchema()), { id: 'secret-request-form' });
 
 export const secretResponseFormValidator = async () =>
 	await superValidate(zod4(secretResponseFormSchema()));
