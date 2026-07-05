@@ -17,7 +17,6 @@
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import type { TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import {
 		type SecretRequestFormSchema,
@@ -25,7 +24,6 @@
 	} from '$lib/validators/formSchemas';
 
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import Checkbox from './form-fields/checkbox.svelte';
 	import RadioGroup from './form-fields/radio-group.svelte';
@@ -34,7 +32,6 @@
 	type Props = {
 		form: SuperValidated<SecretRequestFormSchema>;
 		expirationOptions: number[];
-		tier?: TierOptions | null;
 		successMessage?: string;
 		requestLink?: string;
 	};
@@ -42,7 +39,6 @@
 	let {
 		form: formProp,
 		expirationOptions,
-		tier,
 		successMessage = $bindable(''),
 		requestLink = $bindable('')
 	}: Props = $props();
@@ -179,9 +175,6 @@
 					bind:value={$expiresInProxy}
 				/>
 			</Form.Fieldset>
-			{#if !expirationOptions.length}
-				<UpgradeNotice {tier} />
-			{/if}
 		</div>
 
 		<div class="flex flex-col items-stretch sm:flex-row">

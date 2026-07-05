@@ -111,10 +111,6 @@ export const createOrUpdateUser = async ({
 		})
 		.returning();
 
-	// Note: We no longer create a Stripe customer here. A personal Stripe customer
-	// is created lazily on first checkout (see src/routes/api/v1/plans/checkout/+server.ts),
-	// mirroring how organizations handle it.
-
 	// Add user settings
 	await db
 		.insert(userSettings)

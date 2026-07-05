@@ -17,10 +17,6 @@
 	metaKeywords={m.same_wild_bat_hint()}
 >
 	<Container>
-		<CreateSecret
-			form={data.secretForm}
-			effectiveTier={data.effectiveTier}
-			secretTypes={[SecretType.FILE]}
-		/>
+		<CreateSecret form={data.secretForm} secretTypes={[SecretType.FILE]} />
 	</Container>
 </Page>

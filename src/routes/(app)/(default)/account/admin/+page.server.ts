@@ -1,9 +1,7 @@
 import {
-	getActiveSubscriptions,
 	getAdoptionRates,
 	getApiKeyStats,
 	getGlobalStats,
-	getOrganizationsByTier,
 	getOrganizationSizes,
 	getRecentSignups,
 	getSecretCounts,
@@ -11,7 +9,6 @@ import {
 	getTopUsersBySecrets,
 	getTotalOrganizations,
 	getTotalUsers,
-	getUsersByTier,
 	getUserSignupsByMonth,
 	getWhiteLabelStats
 } from '$lib/server/analytics';
@@ -21,7 +18,6 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async () => {
 	const [
 		totalUsers,
-		usersByTier,
 		userSignups,
 		recentSignups,
 		adoptionRates,
@@ -31,13 +27,10 @@ export const load: PageServerLoad = async () => {
 		secretRequestStats,
 		totalOrganizations,
 		organizationSizes,
-		organizationsByTier,
-		activeSubscriptions,
 		apiKeyStats,
 		whiteLabelStats
 	] = await Promise.all([
 		getTotalUsers(),
-		getUsersByTier(),
 		getUserSignupsByMonth(),
 		getRecentSignups(10),
 		getAdoptionRates(),
@@ -47,8 +40,6 @@ export const load: PageServerLoad = async () => {
 		getSecretRequestStats(),
 		getTotalOrganizations(),
 		getOrganizationSizes(),
-		getOrganizationsByTier(),
-		getActiveSubscriptions(),
 		getApiKeyStats(),
 		getWhiteLabelStats()
 	]);
@@ -56,7 +47,6 @@ export const load: PageServerLoad = async () => {
 	return {
 		pageTitle: 'Admin',
 		totalUsers,
-		usersByTier,
 		userSignups,
 		recentSignups,
 		adoptionRates,
@@ -66,8 +56,6 @@ export const load: PageServerLoad = async () => {
 		secretRequestStats,
 		totalOrganizations,
 		organizationSizes,
-		organizationsByTier,
-		activeSubscriptions,
 		apiKeyStats,
 		whiteLabelStats
 	};

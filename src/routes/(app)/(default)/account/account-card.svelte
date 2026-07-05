@@ -18,7 +18,7 @@
 		user,
 		form
 	}: {
-		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture'> & {
+		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'picture'> & {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			preferences: any;
 		};

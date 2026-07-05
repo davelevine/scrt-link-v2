@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { Building2, Factory, Plus } from '@lucide/svelte';
-	import Plane from '@lucide/svelte/icons/plane';
-	import Rocket from '@lucide/svelte/icons/rocket';
+	import { Plus } from '@lucide/svelte';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -9,7 +7,6 @@
 	import { Container } from '$lib/components/ui/container';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { appName } from '$lib/data/app';
-	import { TierOptions } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -18,23 +15,13 @@
 
 	type Props = {
 		user: App.Locals['user'];
-		effectiveTier?: TierOptions;
 		isMinimal?: boolean;
 		isPersistent?: boolean;
 		tag?: string;
 		breadcrumb?: string;
 	};
 
-	let {
-		user,
-		effectiveTier,
-		isMinimal,
-		isPersistent: isPersistent,
-		tag,
-		breadcrumb
-	}: Props = $props();
-
-	const tier = $derived(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL);
+	let { user, isMinimal, isPersistent: isPersistent, tag, breadcrumb }: Props = $props();
 
 	let persistHeader = $derived(isPersistent || !!tag);
 </script>
@@ -119,25 +106,6 @@
 										>{Array.from(user.email)[0]}</Avatar.Fallback
 									>
 								</Avatar.Root>
-
-								{#if [TierOptions.SECRET, TierOptions.TOP_SECRET, TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE].includes(tier)}
-									<div
-										class="border-background bg-accent text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
-									>
-										{#if tier === TierOptions.SECRET}
-											<Plane class="h-3 w-3" />
-										{/if}
-										{#if tier === TierOptions.TOP_SECRET}
-											<Rocket class="h-3 w-3" />
-										{/if}
-										{#if tier === TierOptions.SECRET_SERVICE}
-											<Factory class="h-3 w-3" />
-										{/if}
-										{#if tier === TierOptions.TOP_SECRET_SERVICE}
-											<Building2 class="h-3 w-3" />
-										{/if}
-									</div>
-								{/if}
 							</a>
 						{:else}
 							<Button variant="ghost" size="sm" href={localizeHref('/login')}>

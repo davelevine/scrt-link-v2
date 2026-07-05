@@ -1,6 +1,6 @@
 Create end-to-end encrypted secrets directly from your terminal. The `scrtlink` CLI is built on top of the [Encoded API](/api-documentation) and uses the same client-side encryption as the web app — the server never sees your plaintext.
 
-To use the CLI, you'll need an active [subscription](/pricing) and an API key from your [account page](/account/api).
+To use the CLI, you'll need an API key from your [account page](/account/api).
 
 ## Installation
 

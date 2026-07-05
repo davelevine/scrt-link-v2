@@ -9,7 +9,6 @@
 <OrganizationMembersCard
 	user={data.user}
 	organization={data.orgWithMembers}
-	orgSubscription={data.orgSubscription}
 	organizationForm={data.organizationForm}
 	inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
 	manageOrganizationMemberForm={data.manageOrganizationMemberForm}

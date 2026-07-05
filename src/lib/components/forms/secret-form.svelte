@@ -16,7 +16,6 @@
 	import { zod4 } from 'sveltekit-superforms/adapters';
 
 	import { page } from '$app/state';
-	import { isOriginalHostname } from '$lib/app-routing';
 	import Number from '$lib/components/forms/form-fields/number.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
@@ -24,14 +23,12 @@
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { type TierOptions } from '$lib/data/enums';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';
 	import { type SecretFormSchema, secretFormSchema } from '$lib/validators/formSchemas';
 
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Input from '../ui/input/input.svelte';
 	import Label from '../ui/label/label.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
@@ -44,7 +41,6 @@
 
 	export type SecretFormProps = {
 		form: SuperValidated<SecretFormSchema>;
-		effectiveTier?: TierOptions | null;
 		secretType: SecretType;
 		successMessage?: string;
 		masterKey: string;
@@ -53,15 +49,13 @@
 		successMessage = $bindable(),
 		masterKey = $bindable(),
 		form: formProp,
-		effectiveTier,
 		secretType
 	}: SecretFormProps = $props();
 
 	let destructionTimer = $state(5);
 
-	let isLoggedIn = $derived(!!effectiveTier);
-	let isWhiteLabel = $derived(!isOriginalHostname(page.url.hostname));
-	let planLimits = $derived(getUserPlanLimits(effectiveTier));
+	let isLoggedIn = $derived(!!page.data.user);
+	const planLimits = getUserPlanLimits();
 
 	const form = superForm(formProp, {
 		validators: zod4(secretFormSchema()),
@@ -128,8 +122,8 @@
 
 	let charactersLeft = $derived(planLimits.text - $formData.content.length);
 
-	const isNeogramAllowed = $derived(secretType === SecretType.NEOGRAM && planLimits.neogram);
-	const isSnapAllowed = $derived(secretType === SecretType.SNAP && planLimits.snap);
+	const isNeogramAllowed = $derived(secretType === SecretType.NEOGRAM);
+	const isSnapAllowed = $derived(secretType === SecretType.SNAP);
 
 	let isButtonDisabled = $derived(
 		isFileUploading ||
@@ -179,11 +173,6 @@
 							/>
 						</Form.Field>
 					{/if}
-					{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
-						<div class="pt-2">
-							<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
-						</div>
-					{/if}
 				</div>
 			</div>
 		{/if}
@@ -208,8 +197,6 @@
 								{m.tired_inner_cougar_push()}
 							</div>
 						{/if}
-					{:else}
-						<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 					{/if}
 				</div>
 			</div>
@@ -229,8 +216,6 @@
 								type="url"
 							/>
 						</Form.Field>
-					{:else}
-						<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 					{/if}
 				</div>
 			</div>
@@ -246,7 +231,6 @@
 					bind:value={$formData.password}
 					autocomplete="new-password"
 					{...$constraints.password}
-					disabled={!planLimits.passwordAllowed}
 				/>
 			</Form.Field>
 
@@ -265,7 +249,6 @@
 					class="w-44"
 					min="1"
 					max={planLimits.maxViewLimit}
-					disabled={planLimits.maxViewLimit <= 1}
 					bind:value={$formData.viewLimit}
 				/>
 			</Form.Field>
@@ -291,10 +274,6 @@
 					max="1000"
 					bind:value={destructionTimer}
 				/>
-			{/if}
-
-			{#if (planLimits.maxViewLimit <= 1 || !planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
-				<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 			{/if}
 		</div>
 

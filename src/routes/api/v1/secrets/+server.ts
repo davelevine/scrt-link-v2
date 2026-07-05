@@ -2,12 +2,10 @@ import { sha256Hash } from '@scrt-link/core';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { TierOptions } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
-import { getEffectiveTierForUser } from '$lib/server/organization';
 import { saveSecret } from '$lib/server/secrets';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
@@ -52,16 +50,8 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	const userId = userWithApiKey.user?.id;
-	const userTier = userWithApiKey.user?.subscriptionTier ?? undefined;
-	const effectiveTier = userId
-		? await getEffectiveTierForUser(userId, userTier ?? TierOptions.CONFIDENTIAL)
-		: userTier;
 
-	const planLimits = getUserPlanLimits(effectiveTier);
-
-	if (!planLimits.apiAccess) {
-		return jsonWithCors({ error: 'API access requires a premium plan.' }, { status: 403 });
-	}
+	const planLimits = getUserPlanLimits();
 
 	const body = await request.json();
 	const validation = secretFormSchema().safeParse(body);

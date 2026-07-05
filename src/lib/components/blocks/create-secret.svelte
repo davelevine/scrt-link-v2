@@ -2,6 +2,7 @@
 	import Check from '@lucide/svelte/icons/circle-check-big';
 	import Reply from '@lucide/svelte/icons/reply';
 	import { fade } from 'svelte/transition';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
@@ -11,13 +12,11 @@
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyFeatures } from '$lib/data/app';
-	import { SecretType, type TierOptions } from '$lib/data/enums';
+	import { SecretType } from '$lib/data/enums';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
-
-	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { getSecretTypes } from '../../data/secretSettings';
 	import Button from '../ui/button/button.svelte';
@@ -29,7 +28,6 @@
 	type Props = {
 		form: SecretFormProps['form'];
 		secretRequestForm?: SuperValidated<SecretRequestFormSchema>;
-		effectiveTier?: TierOptions | null;
 		hidePrimaryFeatureList?: boolean;
 		secretTypes?: SecretType[];
 		cardTitle?: string;
@@ -38,7 +36,6 @@
 	let {
 		form,
 		secretRequestForm,
-		effectiveTier,
 		hidePrimaryFeatureList = false,
 		secretTypes = [
 			SecretType.TEXT,
@@ -63,7 +60,6 @@
 	let requestLink = $state('');
 	let link = $derived(requestLink || secretLink);
 	let currentUser = $derived(page.data.user);
-	let planLimits = $derived(getUserPlanLimits(effectiveTier));
 	let currentTab = $state('text');
 
 	let enabledSecretTypes = $derived(
@@ -123,7 +119,6 @@
 			{#if secretTypes.length === 1}
 				<SecretForm
 					{form}
-					{effectiveTier}
 					secretType={secretTypes[0]}
 					bind:masterKey
 					bind:successMessage={secretSuccessMessage}
@@ -143,8 +138,7 @@
 							{#if currentUser}
 								<SecretRequestForm
 									form={secretRequestForm}
-									expirationOptions={planLimits.expirationOptions}
-									tier={effectiveTier}
+									expirationOptions={getUserPlanLimits().expirationOptions}
 									bind:successMessage={requestSuccessMessage}
 									bind:requestLink
 								/>
@@ -160,7 +154,6 @@
 						{:else}
 							<SecretForm
 								{form}
-								{effectiveTier}
 								secretType={currentTab as SecretType}
 								bind:masterKey
 								bind:successMessage={secretSuccessMessage}

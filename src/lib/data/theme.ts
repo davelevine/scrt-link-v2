@@ -33,7 +33,9 @@ export const THEME_MAP: Record<ThemeOptions, Theme> = {
 
 /** Coerce an unknown/absent value to a valid theme option (defaults to NAVY). */
 export const resolveThemeOption = (value: unknown): ThemeOptions =>
-	value != null && (value as ThemeOptions) in THEME_MAP ? (value as ThemeOptions) : ThemeOptions.NAVY;
+	value != null && (value as ThemeOptions) in THEME_MAP
+		? (value as ThemeOptions)
+		: ThemeOptions.NAVY;
 
 /**
  * CSS custom properties for a theme, as the *inner* text of a `<style>` element

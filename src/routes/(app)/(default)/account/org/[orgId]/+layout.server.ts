@@ -5,7 +5,6 @@ import { MembershipRole } from '$lib/data/enums';
 import { redirectLocalized } from '$lib/i18n';
 import { db } from '$lib/server/db';
 import { membership, organization } from '$lib/server/db/schema';
-import { getActiveSubscription } from '$lib/server/stripe';
 
 import type { LayoutServerLoad } from './$types';
 
@@ -28,13 +27,8 @@ export const load: LayoutServerLoad = async ({ locals, params }) => {
 
 	if (!org) return error(404, 'Organization not found.');
 
-	const orgSubscription = org.stripeCustomerId
-		? await getActiveSubscription(org.stripeCustomerId)
-		: null;
-
 	return {
 		org: { ...org, role: memberRow.role },
-		orgSubscription,
 		isOrgOwner: memberRow.role === MembershipRole.OWNER,
 		isOrgAdmin: memberRow.role === MembershipRole.ADMIN
 	};

@@ -19,17 +19,8 @@ import {
 	MembershipRole,
 	ReadReceiptOptions,
 	Role,
-	SecretType,
-	TierOptions
+	SecretType
 } from '../../data/enums';
-
-export const subscriptionTier = pgEnum('subscription_tier', [
-	TierOptions.CONFIDENTIAL,
-	TierOptions.SECRET,
-	TierOptions.TOP_SECRET,
-	TierOptions.SECRET_SERVICE,
-	TierOptions.TOP_SECRET_SERVICE
-]);
 
 export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
 
@@ -44,9 +35,7 @@ export const user = pgTable('user', {
 	name: text('name'),
 	picture: text('picture'),
 	googleId: text('google_id'),
-	stripeCustomerId: text('stripe_customer_id'),
 	role: role().default(Role.USER),
-	subscriptionTier: subscriptionTier().default(TierOptions.TOP_SECRET_SERVICE),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified'),
 	encryptionEnabled: boolean('encryption_enabled').default(false),
@@ -110,12 +99,7 @@ export const secretTypeEnum = pgEnum('secret_type_enum', [
 export const organization = pgTable('organization', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' }),
-	stripeCustomerId: text('stripe_customer_id'),
-	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.TOP_SECRET_SERVICE),
-	// Designates which user receives the Stripe portal link and billing emails.
-	// Defaults to null (falls back to any org owner). Can be any existing org member.
-	billingOwnerId: uuid('billing_owner_id').references(() => user.id, { onDelete: 'set null' })
+	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' })
 });
 
 export const membershipRole = pgEnum('membership_role', [

@@ -17,10 +17,6 @@
 	metaKeywords={m.heroic_sad_bison_arrive()}
 >
 	<Container>
-		<CreateSecret
-			form={data.secretForm}
-			effectiveTier={data.effectiveTier}
-			secretTypes={[SecretType.TEXT]}
-		/>
+		<CreateSecret form={data.secretForm} secretTypes={[SecretType.TEXT]} />
 	</Container>
 </Page>

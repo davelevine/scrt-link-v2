@@ -6,7 +6,6 @@ import EmailOrganizationInvitation from '$lib/emails/email-organization-invitati
 import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
 import EmailReadReceipt from '$lib/emails/email-read-receipt.svelte';
 import EmailSecretRequestResponse from '$lib/emails/email-secret-request-response.svelte';
-import EmailSubscriptionTrialStart from '$lib/emails/email-subscription-trial-start.svelte';
 import EmailWelcome from '$lib/emails/email-welcome.svelte';
 import { m } from '$lib/paraglide/messages.js';
 
@@ -56,19 +55,6 @@ export const sendReadReceiptEmail = async (
 		html: html
 	});
 	console.log(`Send read receipt to ${email}.`);
-};
-
-export const sendSubscriptionTrialStartEmail = async (
-	email: string,
-	planName: string,
-	name?: string
-) => {
-	const { html } = render(EmailSubscriptionTrialStart, { props: { planName, name } });
-	await sendTransactionalEmail({
-		subject: m.level_every_chicken_fall(),
-		to: email,
-		html
-	});
 };
 
 export const sendSecretRequestResponseReceiptEmail = async (email: string, receiptId: string) => {

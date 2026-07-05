@@ -1,7 +1,5 @@
 import { count, eq, sql } from 'drizzle-orm';
 
-import { TierOptions } from '$lib/data/enums';
-
 import { db } from './db';
 import {
 	apiKey,
@@ -19,17 +17,6 @@ import {
 export const getTotalUsers = async () => {
 	const [result] = await db.select({ count: count() }).from(user);
 	return result.count;
-};
-
-export const getUsersByTier = async () => {
-	const result = await db
-		.select({
-			tier: user.subscriptionTier,
-			count: count()
-		})
-		.from(user)
-		.groupBy(user.subscriptionTier);
-	return result;
 };
 
 export const getUserSignupsByMonth = async (months = 12) => {
@@ -50,7 +37,6 @@ export const getRecentSignups = async (limit = 20) => {
 		.select({
 			email: user.email,
 			name: user.name,
-			tier: user.subscriptionTier,
 			encryptionEnabled: user.encryptionEnabled,
 			createdAt: user.createdAt
 		})
@@ -89,7 +75,6 @@ export const getTopUsersBySecrets = async (limit = 20) => {
 		.select({
 			email: user.email,
 			name: user.name,
-			tier: user.subscriptionTier,
 			totalSecrets: stats.totalSecrets
 		})
 		.from(stats)
@@ -155,27 +140,6 @@ export const getOrganizationSizes = async () => {
 		.groupBy(organization.id, organization.name)
 		.orderBy(sql`coalesce(sum(${stats.totalSecrets}), 0) DESC`);
 	return result;
-};
-
-export const getOrganizationsByTier = async () => {
-	const result = await db
-		.select({
-			tier: organization.subscriptionTier,
-			count: count()
-		})
-		.from(organization)
-		.groupBy(organization.subscriptionTier);
-	return result;
-};
-
-// ── Subscriptions & Revenue ────────────────────────────
-
-export const getActiveSubscriptions = async () => {
-	const [result] = await db
-		.select({ count: count() })
-		.from(user)
-		.where(sql`${user.subscriptionTier} != ${TierOptions.CONFIDENTIAL}`);
-	return result.count;
 };
 
 // ── API Keys ───────────────────────────────────────────

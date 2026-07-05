@@ -7,12 +7,10 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-
-	const { user } = data;
 </script>
 
 <Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
-	<SettingsForm {user} effectiveTier={data.effectiveTier} form={data.settingsForm} />
+	<SettingsForm form={data.settingsForm} />
 </Card>
 
 <Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.left_patchy_piranha_foster()}>

@@ -1,6 +1,6 @@
 This documentation is intended for developers who want to interact with the service programmatically via the API. Since the product uses client-side encryption, it is strongly recommended to use the provided client module, as outlined below.
 
-To use the API, you’ll need an active [subscription](/pricing) that unlocks this feature and allows you to generate an access (bearer) token from your [account page](/account).
+To use the API, generate an access (bearer) token from your [account page](/account).
 
 ## 💡 API Limitations
 

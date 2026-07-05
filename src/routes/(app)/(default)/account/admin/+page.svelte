@@ -26,10 +26,6 @@
 		<p class="text-3xl font-bold">{data.totalUsers}</p>
 	</Card>
 	<Card>
-		<p class="text-muted-foreground truncate text-sm font-medium">Paid Subscriptions</p>
-		<p class="text-3xl font-bold">{data.activeSubscriptions}</p>
-	</Card>
-	<Card>
 		<p class="text-muted-foreground truncate text-sm font-medium">Total Secrets</p>
 		<p class="text-3xl font-bold">{data.globalStats?.totalSecrets ?? 0}</p>
 	</Card>
@@ -51,28 +47,6 @@
 			<span class="font-medium">{formatPercent(data.adoptionRates.emailVerificationRate)}</span>
 		</div>
 	</div>
-
-	<h3 class="mb-2 text-lg font-semibold">Subscription Tiers</h3>
-	<Table.Root>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head>Tier</Table.Head>
-				<Table.Head class="text-right">Users</Table.Head>
-				<Table.Head class="text-right">%</Table.Head>
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each data.usersByTier as tier, i (i)}
-				<Table.Row>
-					<Table.Cell>{tier.tier}</Table.Cell>
-					<Table.Cell class="text-right">{tier.count}</Table.Cell>
-					<Table.Cell class="text-right">{formatPercent(tier.count / data.totalUsers)}</Table.Cell>
-				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root>
-
-	<Separator class="my-6" />
 
 	<h3 class="mb-2 text-lg font-semibold">User Signups by Month</h3>
 	<Table.Root>
@@ -100,7 +74,6 @@
 			<Table.Row>
 				<Table.Head>Email</Table.Head>
 				<Table.Head>Name</Table.Head>
-				<Table.Head>Tier</Table.Head>
 				<Table.Head class="text-right">Date</Table.Head>
 			</Table.Row>
 		</Table.Header>
@@ -109,7 +82,6 @@
 				<Table.Row>
 					<Table.Cell class="max-w-[200px] truncate">{signup.email}</Table.Cell>
 					<Table.Cell>{signup.name ?? '—'}</Table.Cell>
-					<Table.Cell>{signup.tier}</Table.Cell>
 					<Table.Cell class="text-right">{formatDate(signup.createdAt)}</Table.Cell>
 				</Table.Row>
 			{/each}
@@ -205,7 +177,6 @@
 		<Table.Header>
 			<Table.Row>
 				<Table.Head>Email</Table.Head>
-				<Table.Head>Tier</Table.Head>
 				<Table.Head class="text-right">Secrets</Table.Head>
 			</Table.Row>
 		</Table.Header>
@@ -213,7 +184,6 @@
 			{#each data.topUsers as item, i (i)}
 				<Table.Row>
 					<Table.Cell class="max-w-[200px] truncate">{item.email}</Table.Cell>
-					<Table.Cell>{item.tier}</Table.Cell>
 					<Table.Cell class="text-right">{item.totalSecrets}</Table.Cell>
 				</Table.Row>
 			{/each}
@@ -223,30 +193,6 @@
 
 <!-- Organizations Section -->
 <Card title="Organizations" class="mb-6">
-	<h3 class="mb-2 text-lg font-semibold">Subscription Tiers</h3>
-	<Table.Root>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head>Tier</Table.Head>
-				<Table.Head class="text-right">Organizations</Table.Head>
-				<Table.Head class="text-right">%</Table.Head>
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each data.organizationsByTier as tier, i (i)}
-				<Table.Row>
-					<Table.Cell>{tier.tier}</Table.Cell>
-					<Table.Cell class="text-right">{tier.count}</Table.Cell>
-					<Table.Cell class="text-right"
-						>{formatPercent(tier.count / data.totalOrganizations)}</Table.Cell
-					>
-				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root>
-
-	<Separator class="my-6" />
-
 	{#if data.organizationSizes.length === 0}
 		<p class="text-muted-foreground">No organizations yet.</p>
 	{:else}
