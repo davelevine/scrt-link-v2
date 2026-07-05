@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "暗号化を有効化",
 	"dim_quiet_raven_lock": "暗号化鍵をアンロックする必要があります。",
 	"keen_swift_heron_ask": "リクエスト",
+	"home_request_signin_prompt": "ログインしてリクエストリンクを作成し、相手から暗号化されたシークレットを受け取りましょう。",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "マイ Secret Requests",
 	"mild_shy_parrot_rest": "まだ Secret Request を作成していません。",

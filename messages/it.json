@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Abilita la crittografia",
 	"dim_quiet_raven_lock": "Le tue chiavi di crittografia devono essere sbloccate.",
 	"keen_swift_heron_ask": "Richiesta",
+	"home_request_signin_prompt": "Accedi per creare un link di richiesta e ricevere un segreto cifrato da qualcuno.",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "Le mie Secret Requests",
 	"mild_shy_parrot_rest": "Non hai ancora creato nessuna secret request.",

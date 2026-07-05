@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Ativar Criptografia",
 	"dim_quiet_raven_lock": "Suas chaves de criptografia precisam ser desbloqueadas.",
 	"keen_swift_heron_ask": "Solicitação",
+	"home_request_signin_prompt": "Inicie sessão para criar um link de solicitação e receber um segredo encriptado de alguém.",
 	"calm_proud_ibis_list": "Solicitações",
 	"neat_warm_crane_view": "Minhas Solicitações de Segredo",
 	"mild_shy_parrot_rest": "Você ainda não criou nenhuma solicitação de segredo.",

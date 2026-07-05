@@ -7,11 +7,17 @@
 	import { page } from '$app/state';
 	import { copyText, originToUnicode } from '$lib/client/utils';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
+	import SecretRequestForm from '$lib/components/forms/secret-request-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyFeatures } from '$lib/data/app';
 	import { SecretType, type TierOptions } from '$lib/data/enums';
+	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+	import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
+
+	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { getSecretTypes } from '../../data/secretSettings';
 	import Button from '../ui/button/button.svelte';
@@ -22,6 +28,7 @@
 
 	type Props = {
 		form: SecretFormProps['form'];
+		secretRequestForm?: SuperValidated<SecretRequestFormSchema>;
 		effectiveTier?: TierOptions | null;
 		hidePrimaryFeatureList?: boolean;
 		secretTypes?: SecretType[];
@@ -30,16 +37,28 @@
 	};
 	let {
 		form,
+		secretRequestForm,
 		effectiveTier,
 		hidePrimaryFeatureList = false,
-		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP],
+		secretTypes = [
+			SecretType.TEXT,
+			SecretType.FILE,
+			SecretType.REDIRECT,
+			SecretType.SNAP,
+			SecretType.NEOGRAM
+		],
 		cardTitle,
 		class: className = ''
 	}: Props = $props();
 
 	let masterKey = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${originToUnicode(page.url.origin)}/s#${masterKey}`);
+	// Secret links are `/s#<key>`; a Secret Request produces a full link of its own.
+	let secretLink: string = $derived(`${originToUnicode(page.url.origin)}/s#${masterKey}`);
+	let requestLink = $state('');
+	let link = $derived(requestLink || secretLink);
+	let currentUser = $derived(page.data.user);
+	let planLimits = $derived(getUserPlanLimits(effectiveTier));
 	let currentTab = $state('text');
 
 	let enabledSecretTypes = $derived(
@@ -83,8 +102,14 @@
 				<CopyButton class="shrink-0" text={link} />
 			</div>
 		</div>
-		<Button onclick={() => (successMessage = '')} variant="ghost" size="sm"
-			><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
+		<Button
+			onclick={() => {
+				successMessage = '';
+				requestLink = '';
+				masterKey = '';
+			}}
+			variant="ghost"
+			size="sm"><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 		>
 	{:else}
 		<Card title={cardTitle}>
@@ -98,19 +123,42 @@
 				/>
 			{:else}
 				<Tabs.Root bind:value={currentTab}>
-					<Tabs.List class="max-w-full overflow-scroll">
+					<Tabs.List class="max-w-full overflow-x-auto">
 						{#each enabledSecretTypes as secretTypeItem (secretTypeItem.value)}
 							<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 						{/each}
+						{#if secretRequestForm}
+							<Tabs.Trigger value="request">{m.keen_swift_heron_ask()}</Tabs.Trigger>
+						{/if}
 					</Tabs.List>
 					<Tabs.Content value={currentTab}>
-						<SecretForm
-							{form}
-							{effectiveTier}
-							secretType={currentTab as SecretType}
-							bind:masterKey
-							bind:successMessage
-						/>
+						{#if currentTab === 'request' && secretRequestForm}
+							{#if currentUser}
+								<SecretRequestForm
+									form={secretRequestForm}
+									expirationOptions={planLimits.expirationOptions}
+									tier={effectiveTier}
+									bind:successMessage
+									bind:requestLink
+								/>
+							{:else}
+								<div class="px-2 py-8 text-center sm:px-6">
+									<h3 class="mb-2 text-lg font-semibold">{m.fresh_bold_eagle_build()}</h3>
+									<p class="text-muted-foreground mx-auto mb-6 max-w-sm text-sm">
+										{m.home_request_signin_prompt()}
+									</p>
+									<Button href={localizeHref('/login')}>{m.legal_weak_jay_bless()}</Button>
+								</div>
+							{/if}
+						{:else}
+							<SecretForm
+								{form}
+								{effectiveTier}
+								secretType={currentTab as SecretType}
+								bind:masterKey
+								bind:successMessage
+							/>
+						{/if}
 					</Tabs.Content>
 				</Tabs.Root>
 			{/if}

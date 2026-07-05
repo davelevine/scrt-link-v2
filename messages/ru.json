@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Включить шифрование",
 	"dim_quiet_raven_lock": "Ваши ключи шифрования должны быть разблокированы.",
 	"keen_swift_heron_ask": "Запрос",
+	"home_request_signin_prompt": "Войдите, чтобы создать ссылку-запрос и получить от кого-то зашифрованный секрет.",
 	"calm_proud_ibis_list": "Запросы",
 	"neat_warm_crane_view": "Мои секретные запросы",
 	"mild_shy_parrot_rest": "Вы еще не создавали секретных запросов.",

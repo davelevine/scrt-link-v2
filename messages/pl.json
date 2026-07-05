@@ -450,6 +450,7 @@
 	"bold_safe_tiger_lock": "Włącz szyfrowanie",
 	"dim_quiet_raven_lock": "Twoje klucze szyfrujące muszą zostać odblokowane.",
 	"keen_swift_heron_ask": "Żądanie",
+	"home_request_signin_prompt": "Zaloguj się, aby utworzyć link z prośbą i otrzymać od kogoś zaszyfrowany sekret.",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "Moje Secret Requests",
 	"mild_shy_parrot_rest": "Nie utworzyłeś jeszcze żadnych Secret Requests.",
