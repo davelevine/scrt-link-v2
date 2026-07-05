@@ -41,15 +41,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(gel@2.2.0)(kysely@0.28.17)(postgres@3.4.8)
-      drizzle-zod:
-        specifier: ^0.6.1
-        version: 0.6.1(drizzle-orm@0.45.2(gel@2.2.0)(kysely@0.28.17)(postgres@3.4.8))(zod@4.3.6)
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       postgres:
         specifier: ^3.4.5
         version: 3.4.8
@@ -62,9 +56,6 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
-      runed:
-        specifier: ^0.23.3
-        version: 0.23.4(svelte@5.55.7(@typescript-eslint/types@8.54.0))
       svelte-exmarkdown:
         specifier: ^4.0.2
         version: 4.0.3(svelte@5.55.7(@typescript-eslint/types@8.54.0))
@@ -114,9 +105,6 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.0
         version: 4.1.18
-      '@types/grecaptcha':
-        specifier: ^3.0.9
-        version: 3.0.9
       '@types/node':
         specifier: ^25.5.2
         version: 25.5.2
@@ -1579,9 +1567,6 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
-  '@types/grecaptcha@3.0.9':
-    resolution: {integrity: sha512-fFxMtjAvXXMYTzDFK5NpcVB7WHnrHVLl00QzEGpuFxSAC789io6M+vjcn+g5FTEamIJtJr/IHkCDsqvJxeWDyw==}
-
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
@@ -2250,12 +2235,6 @@ packages:
       sqlite3:
         optional: true
 
-  drizzle-zod@0.6.1:
-    resolution: {integrity: sha512-huEbUgnsuR8tupnmLiyB2F1I2H9dswI3GfM36IbIqx9i0YUeYjRsDpJVyFVeziUvI1ogT9JHRL2Q03cC4QmvxA==}
-    peerDependencies:
-      drizzle-orm: '>=0.36.0'
-      zod: '>=3.0.0'
-
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -2764,10 +2743,6 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
-
-  jwt-decode@4.0.0:
-    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
-    engines: {node: '>=18'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -5827,8 +5802,6 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
-  '@types/grecaptcha@3.0.9': {}
-
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
@@ -6434,11 +6407,6 @@ snapshots:
       kysely: 0.28.17
       postgres: 3.4.8
 
-  drizzle-zod@0.6.1(drizzle-orm@0.45.2(gel@2.2.0)(kysely@0.28.17)(postgres@3.4.8))(zod@4.3.6):
-    dependencies:
-      drizzle-orm: 0.45.2(gel@2.2.0)(kysely@0.28.17)(postgres@3.4.8)
-      zod: 4.3.6
-
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -6978,8 +6946,6 @@ snapshots:
   json-stable-stringify-without-jsonify@1.0.1: {}
 
   json5@2.2.3: {}
-
-  jwt-decode@4.0.0: {}
 
   keyv@4.5.4:
     dependencies:
