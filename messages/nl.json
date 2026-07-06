@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"footer_description": "Encoded is een end-to-end versleutelde dienst voor het delen van wachtwoorden, privébestanden en andere gevoelige gegevens via zelfvernietigende links, waardoor geheimen buiten e-mail, Slack, Teams en andere kanalen blijven. Voor bedrijven bieden we een white-labeloplossing, aanpasbaar met je eigen merk en domein.",
+	"footer_description": "Encoded is een end-to-end versleutelde dienst voor het delen van wachtwoorden, privébestanden en andere gevoelige gegevens via zelfvernietigende links, waardoor geheimen buiten e-mail, Slack, Teams en andere kanalen blijven. Oorspronkelijk gebouwd in Zwitserland, onderworpen aan het Zwitserse privacyrecht.",
 	"bold_neat_otter_gate": "Secret Requests is beschikbaar vanaf het Top Secret-abonnement.",
 	"calm_tidy_finch_label": "Nieuw",
 	"loud_clean_crow_count": "Weergavelimiet",

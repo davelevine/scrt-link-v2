@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"footer_description": "Encoded est un service chiffré de bout en bout pour partager des mots de passe, des fichiers privés et d'autres données sensibles via des liens à autodestruction — afin de garder les secrets hors des e-mails, de Slack, de Teams et d'autres canaux. Pour les entreprises, nous proposons une solution en marque blanche, personnalisable avec votre propre marque et domaine.",
+	"footer_description": "Encoded est un service chiffré de bout en bout pour partager des mots de passe, des fichiers privés et d'autres données sensibles via des liens à autodestruction — afin de garder les secrets hors des e-mails, de Slack, de Teams et d'autres canaux. Conçu à l'origine en Suisse, régi par le droit suisse de la protection des données.",
 	"bold_neat_otter_gate": "Secret Requests est disponible à partir du forfait Top Secret.",
 	"calm_tidy_finch_label": "Nouveau",
 	"loud_clean_crow_count": "Limite de vues",

@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"footer_description": "Encoded は、自己消滅リンクを通じてパスワード、プライベートファイル、その他の機密データを共有するエンドツーエンド暗号化サービスです。メール、Slack、Teams などのチャネルから秘密を遠ざけます。企業向けには、独自のブランドとドメインでカスタマイズできるホワイトラベルソリューションを提供しています。",
+	"footer_description": "Encoded は、自己消滅リンクを通じてパスワード、プライベートファイル、その他の機密データを共有するエンドツーエンド暗号化サービスです。メール、Slack、Teams などのチャネルから秘密を遠ざけます。元々スイスで開発され、スイスのプライバシー法に準拠しています。",
 	"bold_neat_otter_gate": "Secret Requests は Top Secret プラン以上でご利用いただけます。",
 	"calm_tidy_finch_label": "新規",
 	"loud_clean_crow_count": "閲覧回数の上限",

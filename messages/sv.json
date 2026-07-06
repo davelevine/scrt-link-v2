@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"footer_description": "Encoded är en helt krypterad tjänst (end-to-end) för att dela lösenord, privata filer och andra känsliga data via självförstörande länkar – så att hemligheter hålls borta från e-post, Slack, Teams och andra kanaler. För företag erbjuder vi en white label-lösning som kan anpassas med ditt eget varumärke och din egen domän.",
+	"footer_description": "Encoded är en helt krypterad tjänst (end-to-end) för att dela lösenord, privata filer och andra känsliga data via självförstörande länkar – så att hemligheter hålls borta från e-post, Slack, Teams och andra kanaler. Ursprungligen byggd i Schweiz, styrd av schweizisk integritetslagstiftning.",
 	"bold_neat_otter_gate": "Secret Requests är tillgängligt från Top Secret-planen och uppåt.",
 	"calm_tidy_finch_label": "Nytt",
 	"loud_clean_crow_count": "Visningsgräns",
