@@ -76,7 +76,7 @@ export const productMenu = () => [
 		label: 'CLI'
 	},
 	{
-		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
+		href: 'https://deepwiki.com/davelevine/scrt-link-v2',
 		label: 'Wiki',
 		externalLink: true
 	}
