@@ -6,6 +6,7 @@ import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { MAX_UPLOAD_CHUNK_SIZE } from '$lib/constants';
 import { s3Client, withKeyPrefix } from '$lib/s3';
 import { isUploadRateLimited } from '$lib/server/rate-limit';
+import { tryReserveUploadBudget } from '$lib/server/upload-usage';
 
 import type { RequestEvent } from './$types';
 
@@ -33,6 +34,13 @@ export const POST = async (event: RequestEvent) => {
 	}
 	if (size > MAX_UPLOAD_CHUNK_SIZE) {
 		return error(413, 'File exceeds the maximum allowed size.');
+	}
+
+	// Global rolling-24h upload budget — the backstop against a patient script
+	// that paces under the per-IP rate limit. When the ceiling is hit, uploads
+	// are refused service-wide until the window rolls off.
+	if (!(await tryReserveUploadBudget(size))) {
+		return error(429, 'Upload capacity for today has been reached. Please try again later.');
 	}
 
 	// Namespace the object under the instance key prefix (transparent to the client,
