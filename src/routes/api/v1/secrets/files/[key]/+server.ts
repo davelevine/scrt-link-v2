@@ -4,6 +4,7 @@ import { importPublicKey, verifyMessageSignature } from '@scrt-link/core';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { s3Client, withKeyPrefix } from '$lib/s3';
 import { db } from '$lib/server/db';
 import { secret as secretSchema } from '$lib/server/db/schema';
@@ -12,9 +13,10 @@ import type { RequestEvent } from './$types';
 
 export const POST = async ({ params, request }: RequestEvent) => {
 	const body = await request.json();
-	const { secretIdHash, bucket, keyHash, signature } = body;
+	const { secretIdHash, keyHash, signature } = body;
 
-	const Bucket = bucket;
+	// Pin the bucket server-side; never trust a client-supplied bucket name.
+	const Bucket = PUBLIC_S3_BUCKET;
 
 	if (!keyHash) {
 		error(400, 'No file key provided.');
