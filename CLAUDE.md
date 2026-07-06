@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Encoded** is a secure secret-sharing platform (an open-source fork of scrt.link). Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, and a public API. It is free — there is no billing or subscription system.
+**Encoded** is a secure secret-sharing platform (an open-source fork of scrt.link). Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, and a public API.
 
 ## Tech Stack
 

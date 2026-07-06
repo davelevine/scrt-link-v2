@@ -1,6 +1,6 @@
 # scrt-link-v2
 
-**Encoded** is a secure secret-sharing platform. Secrets are encrypted on the client before being sent to the server — the server never sees the plaintext. Once a secret has been viewed (or expires), it is permanently deleted. It is free; there is no billing or subscription system.
+**Encoded** is a secure secret-sharing platform. Secrets are encrypted on the client before being sent to the server — the server never sees the plaintext. Once a secret has been viewed (or expires), it is permanently deleted.
 
 Built with [SvelteKit](https://svelte.dev) and [TypeScript](https://www.typescriptlang.org/).
 
