@@ -1,4 +1,5 @@
 import {
+	bigint,
 	boolean,
 	index,
 	integer,
@@ -261,6 +262,19 @@ export const rateLimit = pgTable(
 		expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
 	},
 	(table) => [index('rate_limit_expires_at_idx').on(table.expiresAt)]
+);
+
+// Ledger of declared upload sizes, used to enforce a global rolling 24h upload
+// budget (see upload-usage.ts) so cumulative R2 storage/cost can't run away.
+// One row per presigned-upload request; pruned by the cron.
+export const uploadUsage = pgTable(
+	'upload_usage',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		bytes: bigint('bytes', { mode: 'number' }).notNull(),
+		createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
+	},
+	(table) => [index('upload_usage_created_at_idx').on(table.createdAt)]
 );
 
 export const apiKey = pgTable('api_key', {
