@@ -43,6 +43,29 @@ export const secretMenu = () => [
 	}
 ];
 
+export const useCasesMenu = () => [
+	{
+		href: '/business',
+		label: m.great_funny_beaver_gleam()
+	},
+	{
+		href: '/use-cases/it-security',
+		label: m.warm_calm_hawk_defend()
+	},
+	{
+		href: '/use-cases/legal-compliance',
+		label: m.clear_pure_owl_advise()
+	},
+	{
+		href: '/use-cases/journalists',
+		label: m.brave_sharp_fox_report()
+	},
+	{
+		href: '/use-cases/customer-support',
+		label: m.kind_warm_bear_assist()
+	}
+];
+
 export const productMenu = () => [
 	{
 		href: '/api-documentation',
