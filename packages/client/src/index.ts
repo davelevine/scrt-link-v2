@@ -14,7 +14,7 @@ import type { Options } from './types';
 
 // http://localhost:5173
 const PROTOCOL = 'https';
-const DEFAULT_HOST = 'scrt.link';
+const DEFAULT_HOST = 'encoded.org';
 
 export const scrtLink = (apiKey: string) => {
 	if (!apiKey) {

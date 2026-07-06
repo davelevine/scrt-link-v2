@@ -1,10 +1,12 @@
 # scrt-link-v2
 
-[scrt.link](https://scrt.link) is a secure secret-sharing platform. Secrets are encrypted on the client before being sent to the server — the server never sees the plaintext. Once a secret has been viewed (or expires), it is permanently deleted.
+**Encoded** is a secure secret-sharing platform. Secrets are encrypted on the client before being sent to the server — the server never sees the plaintext. Once a secret has been viewed (or expires), it is permanently deleted.
 
-Version 2 — built with [SvelteKit](https://svelte.dev) and [TypeScript](https://www.typescriptlang.org/).
+Built with [SvelteKit](https://svelte.dev) and [TypeScript](https://www.typescriptlang.org/).
 
-Live: [scrt.link](https://scrt.link)
+Live: [encoded.org](https://encoded.org)
+
+> Open-source, self-hostable fork of [scrt.link](https://scrt.link) by [@stophecom](https://github.com/stophecom).
 
 ## Developing
 
@@ -77,11 +79,11 @@ pnpm dlx shadcn-svelte@latest add form
 Translations are done with [Paraglide.js by Inlang](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 
 ```bash
-# See project.inlang/settings.json for configurations
-# Edit your messages in messages/en.json
-# Consider installing the Sherlock IDE Extension
-pnpm machine-translate # Machine translate missing keys
-
+# See project.inlang/settings.json for configurations.
+# Add/edit source strings in messages/en.json only; the other locales are
+# generated. After adding keys, translate them into every locale, then:
+pnpm cleanup-translation-keys   # remove keys no longer referenced in src/
+pnpm deduplicate-translations   # collapse duplicate identical strings
 ```
 
 ### Usage
@@ -106,27 +108,9 @@ The following login methods are available:
 
 Redirect URI: `/login/google/callback`
 
-## Subscriptions
-
-We use Stripe as payment provider.
-
-- [Client Side (ES Module)](https://www.npmjs.com/package/@stripe/stripe-js)
-- [Server (Node.js)](https://www.npmjs.com/package/stripe)
-
-```bash
-# Stripe CLI
-# Test webhooks
-stripe login
-stripe listen --forward-to https://localhost:5173/api/v1/webhooks
-
-# Trigger event
-stripe trigger payment_intent.succeeded
-
-```
-
 ## Transactional Emails
 
-- Delivered via [resend](https://resend.com/)
+- Delivered via [Lettermint](https://lettermint.co) (`src/lib/server/resend.ts` — filename is legacy). Set `LETTERMINT_TOKEN` and `EMAIL_FROM` (from-address domain must be verified in Lettermint).
 - Email templates with [svelte-email-tailwind](https://github.com/steveninety/svelte-email-tailwind)
 - Structure:
 
@@ -134,13 +118,10 @@ stripe trigger payment_intent.succeeded
 📦 Project
 ├── 📂 src
 │ └── 📂 lib
-│   └── 📂 emails # Email templates
+│   ├── 📂 emails                 # Email templates
+│   └── 📂 server/resend.ts       # Lettermint sender
 │
-├── 📂 routes
-│ └── 📂 admin
-│   └── 📂 email-previews # Preview emails (Only works on localhost )
-│
-└── 📜 vite.config.ts # Tailwind setup
+└── 📂 routes/(app)/(default)/account/admin/email-previews # Preview emails (admin only)
 ```
 
 ## Workflows / E2E Testing
@@ -162,7 +143,7 @@ Since all secrets need to be encrypted on the client, the API relies on proper c
 
 ### Authentication
 
-You can get an API key (bearer token) on the account page. (With proper access rights - see plans.)
+You can get an API key (bearer token) on the account page. API access is available to every account.
 
 ### Endpoints
 
@@ -175,7 +156,7 @@ Used to create secrets programmatically. To interact with the API, use the clien
 # IMPORTANT. The following is just for documentation purposes. Use the client-module to interact with the API.
 
 # Post Secret
-POST http://scrt.link/api/v1/secrets HTTP/1.1
+POST https://encoded.org/api/v1/secrets HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{apiAccessToken}}
 
@@ -197,7 +178,7 @@ Usage in Node.js / Browser:
 
 ```html
 <script type="module">
-	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
+	import { scrtLink } from 'https://encoded.org/api/v1/client-module';
 
 	// Instantiate client with API key.
 	const client = scrtLink('ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ');
@@ -222,7 +203,7 @@ Example response:
 
 ```json
 {
-	"secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+	"secretLink": "https://encoded.org/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000,
 	"expiresAt": "2025-04-24T16:15:52.172Z"
@@ -305,30 +286,21 @@ npm version patch
 npm publish --access public
 ```
 
-#### Build API provided client module
+#### Build the API-provided client module
+
+The ESM module served at `/api/v1/client-module` is bundled from
+`packages/client/src/index.ts` during deployment (via `postbuild`). Build it
+locally with:
 
 ```bash
-# The esm module is built during deployment as part of postbuild and saved in the /static folder.
-# If you need to make adjustments, see $lib/client/client-module.ts
-# Build the module locally with:
-esbuild src/lib/client/client-module.ts --bundle --format=esm --minify --outfile=static/client-module.js
-
-# For vercel:
-esbuild src/lib/client/client-module.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js
-
-# Shortcut
 pnpm build-client-module
-
+# → esbuild packages/client/src/index.ts ... --outfile=.vercel/output/static/client-module.js
 ```
 
 ## User image handling
 
-We store images (logo, app icons) for white-label sites on S3 and serve optimized images via [imagx](https://dashboard.imgix.com/).
-
-```bash
-# Imgix image CDN
-PUBLIC_IMGIX_CDN_URL="scrt-link.imgix.net"
-```
+Images for white-label sites (logo, app icons) are stored on Cloudflare R2, the
+same S3-compatible bucket used for secret files (`PUBLIC_S3_ENDPOINT`).
 
 ## White-label with HTTPS (local)
 
@@ -344,20 +316,36 @@ mkcert -install
 2. Generate certificates for your white-label domain and localhost:
 
 ```bash
-mkcert wl.scrt.link localhost 127.0.0.1 ::1
+mkcert wl.encoded.org localhost 127.0.0.1 ::1
 ```
 
-This creates `wl.scrt.link.pem` and `wl.scrt.link-key.pem` in the current directory.
+This creates `wl.encoded.org.pem` and `wl.encoded.org-key.pem` in the current directory.
 
 3. Add the domain to `/etc/hosts`:
 
 ```
-127.0.0.1 wl.scrt.link
+127.0.0.1 wl.encoded.org
 ```
 
 4. The `vite.config.ts` automatically picks up the certificates if they exist. No config changes needed — HTTPS is enabled conditionally when `.pem` files are present.
 
 > **Note:** The `.pem` files are gitignored and must be generated per machine.
+
+## Limits & abuse controls
+
+File uploads (the only path that writes to R2) are gated at
+`POST /api/v1/secrets/files`:
+
+- **1 GB** per file, **65 MB** per chunk (the latter enforced by a signed
+  `Content-Length` on the presigned PUT).
+- Per-IP rate limit on presigned-URL minting.
+- A global rolling **24 h upload budget** (`DAILY_UPLOAD_BUDGET_BYTES`, default
+  5 GB) — a hard ceiling on total ingestion regardless of IP.
+- The daily cron emails an alert when total bucket storage exceeds
+  `R2_STORAGE_ALERT_THRESHOLD_BYTES`. Files are deleted after
+  `FILE_RETENTION_PERIOD_IN_DAYS` (30).
+
+Thresholds live in `src/lib/constants.ts`.
 
 ## Error Handling
 
@@ -371,13 +359,15 @@ Expected errors are returned with `error(404, 'Some message')` and might be show
 - PostgreSQL (Database)
 - Drizzle (ORM)
 - Inlang/Paraglide (i18n)
-- Resend (Email)
+- Lettermint (Email)
+- Cloudflare R2 (Object storage)
 
 ## Infrastructure
 
-- Website and Postgres on [Vercel](https://vercel.com)
-- S3 Object Storage with [flow.swiss](https://flow.swiss)
-- Emails with [Resend](https://resend.com)
+- Website on [Vercel](https://vercel.com)
+- PostgreSQL on [Neon](https://neon.tech)
+- Object storage on [Cloudflare R2](https://developers.cloudflare.com/r2/) (S3-compatible)
+- Email via [Lettermint](https://lettermint.co)
 
 ## License
 
