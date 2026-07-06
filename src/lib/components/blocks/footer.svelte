@@ -29,8 +29,17 @@
 		</div>
 
 		<div class="pb-8 md:flex">
-			<div class="text-muted-foreground flex flex-wrap items-center py-2 text-sm">
+			<div class="text-muted-foreground flex flex-wrap items-center gap-x-2 py-2 text-sm">
 				<span>©{new Date().getFullYear()} {appName}</span>
+				<span aria-hidden="true">·</span>
+				<a
+					href="https://github.com/stophecom/scrt-link-v2"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hover:text-foreground underline underline-offset-2 transition-colors"
+				>
+					{m.footer_based_on()}
+				</a>
 			</div>
 
 			<div class="ms-auto flex items-center gap-4 py-5 md:py-2">
