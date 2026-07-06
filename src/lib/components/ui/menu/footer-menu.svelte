@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
+
 	import { cn } from '$lib/client/utils';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -16,11 +18,15 @@
 		{#each menu as menuItem (menuItem.href)}
 			<li class="flex items-center">
 				<a
-					class="flex p-1 py-2 font-medium hover:underline sm:py-1"
+					class="flex items-center gap-1 p-1 py-2 font-medium hover:underline sm:py-1"
 					target={menuItem?.externalLink ? '_blank' : ''}
+					rel={menuItem?.externalLink ? 'noopener noreferrer' : undefined}
 					href={menuItem?.externalLink ? menuItem.href : localizeHref(menuItem.href)}
 				>
 					{menuItem.label}
+					{#if menuItem?.externalLink}
+						<ArrowUpRight class="h-3.5 w-3.5" />
+					{/if}
 				</a>
 				{#if menuItem?.badge}
 					<span
