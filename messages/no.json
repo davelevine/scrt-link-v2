@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"footer_description": "Encoded er en ende-til-ende-kryptert tjeneste for å dele passord, private filer og andre sensitive data via selvdestruerende lenker – slik at hemmeligheter holdes borte fra e-post, Slack, Teams og andre kanaler. For bedrifter tilbyr vi en white label-løsning som kan tilpasses med din egen merkevare og ditt eget domene. Bygget i Sveits, underlagt sveitsisk personvernlovgivning.",
 	"bold_neat_otter_gate": "Secret Requests er tilgjengelig fra Top Secret-planen og oppover.",
 	"calm_tidy_finch_label": "Nytt",
 	"loud_clean_crow_count": "Visningsgrense",

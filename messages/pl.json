@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"footer_description": "Encoded to usługa z szyfrowaniem end-to-end do udostępniania haseł, prywatnych plików i innych wrażliwych danych za pomocą samoniszczących się linków, dzięki czemu sekrety nie trafiają do e-maili, Slacka, Teams i innych kanałów. Dla firm oferujemy rozwiązanie white-label, konfigurowalne z własną marką i domeną. Stworzone w Szwajcarii, podlega szwajcarskiemu prawu o ochronie prywatności.",
 	"bold_neat_otter_gate": "Secret Requests jest dostępne w planie Top Secret i wyższych.",
 	"calm_tidy_finch_label": "Nowość",
 	"loud_clean_crow_count": "Limit wyświetleń",

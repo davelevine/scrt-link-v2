@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"footer_description": "Encoded 是一项端到端加密服务，通过自毁链接分享密码、私密文件和其他敏感数据，让机密内容远离电子邮件、Slack、Teams 等渠道。面向企业，我们提供白标解决方案，可使用您自己的品牌和域名进行定制。在瑞士打造，受瑞士隐私法管辖。",
 	"bold_neat_otter_gate": "Secret Requests 在 Top Secret 套餐及以上版本中提供。",
 	"calm_tidy_finch_label": "新建",
 	"loud_clean_crow_count": "查看次数限制",

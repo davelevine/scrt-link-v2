@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Logo from '$lib/assets/images/logo.svg?component';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import { appName } from '../../data/app';
@@ -27,6 +28,12 @@
 				<FooterMenu title={m.equal_away_frog_aim()} menu={helpMenu()} />
 			</div>
 		</div>
+
+		<div class="text-muted-foreground max-w-4xl py-5 text-sm">
+			{m.footer_description()}
+		</div>
+
+		<Separator class="mb-2" />
 
 		<div class="pb-8 md:flex">
 			<div class="text-muted-foreground flex flex-wrap items-center py-2 text-sm">

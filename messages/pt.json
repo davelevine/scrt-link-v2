@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"footer_description": "Encoded é um serviço com criptografia de ponta a ponta para compartilhar senhas, arquivos privados e outros dados sensíveis por meio de links autodestrutivos, mantendo os segredos fora do e-mail, Slack, Teams e outros canais. Para empresas, oferecemos uma solução white-label, personalizável com sua própria marca e domínio. Desenvolvido na Suíça, regido pela lei suíça de privacidade.",
 	"bold_neat_otter_gate": "Secret Requests está disponível no plano Top Secret e superiores.",
 	"calm_tidy_finch_label": "Novo",
 	"loud_clean_crow_count": "Limite de visualizações",
