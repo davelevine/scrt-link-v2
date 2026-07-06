@@ -3,8 +3,8 @@ import { GB } from '$lib/data/units';
 
 import { expiresInOptionsExtended } from './secretSettings';
 
-// Billing and subscription tiers have been removed. Every feature is available
-// to everyone; this returns a single, unlocked set of limits.
+// The per-account limits applied across the app (text/file size, view count,
+// expiry options, feature availability).
 export const getUserPlanLimits = () => ({
 	[SecretType.TEXT]: 100_000,
 	[SecretType.FILE]: 1 * GB,
