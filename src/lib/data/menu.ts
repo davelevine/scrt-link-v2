@@ -38,7 +38,31 @@ export const secretMenu = () => [
 	{
 		icon: ConciergeBell,
 		href: '/account/requests',
-		label: m.keen_swift_heron_ask()
+		label: m.keen_swift_heron_ask(),
+		badge: m.calm_tidy_finch_label()
+	}
+];
+
+export const useCasesMenu = () => [
+	{
+		href: '/business',
+		label: m.great_funny_beaver_gleam()
+	},
+	{
+		href: '/use-cases/it-security',
+		label: m.warm_calm_hawk_defend()
+	},
+	{
+		href: '/use-cases/legal-compliance',
+		label: m.clear_pure_owl_advise()
+	},
+	{
+		href: '/use-cases/journalists',
+		label: m.brave_sharp_fox_report()
+	},
+	{
+		href: '/use-cases/customer-support',
+		label: m.kind_warm_bear_assist()
 	}
 ];
 
@@ -50,6 +74,11 @@ export const productMenu = () => [
 	{
 		href: '/cli',
 		label: 'CLI'
+	},
+	{
+		href: 'https://deepwiki.com/davelevine/scrt-link-v2',
+		label: 'Wiki',
+		externalLink: true
 	}
 ];
 
@@ -72,5 +101,19 @@ export const helpMenu = () => [
 	{
 		href: '/contact',
 		label: m.early_bright_salmon_comfort()
+	},
+	{
+		href: '/faq',
+		label: m.few_awful_chipmunk_trust()
+	},
+	{
+		href: 'https://github.com/davelevine/scrt-link-v2',
+		label: 'GitHub',
+		externalLink: true
+	},
+	{
+		href: 'https://scrt.link',
+		label: 'scrt.link',
+		externalLink: true
 	}
 ];

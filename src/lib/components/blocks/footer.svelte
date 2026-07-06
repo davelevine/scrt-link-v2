@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Logo from '$lib/assets/images/logo.svg?component';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import { appName } from '../../data/app';
-	import { companyMenu, helpMenu, productMenu, secretMenu } from '../../data/menu';
+	import { companyMenu, helpMenu, productMenu, secretMenu, useCasesMenu } from '../../data/menu';
 	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
@@ -22,11 +23,18 @@
 
 			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:flex md:gap-14">
 				<FooterMenu title={m.funny_swift_jay_promise()} menu={secretMenu()} />
+				<FooterMenu title={m.quick_proud_lion_guide()} menu={useCasesMenu()} />
 				<FooterMenu title={m.tiny_suave_nils_accept()} menu={productMenu()} />
 				<FooterMenu title={m.chunky_raw_osprey_dial()} menu={companyMenu()} />
 				<FooterMenu title={m.equal_away_frog_aim()} menu={helpMenu()} />
 			</div>
 		</div>
+
+		<div class="text-muted-foreground max-w-4xl py-5 text-sm">
+			{m.footer_description()}
+		</div>
+
+		<Separator class="mb-2" />
 
 		<div class="pb-8 md:flex">
 			<div class="text-muted-foreground flex flex-wrap items-center py-2 text-sm">
