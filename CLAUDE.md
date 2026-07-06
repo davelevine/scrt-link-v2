@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**scrt.link** is a secure secret-sharing platform. Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, and a public API. It is free — there is no billing or subscription system.
+**Encoded** is a secure secret-sharing platform (an open-source fork of scrt.link). Users create encrypted secrets (text, files) that can be shared via one-time links. The platform supports end-to-end encryption, team workspaces, white-label deployments, and a public API. It is free — there is no billing or subscription system.
 
 ## Tech Stack
 
@@ -12,8 +12,8 @@
 - **Forms**: sveltekit-superforms + Zod 4 + formsnap
 - **Auth**: Custom session-based (Lucia pattern) + Google OAuth (Arctic)
 - **i18n**: Paraglide.js (7 locales: en, de, fr, es, pt, ru, zh-CN)
-- **Email**: Resend + svelte-email-tailwind templates
-- **Storage**: AWS S3 + Imgix CDN
+- **Email**: Lettermint (REST API; sender in `src/lib/server/resend.ts`) + svelte-email-tailwind templates
+- **Storage**: Cloudflare R2 (S3-compatible)
 - **Testing**: Vitest (unit/browser) + Playwright (e2e)
 - **Package manager**: pnpm (monorepo)
 - **Deployment**: Vercel (primary) or Docker
@@ -113,6 +113,6 @@ Schema changes: edit `schema.ts` then `pnpm run db:push`
 
 ## Environment
 
-Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
+Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `LETTERMINT_TOKEN`, `EMAIL_FROM`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
 
 Adapters: Vercel (default) or Node (`ADAPTER=node` for Docker)
