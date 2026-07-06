@@ -7,7 +7,7 @@ import { expiresInOptionsExtended } from './secretSettings';
 // to everyone; this returns a single, unlocked set of limits.
 export const getUserPlanLimits = () => ({
 	[SecretType.TEXT]: 100_000,
-	[SecretType.FILE]: 100 * GB,
+	[SecretType.FILE]: 1 * GB,
 	[SecretType.REDIRECT]: true,
 	[SecretType.SNAP]: true,
 	[SecretType.NEOGRAM]: true,

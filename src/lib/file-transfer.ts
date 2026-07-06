@@ -81,7 +81,11 @@ export const handleFileEncryptionAndUpload = async ({
 		const signature = await signMessage(fileName, privateKey);
 
 		const fileNameHashed = await sha256Hash(fileName);
-		const { url } = await api<PresignedUploadResponse>(`/secrets/files?file=${fileNameHashed}`);
+		// Declare the exact encrypted chunk size so the server can cap it and sign
+		// Content-Length into the presigned URL.
+		const { url } = await api<PresignedUploadResponse>(
+			`/secrets/files?file=${fileNameHashed}&size=${chunkFileSize}`
+		);
 
 		await uploadFileToS3({
 			signal,

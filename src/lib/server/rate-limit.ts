@@ -37,6 +37,24 @@ export async function isRateLimited(event: RequestEvent): Promise<boolean> {
 	return limiter.isLimited(event);
 }
 
+// Dedicated limiter for presigned-upload-URL minting. Kept separate from the
+// form limiter above because a single large file is uploaded as many 64 MB
+// chunks — each needing its own presign — which would trip the 15/min form
+// limit. This is IP-only (API clients don't carry the limiter cookie) and tuned
+// to comfortably fit a chunked multi-GB upload while blocking scripted abuse
+// loops. Distinct rate config → distinct store hash, so it can't collide with
+// the form limiter's counters.
+export const uploadLimiter = new RateLimiter({
+	store: new PostgresRateLimiterStore(),
+	IP: [60, 'm']
+});
+
+/** True when presigned-upload requests from this IP should be blocked. */
+export async function isUploadRateLimited(event: RequestEvent): Promise<boolean> {
+	if (dev) return false;
+	return uploadLimiter.isLimited(event);
+}
+
 /** Standardized 429 message payload — call at use-site so translations resolve correctly. */
 export const rateLimitErrorMessage = (): App.Superforms.Message => ({
 	status: 'error',
