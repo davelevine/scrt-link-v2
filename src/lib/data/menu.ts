@@ -80,6 +80,10 @@ export const helpMenu = () => [
 		label: m.early_bright_salmon_comfort()
 	},
 	{
+		href: '/faq',
+		label: m.few_awful_chipmunk_trust()
+	},
+	{
 		href: 'https://github.com/davelevine/scrt-link-v2',
 		label: 'GitHub',
 		externalLink: true
