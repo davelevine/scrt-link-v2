@@ -1,4 +1,4 @@
-import { EMAIL_FROM, LETTERMINT_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 import { appName, emailNoReply } from '../data/app';
 
@@ -6,7 +6,7 @@ import { appName, emailNoReply } from '../data/app';
 // The `from` address MUST use a domain verified in your Lettermint project —
 // set `EMAIL_FROM` (e.g. `Acme <no-reply@acme.com>`). Falls back to the app
 // defaults only for local development.
-const fromAddress = EMAIL_FROM || `${appName} <${emailNoReply}>`;
+const fromAddress = env.EMAIL_FROM || `${appName} <${emailNoReply}>`;
 
 const LETTERMINT_ENDPOINT = 'https://api.lettermint.co/v1/send';
 
@@ -35,7 +35,7 @@ const sendTransactionalEmail = async ({
 	bcc,
 	replyTo
 }: SendEmailOptions) => {
-	if (!LETTERMINT_TOKEN) {
+	if (!env.LETTERMINT_TOKEN) {
 		console.error('[email] LETTERMINT_TOKEN is not set — email not sent.');
 		return;
 	}
@@ -44,7 +44,7 @@ const sendTransactionalEmail = async ({
 		const response = await fetch(LETTERMINT_ENDPOINT, {
 			method: 'POST',
 			headers: {
-				'x-lettermint-token': LETTERMINT_TOKEN,
+				'x-lettermint-token': env.LETTERMINT_TOKEN,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({

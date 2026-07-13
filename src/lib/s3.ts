@@ -1,6 +1,6 @@
 import { S3Client } from '@aws-sdk/client-s3';
 
-import { S3_ACCESS_KEY, S3_SECRET_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { PUBLIC_S3_ENDPOINT, PUBLIC_S3_KEY_PREFIX } from '$env/static/public';
 
 // S3-compatible client. Configured for Cloudflare R2:
@@ -25,8 +25,8 @@ export const s3Client = new S3Client({
 	requestChecksumCalculation: 'WHEN_REQUIRED',
 	responseChecksumValidation: 'WHEN_REQUIRED',
 	credentials: {
-		accessKeyId: S3_ACCESS_KEY,
-		secretAccessKey: S3_SECRET_KEY
+		accessKeyId: env.S3_ACCESS_KEY ?? '',
+		secretAccessKey: env.S3_SECRET_KEY ?? ''
 	}
 });
 
