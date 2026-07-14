@@ -5,8 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
-		"postbuild": "pnpm build-client-module",
+		"build": "pnpm build-client-module && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -22,7 +21,7 @@
 		"prepare": "husky",
 		"cleanup-translation-keys": "node bin/cleanup-translation-keys.js",
 		"deduplicate-translations": "node bin/deduplicate-translations.js",
-		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
+		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=static/client-module.js"
 	},
 	"engines": {
 		"node": "24.x"

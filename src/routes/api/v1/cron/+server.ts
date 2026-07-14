@@ -4,7 +4,7 @@ import { error, json } from '@sveltejs/kit';
 import { and, eq, isNull, or } from 'drizzle-orm';
 import { lte } from 'drizzle-orm';
 
-import { CRON_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 import {
@@ -38,7 +38,7 @@ type ObjectList = { Key: string }[];
 export const GET: RequestHandler = async ({ request }) => {
 	const authorization = request.headers.get('authorization');
 
-	if (authorization === `Bearer ${CRON_SECRET}`) {
+	if (env.CRON_SECRET && authorization === `Bearer ${env.CRON_SECRET}`) {
 		// Delete files older than X days
 		const deleteFilesBeforeDate = subtractDays(new Date(), FILE_RETENTION_PERIOD_IN_DAYS);
 

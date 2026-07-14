@@ -1,11 +1,14 @@
-import { VERCEL_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { PUBLIC_ENV, PUBLIC_PRODUCTION_URL } from '$env/static/public';
 import { GB, MB } from '$lib/data/units';
 
 export const getBaseUrl = () => {
 	switch (PUBLIC_ENV) {
 		case 'preview': {
-			return `https://${VERCEL_URL}`;
+			// Read at runtime ($env/dynamic/private), not build time. VERCEL_URL only
+			// exists on Vercel preview deploys; a static import would fail the build
+			// everywhere else (e.g. the self-hosted Docker image).
+			return `https://${env.VERCEL_URL}`;
 		}
 		case 'staging': {
 			return `https://dev.${PUBLIC_PRODUCTION_URL}`;

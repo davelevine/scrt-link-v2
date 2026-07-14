@@ -8,6 +8,12 @@ jobs:
     name: Run end-to-end tests on published site
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
+    # Surfaced at job level so step-level `if:` can gate on it (the `secrets`
+    # context isn't available in `if:`). Preview deploys are behind Vercel's SSO
+    # protection; without this bypass token Playwright lands on Vercel's login
+    # wall and every test times out. Skip rather than fail when it's absent.
+    env:
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
     # Without this, a hung `playwright install` (a known CDN-stall failure mode)
     # squats on the runner until GitHub's 6h max-job-time kills it.
     timeout-minutes: 20
@@ -29,11 +35,14 @@ jobs:
         # Only chromium is needed (playwright.config.ts specifies no other browser).
         timeout-minutes: 8
         run: npx playwright install --with-deps chromium
+      - name: Skip preview E2E (no Vercel bypass secret)
+        if: github.event.deployment_status.environment != 'Production' && env.VERCEL_AUTOMATION_BYPASS_SECRET == ''
+        run: echo "::notice::Skipping preview E2E — VERCEL_AUTOMATION_BYPASS_SECRET is not set, so the SSO-protected preview is unreachable."
+
       - name: Run tests on preview PR
-        if: github.event.deployment_status.environment != 'Production'
+        if: github.event.deployment_status.environment != 'Production' && env.VERCEL_AUTOMATION_BYPASS_SECRET != ''
         run: xvfb-run npx playwright test
         env:
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
           E2E_USER_EMAIL: e2e@scrt.link
           E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
           PUBLIC_ENV: preview
