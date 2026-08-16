@@ -54,8 +54,10 @@ export const GET: RequestHandler = async ({ request }) => {
 			{ client, pageSize: 1000 },
 			{ Bucket: BucketName, Prefix: s3KeyPrefix }
 		)) {
+			// An empty prefix is normal (no files uploaded, or all aged out): S3 omits
+			// `Contents` entirely rather than sending an empty array.
 			if (!data.Contents) {
-				error(500, 'No Contents');
+				continue;
 			}
 
 			// Tally current storage across every page for the alert check below.
